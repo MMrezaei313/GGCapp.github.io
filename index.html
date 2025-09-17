@@ -543,7 +543,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="k1-production">مقدار تولید واقعی (متر مربع):</label>
+                    <label for="k1-production">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
                     <input type="number" id="k1-production" step="0.01">
                 </div>
                 
@@ -632,7 +632,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="k2-production1">مقدار تولید واقعی (متر مربع):</label>
+                    <label for="k2-production1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
                     <input type="number" id="k2-production1" step="0.01">
                 </div>
 
@@ -687,7 +687,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="k2-production2">مقدار تولید واقعی (متر مربع):</label>
+                    <label for="k2-production2">مقدار تولید واقعی (متر مربع بر حسب 2میل):</label>
                     <input type="number" id="k2-production2" step="0.01">
                 </div>
                 
@@ -816,7 +816,7 @@
             const batchConsumption = batchCount * 649;
             const culletConsumption = (dailyMelt - batchConsumption * 0.815);
             const culletPercentage = dailyMelt > 0 ? (culletConsumption / dailyMelt) * 100 : 0;
-            const efficiency = dailyMelt > 0 ? (production * weight / dailyMelt) * 100 : 0;
+            const efficiency = dailyMelt > 0 ? (production * weight * 2 / dailyMelt * "k1-thickness") * 100 : 0;
 
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
