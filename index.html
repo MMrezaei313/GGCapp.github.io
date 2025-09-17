@@ -911,12 +911,14 @@
 
         // توابع مربوط به کوره 2
         function calculateKoor2() {
+            const k2thickness1 = parseFloat(document.getElementById("k2-thickness1").value) || 0;
             const width1 = parseFloat(document.getElementById("k2-width1").value) || 0;
             const weight1 = parseFloat(document.getElementById("k2-weight1").value) || 0;
             const speed1 = parseFloat(document.getElementById("k2-speed1").value) || 0;
             const hours1 = parseFloat(document.getElementById("k2-hours1").value) || 0;
             const production1 = parseFloat(document.getElementById("k2-production1").value) || 0;
 
+            const k2thickness2 = parseFloat(document.getElementById("k2-thickness2").value) || 0;
             const width2 = parseFloat(document.getElementById("k2-width2").value) || 0;
             const weight2 = parseFloat(document.getElementById("k2-weight2").value) || 0;
             const speed2 = parseFloat(document.getElementById("k2-speed2").value) || 0;
@@ -933,7 +935,7 @@
             const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
-            const totalProdWeight = (production1 * weight1) + (production2 * weight2);
+            const totalProdWeight = (( production1 * 2 * weight1 )/ k2thickness1 ) + ( (production2 * 2 * weight2 ) / k2thickness2 );
             const efficiency = totalDailyMelt > 0 ? (totalProdWeight / totalDailyMelt) * 100 : 0;
             
             const silica = batchCount * 1010;
