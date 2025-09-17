@@ -814,7 +814,7 @@
 
             const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
             const batchConsumption = batchCount * 649;
-            const culletConsumption = (dailyMelt - batchConsumption) * 0.815;
+            const culletConsumption = (dailyMelt - batchConsumption * 0.815);
             const culletPercentage = dailyMelt > 0 ? (culletConsumption / dailyMelt) * 100 : 0;
             const efficiency = dailyMelt > 0 ? (production * weight / dailyMelt) * 100 : 0;
 
@@ -929,7 +929,7 @@
             const totalDailyMelt = dailyMelt1 + dailyMelt2;
             
             const batchConsumption = batchCount * 1655.12;
-            const culletConsumption = (totalDailyMelt - batchConsumption) * 0.815;
+            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
             const totalProdWeight = (production1 * weight1) + (production2 * weight2);
