@@ -805,6 +805,7 @@
 
         // توابع مربوط به کوره 1
         function calculateKoor1() {
+            const k1thickness = parseFloat(document.getElementById("k1-thickness").value) || 0;
             const width = parseFloat(document.getElementById("k1-width").value) || 0;
             const weight = parseFloat(document.getElementById("k1-weight").value) || 0;
             const speed = parseFloat(document.getElementById("k1-speed").value) || 0;
@@ -816,7 +817,7 @@
             const batchConsumption = batchCount * 649;
             const culletConsumption = (dailyMelt - batchConsumption * 0.815);
             const culletPercentage = dailyMelt > 0 ? (culletConsumption / dailyMelt) * 100 : 0;
-            const efficiency = dailyMelt > 0 ? (production * weight * 2 / dailyMelt * "k1-thickness") * 100 : 0;
+            const efficiency = dailyMelt > 0 ? (production * weight * 2 / dailyMelt * k1thickness) * 100 : 0;
 
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
