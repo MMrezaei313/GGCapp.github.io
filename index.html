@@ -1032,8 +1032,7 @@
             const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
-            const avgThickness = totalProduction > 0 ? totalWeightedThickness / totalProduction : 0;
-            const efficiency = totalDailyMelt > 0 ? ( ( totalWeightedThickness ) * 2  / totalDailyMelt) * 100 : 0;
+            const efficiency = totalDailyMelt > 0 ? ( ( totalWeightedThickness  * 2 ) / totalDailyMelt) * 100 : 0;
 
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
