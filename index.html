@@ -349,6 +349,59 @@
             background-color: #eaf2f8;
         }
 
+        /* استایل برای ورودی‌های چندگانه */
+        .input-group {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            position: relative;
+        }
+
+        .input-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .input-group-title {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .remove-input-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .remove-input-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .add-input-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .add-input-btn:hover {
+            background-color: #219653;
+        }
+
         /* ریسپانسیو */
         @media (max-width: 768px) {
             .form-group {
@@ -412,6 +465,10 @@
             .report-table td {
                 padding: 6px;
             }
+            
+            .input-group {
+                padding: 10px;
+            }
         }
 
         /* چاپ */
@@ -442,6 +499,9 @@
                 display: none;
             }
             .logout-btn {
+                display: none;
+            }
+            .add-input-btn, .remove-input-btn {
                 display: none;
             }
         }
@@ -493,59 +553,72 @@
                 </div>
 
                 <h3>خط تولید ۱</h3>
-                <div class="form-group">
-                    <label for="k1-width">عرض با کناره (سانتی متر):</label>
-                    <input type="number" id="k1-width" step="0.01">
+                
+                <div id="k1-inputs-container">
+                    <!-- اولین گروه ورودی -->
+                    <div class="input-group" id="k1-input-group-1">
+                        <div class="input-group-header">
+                            <span class="input-group-title">ورودی تولید ۱</span>
+                            <button class="remove-input-btn" onclick="removeInputGroup('k1-input-group-1')">حذف</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k1-width-1">عرض با کناره (سانتی متر):</label>
+                            <input type="number" id="k1-width-1" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k1-weight-1">وزن یک متر مربع شیشه (کیلوگرم):</label>
+                            <input type="number" id="k1-weight-1" step="0.001">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k1-thickness-1">ضخامت (میلیمتر):</label>
+                            <input type="number" id="k1-thickness-1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k1-design-1">نوع طرح:</label>
+                            <select id="k1-design-1">
+                                <option value="برفی">برفی</option>
+                                <option value="کاراتاچی">کاراتاچی</option>
+                                <option value="برگ بیدی">برگ بیدی</option>
+                                <option value="بازوبندی">بازوبندی</option>
+                                <option value="بادی">بادی</option>
+                                <option value="شاپرکی">شاپرکی</option>
+                                <option value="الماسی">الماسی</option>
+                                <option value="ماتریکس">ماتریکس</option>
+                                <option value="نی ریز">نی ریز</option>
+                                <option value="حبابی">حبابی</option>
+                                <option value="بامبو">بامبو</option>
+                                <option value="مدادی">مدادی</option>
+                                <option value="راه مات">راه مات</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k1-speed-1">سرعت (اینچ/دقیقه):</label>
+                            <input type="number" id="k1-speed-1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k1-hours-1">ساعات کارکرد:</label>
+                            <input type="number" id="k1-hours-1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k1-delivery-1">عرض تحویلی (سانتی متر):</label>
+                            <input type="number" id="k1-delivery-1" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k1-production-1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
+                            <input type="number" id="k1-production-1" step="0.01">
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="k1-weight">وزن یک متر مربع شیشه (کیلوگرم):</label>
-                    <input type="number" id="k1-weight" step="0.001">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k1-thickness">ضخامت (میلیمتر):</label>
-                    <input type="number" id="k1-thickness" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k1-design">نوع طرح:</label>
-                    <select id="k1-design">
-                        <option value="برفی">برفی</option>
-                        <option value="کاراتاچی">کاراتاچی</option>
-                        <option value="برگ بیدی">برگ بیدی</option>
-                        <option value="بازوبندی">بازوبندی</option>
-                        <option value="بادی">بادی</option>
-                        <option value="شاپرکی">شاپرکی</option>
-                        <option value="الماسی">الماسی</option>
-                        <option value="ماتریکس">ماتریکس</option>
-                        <option value="نی ریز">نی ریز</option>
-                        <option value="حبابی">حبابی</option>
-                        <option value="بامبو">بامبو</option>
-                        <option value="مدادی">مدادی</option>
-                        <option value="راه مات">راه مات</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="k1-speed">سرعت (اینچ/دقیقه):</label>
-                    <input type="number" id="k1-speed" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k1-hours">ساعات کارکرد:</label>
-                    <input type="number" id="k1-hours" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k1-delivery">عرض تحویلی (سانتی متر):</label>
-                    <input type="number" id="k1-delivery" step="0.01">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k1-production">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
-                    <input type="number" id="k1-production" step="0.01">
-                </div>
+                <button class="add-input-btn" onclick="addInputGroup('k1')">+ افزودن ورودی جدید</button>
                 
                 <div class="form-group">
                     <label for="k1-batch">تعداد بچ مصرفی:</label>
@@ -582,114 +655,140 @@
                 </div>
 
                 <h3>خط تولید ۲</h3>
-                <div class="form-group">
-                    <label for="k2-width1">عرض با کناره (سانتی متر):</label>
-                    <input type="number" id="k2-width1" step="0.01">
+                
+                <div id="k2-line2-inputs-container">
+                    <!-- اولین گروه ورودی برای خط ۲ -->
+                    <div class="input-group" id="k2-line2-input-group-1">
+                        <div class="input-group-header">
+                            <span class="input-group-title">ورودی تولید خط ۲ - ۱</span>
+                            <button class="remove-input-btn" onclick="removeInputGroup('k2-line2-input-group-1')">حذف</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-width2-1">عرض با کناره (سانتی متر):</label>
+                            <input type="number" id="k2-width2-1" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-weight2-1">وزن یک متر مربع شیشه (کیلوگرم):</label>
+                            <input type="number" id="k2-weight2-1" step="0.001">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-thickness2-1">ضخامت (میلیمتر):</label>
+                            <input type="number" id="k2-thickness2-1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-design2-1">نوع طرح:</label>
+                            <select id="k2-design2-1">
+                                <option value="برفی">برفی</option>
+                                <option value="کاراتاچی">کاراتاچی</option>
+                                <option value="برگ بیدی">برگ بیدی</option>
+                                <option value="بازوبندی">بازوبندی</option>
+                                <option value="بادی">بادی</option>
+                                <option value="شاپرکی">شاپرکی</option>
+                                <option value="الماسی">الماسی</option>
+                                <option value="ماتریکس">ماتریکس</option>
+                                <option value="نی ریز">نی ریز</option>
+                                <option value="حبابی">حبابی</option>
+                                <option value="بامبو">بامبو</option>
+                                <option value="مدادی">مدادی</option>
+                                <option value="راه مات">راه مات</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-speed2-1">سرعت (اینچ/دقیقه):</label>
+                            <input type="number" id="k2-speed2-1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-hours2-1">ساعات کارکرد:</label>
+                            <input type="number" id="k2-hours2-1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-delivery2-1">عرض تحویلی (سانتی متر):</label>
+                            <input type="number" id="k2-delivery2-1" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-production2-1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
+                            <input type="number" id="k2-production2-1" step="0.01">
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="k2-weight1">وزن یک متر مربع شیشه (کیلوگرم):</label>
-                    <input type="number" id="k2-weight1" step="0.001">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-thickness1">ضخامت (میلیمتر):</label>
-                    <input type="number" id="k2-thickness1" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-design1">نوع طرح:</label>
-                    <select id="k2-design1">
-                        <option value="برفی">برفی</option>
-                        <option value="کاراتاچی">کاراتاچی</option>
-                        <option value="برگ بیدی">برگ بیدی</option>
-                        <option value="بازوبندی">بازوبندی</option>
-                        <option value="بادی">بادی</option>
-                        <option value="شاپرکی">شاپرکی</option>
-                        <option value="الماسی">الماسی</option>
-                        <option value="ماتریکس">ماتریکس</option>
-                        <option value="نی ریز">نی ریز</option>
-                        <option value="حبابی">حبابی</option>
-                        <option value="بامبو">بامبو</option>
-                        <option value="مدادی">مدادی</option>
-                        <option value="راه مات">راه مات</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-speed1">سرعت (اینچ/دقیقه):</label>
-                    <input type="number" id="k2-speed1" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-hours1">ساعات کارکرد:</label>
-                    <input type="number" id="k2-hours1" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-delivery1">عرض تحویلی (سانتی متر):</label>
-                    <input type="number" id="k2-delivery1" step="0.01">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-production1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
-                    <input type="number" id="k2-production1" step="0.01">
-                </div>
+                <button class="add-input-btn" onclick="addInputGroup('k2-line2')">+ افزودن ورودی جدید برای خط ۲</button>
 
                 <h3>خط تولید ۳</h3>
-                <div class="form-group">
-                    <label for="k2-width2">عرض با کناره (سانتی متر):</label>
-                    <input type="number" id="k2-width2" step="0.01">
+                
+                <div id="k2-line3-inputs-container">
+                    <!-- اولین گروه ورودی برای خط ۳ -->
+                    <div class="input-group" id="k2-line3-input-group-1">
+                        <div class="input-group-header">
+                            <span class="input-group-title">ورودی تولید خط ۳ - ۱</span>
+                            <button class="remove-input-btn" onclick="removeInputGroup('k2-line3-input-group-1')">حذف</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-width3-1">عرض با کناره (سانتی متر):</label>
+                            <input type="number" id="k2-width3-1" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-weight3-1">وزن یک متر مربع شیشه (کیلوگرم):</label>
+                            <input type="number" id="k2-weight3-1" step="0.001">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-thickness3-1">ضخامت (میلیمتر):</label>
+                            <input type="number" id="k2-thickness3-1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-design3-1">نوع طرح:</label>
+                            <select id="k2-design3-1">
+                                <option value="برفی">برفی</option>
+                                <option value="کاراتاچی">کاراتاچی</option>
+                                <option value="برگ بیدی">برگ بیدی</option>
+                                <option value="بازوبندی">بازوبندی</option>
+                                <option value="بادی">بادی</option>
+                                <option value="شاپرکی">شاپرکی</option>
+                                <option value="الماسی">الماسی</option>
+                                <option value="ماتریکس">ماتریکس</option>
+                                <option value="نی ریز">نی ریز</option>
+                                <option value="حبابی">حبابی</option>
+                                <option value="بامبو">بامبو</option>
+                                <option value="مدادی">مدادی</option>
+                                <option value="راه مات">راه مات</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-speed3-1">سرعت (اینچ/دقیقه):</label>
+                            <input type="number" id="k2-speed3-1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-hours3-1">ساعات کارکرد:</label>
+                            <input type="number" id="k2-hours3-1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-delivery3-1">عرض تحویلی (سانتی متر):</label>
+                            <input type="number" id="k2-delivery3-1" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="k2-production3-1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
+                            <input type="number" id="k2-production3-1" step="0.01">
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="k2-weight2">وزن یک متر مربع شیشه (کیلوگرم):</label>
-                    <input type="number" id="k2-weight2" step="0.001">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-thickness2">ضخامت (میلیمتر):</label>
-                    <input type="number" id="k2-thickness2" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-design2">نوع طرح:</label>
-                    <select id="k2-design2">
-                        <option value="برفی">برفی</option>
-                        <option value="کاراتاچی">کاراتاچی</option>
-                        <option value="برگ بیدی">برگ بیدی</option>
-                        <option value="بازوبندی">بازوبندی</option>
-                        <option value="بادی">بادی</option>
-                        <option value="شاپرکی">شاپرکی</option>
-                        <option value="الماسی">الماسی</option>
-                        <option value="ماتریکس">ماتریکس</option>
-                        <option value="نی ریز">نی ریز</option>
-                        <option value="حبابی">حبابی</option>
-                        <option value="بامبو">بامبو</option>
-                        <option value="مدادی">مدادی</option>
-                        <option value="راه مات">راه مات</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-speed2">سرعت (اینچ/دقیقه):</label>
-                    <input type="number" id="k2-speed2" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-hours2">ساعات کارکرد:</label>
-                    <input type="number" id="k2-hours2" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-delivery2">عرض تحویلی (سانتی متر):</label>
-                    <input type="number" id="k2-delivery2" step="0.01">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-production2">مقدار تولید واقعی (متر مربع بر حسب 2میل):</label>
-                    <input type="number" id="k2-production2" step="0.01">
-                </div>
+                <button class="add-input-btn" onclick="addInputGroup('k2-line3')">+ افزودن ورودی جدید برای خط ۳</button>
                 
                 <div class="form-group">
                     <label for="k2-batch">تعداد بچ مصرفی:</label>
@@ -743,6 +842,11 @@
         // متغیرهای گزارشات
         let koor1Reports = JSON.parse(localStorage.getItem('koor1Reports')) || [];
         let koor2Reports = JSON.parse(localStorage.getItem('koor2Reports')) || [];
+
+        // شمارنده برای شناسایی منحصر به فرد گروه‌های ورودی
+        let k1InputCounter = 1;
+        let k2Line2InputCounter = 1;
+        let k2Line3InputCounter = 1;
 
         // تابع ورود به سیستم
         function login() {
@@ -803,21 +907,133 @@
             });
         }
 
+        // توابع مدیریت گروه‌های ورودی
+        function addInputGroup(type) {
+            let containerId, counter, prefix;
+            
+            if (type === 'k1') {
+                containerId = 'k1-inputs-container';
+                counter = ++k1InputCounter;
+                prefix = 'k1';
+            } else if (type === 'k2-line2') {
+                containerId = 'k2-line2-inputs-container';
+                counter = ++k2Line2InputCounter;
+                prefix = 'k2-line2';
+            } else if (type === 'k2-line3') {
+                containerId = 'k2-line3-inputs-container';
+                counter = ++k2Line3InputCounter;
+                prefix = 'k2-line3';
+            }
+            
+            const groupId = `${prefix}-input-group-${counter}`;
+            const container = document.getElementById(containerId);
+            
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'input-group';
+            inputGroup.id = groupId;
+            
+            inputGroup.innerHTML = `
+                <div class="input-group-header">
+                    <span class="input-group-title">ورودی تولید ${counter}</span>
+                    <button class="remove-input-btn" onclick="removeInputGroup('${groupId}')">حذف</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="${prefix}-width-${counter}">عرض با کناره (سانتی متر):</label>
+                    <input type="number" id="${prefix}-width-${counter}" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="${prefix}-weight-${counter}">وزن یک متر مربع شیشه (کیلوگرم):</label>
+                    <input type="number" id="${prefix}-weight-${counter}" step="0.001">
+                </div>
+                
+                <div class="form-group">
+                    <label for="${prefix}-thickness-${counter}">ضخامت (میلیمتر):</label>
+                    <input type="number" id="${prefix}-thickness-${counter}" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="${prefix}-design-${counter}">نوع طرح:</label>
+                    <select id="${prefix}-design-${counter}">
+                        <option value="برفی">برفی</option>
+                        <option value="کاراتاچی">کاراتاچی</option>
+                        <option value="برگ بیدی">برگ بیدی</option>
+                        <option value="بازوبندی">بازوبندی</option>
+                        <option value="بادی">بادی</option>
+                        <option value="شاپرکی">شاپرکی</option>
+                        <option value="الماسی">الماسی</option>
+                        <option value="ماتریکس">ماتریکس</option>
+                        <option value="نی ریز">نی ریز</option>
+                        <option value="حبابی">حبابی</option>
+                        <option value="بامبو">بامبو</option>
+                        <option value="مدادی">مدادی</option>
+                        <option value="راه مات">راه مات</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="${prefix}-speed-${counter}">سرعت (اینچ/دقیقه):</label>
+                    <input type="number" id="${prefix}-speed-${counter}" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="${prefix}-hours-${counter}">ساعات کارکرد:</label>
+                    <input type="number" id="${prefix}-hours-${counter}" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="${prefix}-delivery-${counter}">عرض تحویلی (سانتی متر):</label>
+                    <input type="number" id="${prefix}-delivery-${counter}" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="${prefix}-production-${counter}">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
+                    <input type="number" id="${prefix}-production-${counter}" step="0.01">
+                </div>
+            `;
+            
+            container.appendChild(inputGroup);
+        }
+
+        function removeInputGroup(groupId) {
+            const group = document.getElementById(groupId);
+            if (group) {
+                group.remove();
+            }
+        }
+
         // توابع مربوط به کوره 1
         function calculateKoor1() {
-            const k1thickness = parseFloat(document.getElementById("k1-thickness").value) || 0;
-            const width = parseFloat(document.getElementById("k1-width").value) || 0;
-            const weight = parseFloat(document.getElementById("k1-weight").value) || 0;
-            const speed = parseFloat(document.getElementById("k1-speed").value) || 0;
-            const hours = parseFloat(document.getElementById("k1-hours").value) || 0;
-            const production = parseFloat(document.getElementById("k1-production").value) || 0;
-            const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
+            // جمع‌آوری تمام گروه‌های ورودی
+            const inputGroups = document.querySelectorAll('#k1-inputs-container .input-group');
+            let totalDailyMelt = 0;
+            let totalProduction = 0;
+            let totalWeightedThickness = 0;
+            
+            // محاسبه برای هر گروه ورودی
+            inputGroups.forEach((group, index) => {
+                const i = index + 1;
+                const thickness = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
+                const width = parseFloat(document.getElementById(`k1-width-${i}`).value) || 0;
+                const weight = parseFloat(document.getElementById(`k1-weight-${i}`).value) || 0;
+                const speed = parseFloat(document.getElementById(`k1-speed-${i}`).value) || 0;
+                const hours = parseFloat(document.getElementById(`k1-hours-${i}`).value) || 0;
+                const production = parseFloat(document.getElementById(`k1-production-${i}`).value) || 0;
 
-            const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                totalDailyMelt += dailyMelt;
+                totalProduction += production;
+                totalWeightedThickness += production * thickness;
+            });
+
+            const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
             const batchConsumption = batchCount * 649;
-            const culletConsumption = (dailyMelt - batchConsumption * 0.815);
-            const culletPercentage = dailyMelt > 0 ? (culletConsumption / dailyMelt) * 100 : 0;
-            const efficiency = dailyMelt > 0 ? (( production * weight * 2 ) / (dailyMelt * k1thickness)) * 100 : 0;
+            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
+            const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
+            
+            const avgThickness = totalProduction > 0 ? totalWeightedThickness / totalProduction : 0;
+            const efficiency = totalDailyMelt > 0 ? (( totalProduction * (totalWeightedThickness/totalProduction) * 2 ) / (totalDailyMelt * avgThickness)) * 100 : 0;
 
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
@@ -829,7 +1045,10 @@
             resultsDiv.innerHTML = `
                 <h3>نتایج محاسبات</h3>
                 <div class="result-item">
-                    <strong>مقدار ذوب روزانه:</strong> ${dailyMelt.toFixed(2)} کیلوگرم
+                    <strong>تعداد ورودی‌های تولید:</strong> ${inputGroups.length}
+                </div>
+                <div class="result-item">
+                    <strong>مقدار ذوب روزانه:</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
                 </div>
                 <div class="result-item">
                     <strong>مقدار بچ مصرفی:</strong> ${batchConsumption.toFixed(2)} کیلوگرم
@@ -862,10 +1081,30 @@
             `;
 
             window.koor1Results = {
-                dailyMelt, batchConsumption, culletConsumption,
-                culletPercentage, efficiency,
-                materials: { silica, sodiumCarbonate, dolomite, sodiumSulfate, coal }
+                inputCount: inputGroups.length,
+                totalDailyMelt, 
+                batchConsumption, 
+                culletConsumption,
+                culletPercentage, 
+                efficiency,
+                materials: { silica, sodiumCarbonate, dolomite, sodiumSulfate, coal },
+                inputs: []
             };
+
+            // ذخیره اطلاعات هر ورودی
+            inputGroups.forEach((group, index) => {
+                const i = index + 1;
+                window.koor1Results.inputs.push({
+                    width: document.getElementById(`k1-width-${i}`).value,
+                    weight: document.getElementById(`k1-weight-${i}`).value,
+                    thickness: document.getElementById(`k1-thickness-${i}`).value,
+                    design: document.getElementById(`k1-design-${i}`).value,
+                    speed: document.getElementById(`k1-speed-${i}`).value,
+                    hours: document.getElementById(`k1-hours-${i}`).value,
+                    delivery: document.getElementById(`k1-delivery-${i}`).value,
+                    production: document.getElementById(`k1-production-${i}`).value
+                });
+            });
         }
 
         function saveKoor1() {
@@ -879,14 +1118,6 @@
                 ...window.koor1Results,
                 date: document.getElementById("k1-date").value,
                 shift: document.getElementById("k1-shift").value,
-                width: document.getElementById("k1-width").value,
-                weight: document.getElementById("k1-weight").value,
-                thickness: document.getElementById("k1-thickness").value,
-                design: document.getElementById("k1-design").value,
-                speed: document.getElementById("k1-speed").value,
-                hours: document.getElementById("k1-hours").value,
-                delivery: document.getElementById("k1-delivery").value,
-                production: document.getElementById("k1-production").value,
                 batchCount: document.getElementById("k1-batch").value,
                 enteredBy: user.name,
                 userId: Object.keys(users).find(key => users[key].name === user.name),
@@ -895,7 +1126,7 @@
 
             koor1Reports.push(report);
             localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
-            alert(`گزارش با موفقیت ثبت شد\nثبت کننده: ${user.name}`);
+            alert(`گزارش با موفقیت ثبت شد\nثبت کننده: ${user.name}\nتعداد ورودی‌ها: ${report.inputCount}`);
         }
 
         function printKoor1() {
@@ -911,31 +1142,59 @@
 
         // توابع مربوط به کوره 2
         function calculateKoor2() {
-            const k2thickness1 = parseFloat(document.getElementById("k2-thickness1").value) || 0;
-            const width1 = parseFloat(document.getElementById("k2-width1").value) || 0;
-            const weight1 = parseFloat(document.getElementById("k2-weight1").value) || 0;
-            const speed1 = parseFloat(document.getElementById("k2-speed1").value) || 0;
-            const hours1 = parseFloat(document.getElementById("k2-hours1").value) || 0;
-            const production1 = parseFloat(document.getElementById("k2-production1").value) || 0;
-
-            const k2thickness2 = parseFloat(document.getElementById("k2-thickness2").value) || 0;
-            const width2 = parseFloat(document.getElementById("k2-width2").value) || 0;
-            const weight2 = parseFloat(document.getElementById("k2-weight2").value) || 0;
-            const speed2 = parseFloat(document.getElementById("k2-speed2").value) || 0;
-            const hours2 = parseFloat(document.getElementById("k2-hours2").value) || 0;
-            const production2 = parseFloat(document.getElementById("k2-production2").value) || 0;
-
-            const batchCount = parseInt(document.getElementById("k2-batch").value) || 0;
-
-            const dailyMelt1 = speed1 * 2.54 * 60 * hours1 * (width1 / 100) * weight1 / 100;
-            const dailyMelt2 = speed2 * 2.54 * 60 * hours2 * (width2 / 100) * weight2 / 100;
-            const totalDailyMelt = dailyMelt1 + dailyMelt2;
+            // جمع‌آوری تمام گروه‌های ورودی خط ۲
+            const line2InputGroups = document.querySelectorAll('#k2-line2-inputs-container .input-group');
+            let line2DailyMelt = 0;
+            let line2Production = 0;
+            let line2WeightedThickness = 0;
             
+            // محاسبه برای هر گروه ورودی خط ۲
+            line2InputGroups.forEach((group, index) => {
+                const i = index + 1;
+                const thickness = parseFloat(document.getElementById(`k2-line2-thickness-${i}`).value) || 0;
+                const width = parseFloat(document.getElementById(`k2-line2-width-${i}`).value) || 0;
+                const weight = parseFloat(document.getElementById(`k2-line2-weight-${i}`).value) || 0;
+                const speed = parseFloat(document.getElementById(`k2-line2-speed-${i}`).value) || 0;
+                const hours = parseFloat(document.getElementById(`k2-line2-hours-${i}`).value) || 0;
+                const production = parseFloat(document.getElementById(`k2-line2-production-${i}`).value) || 0;
+
+                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                line2DailyMelt += dailyMelt;
+                line2Production += production;
+                line2WeightedThickness += production * thickness;
+            });
+
+            // جمع‌آوری تمام گروه‌های ورودی خط ۳
+            const line3InputGroups = document.querySelectorAll('#k2-line3-inputs-container .input-group');
+            let line3DailyMelt = 0;
+            let line3Production = 0;
+            let line3WeightedThickness = 0;
+            
+            // محاسبه برای هر گروه ورودی خط ۳
+            line3InputGroups.forEach((group, index) => {
+                const i = index + 1;
+                const thickness = parseFloat(document.getElementById(`k2-line3-thickness-${i}`).value) || 0;
+                const width = parseFloat(document.getElementById(`k2-line3-width-${i}`).value) || 0;
+                const weight = parseFloat(document.getElementById(`k2-line3-weight-${i}`).value) || 0;
+                const speed = parseFloat(document.getElementById(`k2-line3-speed-${i}`).value) || 0;
+                const hours = parseFloat(document.getElementById(`k2-line3-hours-${i}`).value) || 0;
+                const production = parseFloat(document.getElementById(`k2-line3-production-${i}`).value) || 0;
+
+                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                line3DailyMelt += dailyMelt;
+                line3Production += production;
+                line3WeightedThickness += production * thickness;
+            });
+
+            const totalDailyMelt = line2DailyMelt + line3DailyMelt;
+            const totalProduction = line2Production + line3Production;
+            
+            const batchCount = parseInt(document.getElementById("k2-batch").value) || 0;
             const batchConsumption = batchCount * 1655.12;
             const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
-            const totalProdWeight = (( production1 * 2 * weight1 )/ k2thickness1 ) + ( (production2 * 2 * weight2 ) / k2thickness2 );
+            const totalProdWeight = (( line2Production * 2 * (line2WeightedThickness/line2Production) ) + ( line3Production * 2 * (line3WeightedThickness/line3Production) ));
             const efficiency = totalDailyMelt > 0 ? (totalProdWeight / totalDailyMelt) * 100 : 0;
             
             const silica = batchCount * 1010;
@@ -949,10 +1208,16 @@
             resultsDiv.innerHTML = `
                 <h3>نتایج محاسبات</h3>
                 <div class="result-item">
-                    <strong>مقدار ذوب روزانه خط ۲:</strong> ${dailyMelt1.toFixed(2)} کیلوگرم
+                    <strong>تعداد ورودی‌های خط ۲:</strong> ${line2InputGroups.length}
                 </div>
                 <div class="result-item">
-                    <strong>مقدار ذوب روزانه خط ۳:</strong> ${dailyMelt2.toFixed(2)} کیلوگرم
+                    <strong>تعداد ورودی‌های خط ۳:</strong> ${line3InputGroups.length}
+                </div>
+                <div class="result-item">
+                    <strong>مقدار ذوب روزانه خط ۲:</strong> ${line2DailyMelt.toFixed(2)} کیلوگرم
+                </div>
+                <div class="result-item">
+                    <strong>مقدار ذوب روزانه خط ۳:</strong> ${line3DailyMelt.toFixed(2)} کیلوگرم
                 </div>
                 <div class="result-item">
                     <strong>مقدار ذوب کل کوره:</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
@@ -991,11 +1256,49 @@
             `;
 
             window.koor2Results = {
-                dailyMelt1, dailyMelt2, totalDailyMelt,
-                batchConsumption, culletConsumption,
-                culletPercentage, efficiency,
-                materials: { silica, sodiumCarbonate, dolomite, lime, sodiumSulfate, coal }
+                line2InputCount: line2InputGroups.length,
+                line3InputCount: line3InputGroups.length,
+                line2DailyMelt, 
+                line3DailyMelt, 
+                totalDailyMelt,
+                batchConsumption, 
+                culletConsumption,
+                culletPercentage, 
+                efficiency,
+                materials: { silica, sodiumCarbonate, dolomite, lime, sodiumSulfate, coal },
+                line2Inputs: [],
+                line3Inputs: []
             };
+
+            // ذخیره اطلاعات هر ورودی خط ۲
+            line2InputGroups.forEach((group, index) => {
+                const i = index + 1;
+                window.koor2Results.line2Inputs.push({
+                    width: document.getElementById(`k2-line2-width-${i}`).value,
+                    weight: document.getElementById(`k2-line2-weight-${i}`).value,
+                    thickness: document.getElementById(`k2-line2-thickness-${i}`).value,
+                    design: document.getElementById(`k2-line2-design-${i}`).value,
+                    speed: document.getElementById(`k2-line2-speed-${i}`).value,
+                    hours: document.getElementById(`k2-line2-hours-${i}`).value,
+                    delivery: document.getElementById(`k2-line2-delivery-${i}`).value,
+                    production: document.getElementById(`k2-line2-production-${i}`).value
+                });
+            });
+
+            // ذخیره اطلاعات هر ورودی خط ۳
+            line3InputGroups.forEach((group, index) => {
+                const i = index + 1;
+                window.koor2Results.line3Inputs.push({
+                    width: document.getElementById(`k2-line3-width-${i}`).value,
+                    weight: document.getElementById(`k2-line3-weight-${i}`).value,
+                    thickness: document.getElementById(`k2-line3-thickness-${i}`).value,
+                    design: document.getElementById(`k2-line3-design-${i}`).value,
+                    speed: document.getElementById(`k2-line3-speed-${i}`).value,
+                    hours: document.getElementById(`k2-line3-hours-${i}`).value,
+                    delivery: document.getElementById(`k2-line3-delivery-${i}`).value,
+                    production: document.getElementById(`k2-line3-production-${i}`).value
+                });
+            });
         }
 
         function saveKoor2() {
@@ -1009,22 +1312,6 @@
                 ...window.koor2Results,
                 date: document.getElementById("k2-date").value,
                 shift: document.getElementById("k2-shift").value,
-                width1: document.getElementById("k2-width1").value,
-                weight1: document.getElementById("k2-weight1").value,
-                thickness1: document.getElementById("k2-thickness1").value,
-                design1: document.getElementById("k2-design1").value,
-                speed1: document.getElementById("k2-speed1").value,
-                hours1: document.getElementById("k2-hours1").value,
-                delivery1: document.getElementById("k2-delivery1").value,
-                production1: document.getElementById("k2-production1").value,
-                width2: document.getElementById("k2-width2").value,
-                weight2: document.getElementById("k2-weight2").value,
-                thickness2: document.getElementById("k2-thickness2").value,
-                design2: document.getElementById("k2-design2").value,
-                speed2: document.getElementById("k2-speed2").value,
-                hours2: document.getElementById("k2-hours2").value,
-                delivery2: document.getElementById("k2-delivery2").value,
-                production2: document.getElementById("k2-production2").value,
                 batchCount: document.getElementById("k2-batch").value,
                 enteredBy: user.name,
                 userId: Object.keys(users).find(key => users[key].name === user.name),
@@ -1033,7 +1320,7 @@
 
             koor2Reports.push(report);
             localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
-            alert(`گزارش با موفقیت ثبت شد\nثبت کننده: ${user.name}`);
+            alert(`گزارش با موفقیت ثبت شد\nثبت کننده: ${user.name}\nتعداد ورودی‌های خط ۲: ${report.line2InputCount}\nتعداد ورودی‌های خط ۳: ${report.line3InputCount}`);
         }
 
         function printKoor2() {
@@ -1073,6 +1360,7 @@
                             <th>تاریخ</th>
                             <th>شیفت</th>
                             <th>کاربر</th>
+                            <th>تعداد ورودی‌ها</th>
                             <th>تولید (m²)</th>
                             <th>ذوب (kg)</th>
                             <th>بچ (kg)</th>
@@ -1084,6 +1372,7 @@
                     <tbody>
             `;
 
+            let totalInputCount = 0;
             let totalProduction = 0;
             let totalMelt = 0;
             let totalBatch = 0;
@@ -1091,13 +1380,22 @@
             let totalEfficiency = 0;
 
             filteredReports.forEach(report => {
+                // محاسبه تولید کل از تمام ورودی‌ها
+                let production = 0;
+                if (report.inputs && report.inputs.length > 0) {
+                    report.inputs.forEach(input => {
+                        production += parseFloat(input.production || 0);
+                    });
+                }
+
                 html += `
                     <tr>
                         <td>${report.date}</td>
                         <td>${report.shift}</td>
                         <td>${report.enteredBy}</td>
-                        <td>${report.production}</td>
-                        <td>${report.dailyMelt.toFixed(2)}</td>
+                        <td>${report.inputCount || 1}</td>
+                        <td>${production.toFixed(2)}</td>
+                        <td>${report.totalDailyMelt.toFixed(2)}</td>
                         <td>${report.batchConsumption.toFixed(2)}</td>
                         <td>${report.culletConsumption.toFixed(2)}</td>
                         <td>${report.culletPercentage.toFixed(2)}</td>
@@ -1105,8 +1403,9 @@
                     </tr>
                 `;
 
-                totalProduction += parseFloat(report.production);
-                totalMelt += report.dailyMelt;
+                totalInputCount += report.inputCount || 1;
+                totalProduction += production;
+                totalMelt += report.totalDailyMelt;
                 totalBatch += report.batchConsumption;
                 totalCullet += report.culletConsumption;
                 totalEfficiency += report.efficiency;
@@ -1119,6 +1418,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="3"><strong>جمع کل/میانگین</strong></td>
+                            <td>${totalInputCount}</td>
                             <td>${totalProduction.toFixed(2)}</td>
                             <td>${totalMelt.toFixed(2)}</td>
                             <td>${totalBatch.toFixed(2)}</td>
@@ -1158,6 +1458,8 @@
                             <th>تاریخ</th>
                             <th>شیفت</th>
                             <th>کاربر</th>
+                            <th>ورودی‌های خط۲</th>
+                            <th>ورودی‌های خط۳</th>
                             <th>تولید خط۲ (m²)</th>
                             <th>تولید خط۳ (m²)</th>
                             <th>ذوب (kg)</th>
@@ -1170,6 +1472,8 @@
                     <tbody>
             `;
 
+            let totalLine2InputCount = 0;
+            let totalLine3InputCount = 0;
             let totalProduction1 = 0;
             let totalProduction2 = 0;
             let totalMelt = 0;
@@ -1178,13 +1482,31 @@
             let totalEfficiency = 0;
 
             filteredReports.forEach(report => {
+                // محاسبه تولید کل از تمام ورودی‌های خط ۲
+                let production1 = 0;
+                if (report.line2Inputs && report.line2Inputs.length > 0) {
+                    report.line2Inputs.forEach(input => {
+                        production1 += parseFloat(input.production || 0);
+                    });
+                }
+
+                // محاسبه تولید کل از تمام ورودی‌های خط ۳
+                let production2 = 0;
+                if (report.line3Inputs && report.line3Inputs.length > 0) {
+                    report.line3Inputs.forEach(input => {
+                        production2 += parseFloat(input.production || 0);
+                    });
+                }
+
                 html += `
                     <tr>
                         <td>${report.date}</td>
                         <td>${report.shift}</td>
                         <td>${report.enteredBy}</td>
-                        <td>${report.production1}</td>
-                        <td>${report.production2}</td>
+                        <td>${report.line2InputCount || 1}</td>
+                        <td>${report.line3InputCount || 1}</td>
+                        <td>${production1.toFixed(2)}</td>
+                        <td>${production2.toFixed(2)}</td>
                         <td>${report.totalDailyMelt.toFixed(2)}</td>
                         <td>${report.batchConsumption.toFixed(2)}</td>
                         <td>${report.culletConsumption.toFixed(2)}</td>
@@ -1193,8 +1515,10 @@
                     </tr>
                 `;
 
-                totalProduction1 += parseFloat(report.production1);
-                totalProduction2 += parseFloat(report.production2);
+                totalLine2InputCount += report.line2InputCount || 1;
+                totalLine3InputCount += report.line3InputCount || 1;
+                totalProduction1 += production1;
+                totalProduction2 += production2;
                 totalMelt += report.totalDailyMelt;
                 totalBatch += report.batchConsumption;
                 totalCullet += report.culletConsumption;
@@ -1208,6 +1532,8 @@
                     <tfoot>
                         <tr>
                             <td colspan="3"><strong>جمع کل/میانگین</strong></td>
+                            <td>${totalLine2InputCount}</td>
+                            <td>${totalLine3InputCount}</td>
                             <td>${totalProduction1.toFixed(2)}</td>
                             <td>${totalProduction2.toFixed(2)}</td>
                             <td>${totalMelt.toFixed(2)}</td>
