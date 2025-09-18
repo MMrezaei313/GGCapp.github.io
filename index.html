@@ -522,8 +522,8 @@
             <button class="login-btn" onclick="login()">ورود به سیستم</button>
             <div style="margin-top: 20px; text-align: center; font-size: 14px; color: #666;">
                 <p>برای تست سیستم از اطلاعات زیر استفاده کنید:</p>
-                <p>نام کاربری: supervisor1 | رمز عبور: s123</p>
-                <p>نام کاربری: manager1 | رمز عبور: m789</p>
+                <p>نام کاربری: supervisor1 |   </p>
+                <p>نام کاربری: manager1 |   </p>
             </div>
         </div>
     </div>
@@ -1106,17 +1106,15 @@
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
                 totalDailyMelt += dailyMelt;
                 totalProduction += production;
-                totalWeightedThickness += production * thickness;
+                totalWeightedThickness += ( production * weight ) / thickness;
             });
 
             const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
             const batchConsumption = batchCount * 649;
-            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
+            const culletConsumption = (totalDailyMelt - ( batchConsumption * 0.815 ));
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
+            const efficiency = totalDailyMelt > 0 ? (( totalWeightedThickness * 2 ) / totalDailyMelt ) * 100 : 0;
             
-            const avgThickness = totalProduction > 0 ? totalWeightedThickness / totalProduction : 0;
-            const efficiency = totalDailyMelt > 0 ? (( totalProduction * (totalWeightedThickness/totalProduction) * 2 ) / (totalDailyMelt * avgThickness)) * 100 : 0;
-
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
             const dolomite = batchCount * 122;
@@ -1234,17 +1232,16 @@
             // محاسبه برای هر گروه ورودی خط ۲
             line2InputGroups.forEach((group, index) => {
                 const i = index + 1;
-                const thickness = parseFloat(document.getElementById(`k2-line2-thickness-${i}`).value) || 0;
+                const thickness2 = parseFloat(document.getElementById(`k2-line2-thickness-${i}`).value) || 0;
                 const width = parseFloat(document.getElementById(`k2-line2-width-${i}`).value) || 0;
-                const weight = parseFloat(document.getElementById(`k2-line2-weight-${i}`).value) || 0;
+                const weight2 = parseFloat(document.getElementById(`k2-line2-weight-${i}`).value) || 0;
                 const speed = parseFloat(document.getElementById(`k2-line2-speed-${i}`).value) || 0;
                 const hours = parseFloat(document.getElementById(`k2-line2-hours-${i}`).value) || 0;
                 const production = parseFloat(document.getElementById(`k2-line2-production-${i}`).value) || 0;
 
-                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight2 / 100;
                 line2DailyMelt += dailyMelt;
                 line2Production += production;
-                line2WeightedThickness += production * thickness;
             });
 
             // جمع‌آوری تمام گروه‌های ورودی خط ۳
@@ -1256,17 +1253,16 @@
             // محاسبه برای هر گروه ورودی خط ۳
             line3InputGroups.forEach((group, index) => {
                 const i = index + 1;
-                const thickness = parseFloat(document.getElementById(`k2-line3-thickness-${i}`).value) || 0;
+                const thickness3 = parseFloat(document.getElementById(`k2-line3-thickness-${i}`).value) || 0;
                 const width = parseFloat(document.getElementById(`k2-line3-width-${i}`).value) || 0;
-                const weight = parseFloat(document.getElementById(`k2-line3-weight-${i}`).value) || 0;
+                const weight3 = parseFloat(document.getElementById(`k2-line3-weight-${i}`).value) || 0;
                 const speed = parseFloat(document.getElementById(`k2-line3-speed-${i}`).value) || 0;
                 const hours = parseFloat(document.getElementById(`k2-line3-hours-${i}`).value) || 0;
                 const production = parseFloat(document.getElementById(`k2-line3-production-${i}`).value) || 0;
 
-                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight3 / 100;
                 line3DailyMelt += dailyMelt;
                 line3Production += production;
-                line3WeightedThickness += production * thickness;
             });
 
             const totalDailyMelt = line2DailyMelt + line3DailyMelt;
@@ -1274,11 +1270,12 @@
             
             const batchCount = parseInt(document.getElementById("k2-batch").value) || 0;
             const batchConsumption = batchCount * 1655.12;
-            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
+            const culletConsumption = (totalDailyMelt - ( batchConsumption * 0.815 ));
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
-            
-            const totalProdWeight = (( line2Production * 2 * (line2WeightedThickness/line2Production) ) + ( line3Production * 2 * (line3WeightedThickness/line3Production) ));
-            const efficiency = totalDailyMelt > 0 ? (totalProdWeight / totalDailyMelt) * 100 : 0;
+            const totalProdWeight2 = ( line2Production * weight2 ) / thickness2;
+            const totalProdWeight3 = ( line3Production * weight3 ) / thickness3;
+            const totalProdWeight = ( totalProdWeight3 + totalProdWeight2 );
+            const efficiency = totalDailyMelt > 0 ? (( totalProdWeight * 2 ) / totalDailyMelt) * 100 : 0;
             
             const silica = batchCount * 1010;
             const sodiumCarbonate = batchCount * 329;
