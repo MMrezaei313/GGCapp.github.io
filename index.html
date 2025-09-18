@@ -1024,7 +1024,7 @@
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
                 totalDailyMelt += dailyMelt;
                 totalProduction += production;
-                totalWeightedThickness += production * thickness;
+                totalWeightedThickness += ( production * weight ) / thickness;
             });
 
             const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
@@ -1033,7 +1033,7 @@
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
             const avgThickness = totalProduction > 0 ? totalWeightedThickness / totalProduction : 0;
-            const efficiency = totalDailyMelt > 0 ? (( totalProduction * (totalWeightedThickness/totalProduction) * 2 ) / (totalDailyMelt * avgThickness)) * 100 : 0;
+            const efficiency = totalDailyMelt > 0 ? ( ( totalWeightedThickness ) * 2  / totalDailyMelt) * 100 : 0;
 
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
@@ -1048,10 +1048,10 @@
                     <strong>تعداد ورودی‌های تولید:</strong> ${inputGroups.length}
                 </div>
                 <div class="result-item">
-                    <strong>مقدار تولید روزانه:</strong> ${totalProduction.toFixed(2)} مترمربع 
+                    <strong>مقدار تولید :</strong> ${totalProduction.toFixed(2)} مترمربع 
                 </div>
                 <div class="result-item">
-                    <strong>مقدار ذوب روزانه:</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
+                    <strong>مقدار ذوب :</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
                 </div>
                 <div class="result-item">
                     <strong>مقدار بچ مصرفی:</strong> ${batchConsumption.toFixed(2)} کیلوگرم
