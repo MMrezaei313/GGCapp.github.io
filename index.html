@@ -607,14 +607,13 @@
                         </div>
                         
                         <div class="form-group">
-                           <label for="k1-delivery-width-${counter}">عرض تحویلی (سانتی متر):</label>
-                           <input type="number" id="k1-delivery-width-${counter}" step="0.01">
+                            <label for="k1-delivery-width-1">عرض تحویلی (سانتی متر):</label>
+                            <input type="number" id="k1-delivery-width-1" step="0.01">
                         </div>
-
+                        
                         <div class="form-group">
-                           <label for="k1-delivery-length-${counter}">طول تحویلی (سانتی متر):</label>
-                           <input type="number" id="k1-delivery-length-${counter}" step="0.01">
-                        </div>
+                            <label for="k1-delivery-length-1">طول تحویلی (سانتی متر):</label>
+                            <input type="number" id="k1-delivery-length-1" step="0.01">
                         </div>
                         
                         <div class="form-group">
@@ -938,67 +937,139 @@
             inputGroup.className = 'input-group';
             inputGroup.id = groupId;
             
-            inputGroup.innerHTML = `
-                <div class="input-group-header">
-                    <span class="input-group-title">ورودی تولید ${counter}</span>
-                    <button class="remove-input-btn" onclick="removeInputGroup('${groupId}')">حذف</button>
-                </div>
-                
-                <div class="form-group">
-                    <label for="${prefix}-width-${counter}">عرض با کناره (سانتی متر):</label>
-                    <input type="number" id="${prefix}-width-${counter}" step="0.01">
-                </div>
-                
-                <div class="form-group">
-                    <label for="${prefix}-weight-${counter}">وزن یک متر مربع شیشه (کیلوگرم):</label>
-                    <input type="number" id="${prefix}-weight-${counter}" step="0.001">
-                </div>
-                
-                <div class="form-group">
-                    <label for="${prefix}-thickness-${counter}">ضخامت (میلیمتر):</label>
-                    <input type="number" id="${prefix}-thickness-${counter}" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="${prefix}-design-${counter}">نوع طرح:</label>
-                    <select id="${prefix}-design-${counter}">
-                        <option value="برفی">برفی</option>
-                        <option value="کاراتاچی">کاراتاچی</option>
-                        <option value="برگ بیدی">برگ بیدی</option>
-                        <option value="بازوبندی">بازوبندی</option>
-                        <option value="بادی">بادی</option>
-                        <option value="شاپرکی">شاپرکی</option>
-                        <option value="الماسی">الماسی</option>
-                        <option value="ماتریکس">ماتریکس</option>
-                        <option value="نی ریز">نی ریز</option>
-                        <option value="حبابی">حبابی</option>
-                        <option value="بامبو">بامبو</option>
-                        <option value="مدادی">مدادی</option>
-                        <option value="راه مات">راه مات</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="${prefix}-speed-${counter}">سرعت (اینچ/دقیقه):</label>
-                    <input type="number" id="${prefix}-speed-${counter}" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="${prefix}-hours-${counter}">ساعات کارکرد:</label>
-                    <input type="number" id="${prefix}-hours-${counter}" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="${prefix}-delivery-${counter}">عرض تحویلی (سانتی متر):</label>
-                    <input type="number" id="${prefix}-delivery-${counter}" step="0.01">
-                </div>
-                
-                <div class="form-group">
-                    <label for="${prefix}-production-${counter}">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
-                    <input type="number" id="${prefix}-production-${counter}" step="0.01">
-                </div>
-            `;
+            // تعیین محتوای HTML بر اساس نوع گروه ورودی
+            let htmlContent = '';
+            if (type === 'k1') {
+                htmlContent = `
+                    <div class="input-group-header">
+                        <span class="input-group-title">ورودی تولید ${counter}</span>
+                        <button class="remove-input-btn" onclick="removeInputGroup('${groupId}')">حذف</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-width-${counter}">عرض با کناره (سانتی متر):</label>
+                        <input type="number" id="${prefix}-width-${counter}" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-weight-${counter}">وزن یک متر مربع شیشه (کیلوگرم):</label>
+                        <input type="number" id="${prefix}-weight-${counter}" step="0.001">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-thickness-${counter}">ضخامت (میلیمتر):</label>
+                        <input type="number" id="${prefix}-thickness-${counter}" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-design-${counter}">نوع طرح:</label>
+                        <select id="${prefix}-design-${counter}">
+                            <option value="برفی">برفی</option>
+                            <option value="کاراتاچی">کاراتاچی</option>
+                            <option value="برگ بیدی">برگ بیدی</option>
+                            <option value="بازوبندی">بازوبندی</option>
+                            <option value="بادی">بادی</option>
+                            <option value="شاپرکی">شاپرکی</option>
+                            <option value="الماسی">الماسی</option>
+                            <option value="ماتریکس">ماتریکس</option>
+                            <option value="نی ریز">نی ریز</option>
+                            <option value="حبابی">حبابی</option>
+                            <option value="بامبو">بامبو</option>
+                            <option value="مدادی">مدادی</option>
+                            <option value="راه مات">راه مات</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-speed-${counter}">سرعت (اینچ/دقیقه):</label>
+                        <input type="number" id="${prefix}-speed-${counter}" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-hours-${counter}">ساعات کارکرد:</label>
+                        <input type="number" id="${prefix}-hours-${counter}" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-delivery-width-${counter}">عرض تحویلی (سانتی متر):</label>
+                        <input type="number" id="${prefix}-delivery-width-${counter}" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-delivery-length-${counter}">طول تحویلی (سانتی متر):</label>
+                        <input type="number" id="${prefix}-delivery-length-${counter}" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-production-${counter}">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
+                        <input type="number" id="${prefix}-production-${counter}" step="0.01">
+                    </div>
+                `;
+            } else {
+                // برای کوره ۲ (هر دو خط)
+                htmlContent = `
+                    <div class="input-group-header">
+                        <span class="input-group-title">ورودی تولید ${prefix.includes('line2') ? 'خط ۲' : 'خط ۳'} - ${counter}</span>
+                        <button class="remove-input-btn" onclick="removeInputGroup('${groupId}')">حذف</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-width-${counter}">عرض با کناره (سانتی متر):</label>
+                        <input type="number" id="${prefix}-width-${counter}" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-weight-${counter}">وزن یک متر مربع شیشه (کیلوگرم):</label>
+                        <input type="number" id="${prefix}-weight-${counter}" step="0.001">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-thickness-${counter}">ضخامت (میلیمتر):</label>
+                        <input type="number" id="${prefix}-thickness-${counter}" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-design-${counter}">نوع طرح:</label>
+                        <select id="${prefix}-design-${counter}">
+                            <option value="برفی">برفی</option>
+                            <option value="کاراتاچی">کاراتاچی</option>
+                            <option value="برگ بیدی">برگ بیدی</option>
+                            <option value="بازوبندی">بازوبندی</option>
+                            <option value="بادی">بادی</option>
+                            <option value="شاپرکی">شاپرکی</option>
+                            <option value="الماسی">الماسی</option>
+                            <option value="ماتریکس">ماتریکس</option>
+                            <option value="نی ریز">نی ریز</option>
+                            <option value="حبابی">حبابی</option>
+                            <option value="بامبو">بامبو</option>
+                            <option value="مدادی">مدادی</option>
+                            <option value="راه مات">راه مات</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-speed-${counter}">سرعت (اینچ/دقیقه):</label>
+                        <input type="number" id="${prefix}-speed-${counter}" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-hours-${counter}">ساعات کارکرد:</label>
+                        <input type="number" id="${prefix}-hours-${counter}" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-delivery-${counter}">عرض تحویلی (سانتی متر):</label>
+                        <input type="number" id="${prefix}-delivery-${counter}" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="${prefix}-production-${counter}">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
+                        <input type="number" id="${prefix}-production-${counter}" step="0.01">
+                    </div>
+                `;
+            }
             
+            inputGroup.innerHTML = htmlContent;
             container.appendChild(inputGroup);
         }
 
@@ -1021,7 +1092,6 @@
             inputGroups.forEach((group, index) => {
                 const i = index + 1;
                 const thickness = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
-                const k1delivery1 = parseFloat(document.getElementById(`k1-delivery-1-${i}`).value) || 0;
                 const width = parseFloat(document.getElementById(`k1-width-${i}`).value) || 0;
                 const weight = parseFloat(document.getElementById(`k1-weight-${i}`).value) || 0;
                 const speed = parseFloat(document.getElementById(`k1-speed-${i}`).value) || 0;
@@ -1031,7 +1101,7 @@
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
                 totalDailyMelt += dailyMelt;
                 totalProduction += production;
-                totalWeightedThickness += ( production * weight ) / thickness;
+                totalWeightedThickness += production * thickness;
             });
 
             const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
@@ -1039,7 +1109,8 @@
             const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
-            const efficiency = totalDailyMelt > 0 ? ( ( totalWeightedThickness  * 2 ) / totalDailyMelt) * 100 : 0;
+            const avgThickness = totalProduction > 0 ? totalWeightedThickness / totalProduction : 0;
+            const efficiency = totalDailyMelt > 0 ? (( totalProduction * (totalWeightedThickness/totalProduction) * 2 ) / (totalDailyMelt * avgThickness)) * 100 : 0;
 
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
@@ -1054,10 +1125,7 @@
                     <strong>تعداد ورودی‌های تولید:</strong> ${inputGroups.length}
                 </div>
                 <div class="result-item">
-                    <strong>مقدار تولید :</strong> ${totalProduction.toFixed(2)} مترمربع 
-                </div>
-                <div class="result-item">
-                    <strong>مقدار ذوب :</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
+                    <strong>مقدار ذوب روزانه:</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
                 </div>
                 <div class="result-item">
                     <strong>مقدار بچ مصرفی:</strong> ${batchConsumption.toFixed(2)} کیلوگرم
@@ -1079,7 +1147,7 @@
                     <strong>کربنات سدیم:</strong> ${sodiumCarbonate.toFixed(2)} کیلوگرم
                 </div>
                 <div class="result-item">
-                    <strong>دولومیت:</strong> ${dolomite.toFixed(2)} کیلوگرم
+                    <strong>دولومیت:</strong> ${dolomite.toFixed(2)} کیلوگرм
                 </div>
                 <div class="result-item">
                     <strong>سولفات سدیم:</strong> ${sodiumSulfate.toFixed(2)} کیلوگرم
@@ -1110,7 +1178,8 @@
                     design: document.getElementById(`k1-design-${i}`).value,
                     speed: document.getElementById(`k1-speed-${i}`).value,
                     hours: document.getElementById(`k1-hours-${i}`).value,
-                    delivery: document.getElementById(`k1-delivery-${i}`).value,
+                    deliveryWidth: document.getElementById(`k1-delivery-width-${i}`).value,
+                    deliveryLength: document.getElementById(`k1-delivery-length-${i}`).value,
                     production: document.getElementById(`k1-production-${i}`).value
                 });
             });
@@ -1510,7 +1579,7 @@
                 html += `
                     <tr>
                         <td>${report.date}</td>
-                        <td>${report.shift}</td>
+                        <td>${report.shift</td>
                         <td>${report.enteredBy}</td>
                         <td>${report.line2InputCount || 1}</td>
                         <td>${report.line3InputCount || 1}</td>
