@@ -520,6 +520,11 @@
                 <input type="password" id="password" placeholder="رمز عبور">
             </div>
             <button class="login-btn" onclick="login()">ورود به سیستم</button>
+            <div style="margin-top: 20px; text-align: center; font-size: 14px; color: #666;">
+                <p>برای تست سیستم از اطلاعات زیر استفاده کنید:</p>
+                <p>نام کاربری: supervisor1 | رمز عبور: s123</p>
+                <p>نام کاربری: manager1 | رمز عبور: m789</p>
+            </div>
         </div>
     </div>
 
@@ -704,7 +709,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="k2-speed2-1">سرعت (اینچ/دقیقه):</label>
+                            <label for="k2-speed2-1">سرعت (اینچ/دقیله):</label>
                             <input type="number" id="k2-speed2-1" step="0.1">
                         </div>
                         
@@ -714,8 +719,8 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="k2-delivery2-1">عرض تحویلی (سانتی متر):</label>
-                            <input type="number" id="k2-delivery2-1" step="0.01">
+                            <label for="k2-delivery2-1">ابعاد تحویلی (سانتی متر):</label>
+                            <input type="text" id="k2-delivery2-1" placeholder="مثال: 140x150">
                         </div>
                         
                         <div class="form-group">
@@ -782,8 +787,8 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="k2-delivery3-1">عرض تحویلی (سانتی متر):</label>
-                            <input type="number" id="k2-delivery3-1" step="0.01">
+                            <label for="k2-delivery3-1">ابعاد تحویلی (سانتی متر):</label>
+                            <input type="text" id="k2-delivery3-1" placeholder="مثال: 140x150">
                         </div>
                         
                         <div class="form-group">
@@ -1058,8 +1063,8 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="${prefix}-delivery-${counter}">عرض تحویلی (سانتی متر):</label>
-                        <input type="number" id="${prefix}-delivery-${counter}" step="0.01">
+                        <label for="${prefix}-delivery-${counter}">ابعاد تحویلی (سانتی متر):</label>
+                        <input type="text" id="${prefix}-delivery-${counter}" placeholder="مثال: 140x150">
                     </div>
                     
                     <div class="form-group">
@@ -1147,7 +1152,7 @@
                     <strong>کربنات سدیم:</strong> ${sodiumCarbonate.toFixed(2)} کیلوگرم
                 </div>
                 <div class="result-item">
-                    <strong>دولومیت:</strong> ${dolomite.toFixed(2)} کیلوگرм
+                    <strong>دولومیت:</strong> ${dolomite.toFixed(2)} کیلوگرم
                 </div>
                 <div class="result-item">
                     <strong>سولفات سدیم:</strong> ${sodiumSulfate.toFixed(2)} کیلوگرم
@@ -1292,7 +1297,7 @@
                     <strong>تعداد ورودی‌های خط ۳:</strong> ${line3InputGroups.length}
                 </div>
                 <div class="result-item">
-                    <strong>مقدار ذوب روزانه خط ۲:</strong> ${line2DailyMelt.toFixed(2)} کیلوگرم
+                    <strong>مقدار ذوب روزانه خط ۲:</strong> ${line2DailyMelt.toFixed(2)} کילوگرم
                 </div>
                 <div class="result-item">
                     <strong>مقدار ذوب روزانه خط ۳:</strong> ${line3DailyMelt.toFixed(2)} کیلوگرم
@@ -1579,7 +1584,7 @@
                 html += `
                     <tr>
                         <td>${report.date}</td>
-                        <td>${report.shift</td>
+                        <td>${report.shift}</td>
                         <td>${report.enteredBy}</td>
                         <td>${report.line2InputCount || 1}</td>
                         <td>${report.line3InputCount || 1}</td>
