@@ -1321,7 +1321,7 @@
 
             const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
             const batchConsumption = batchCount * 649;
-            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
+            const culletConsumption = ((totalDailyMelt - (batchConsumption * 0.815));
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
             const avgThickness = totalProduction > 0 ? totalWeightedThickness / totalProduction : 0;
@@ -1479,7 +1479,7 @@
             
             const batchCount = parseInt(document.getElementById("k2-batch").value) || 0;
             const batchConsumption = batchCount * 1655.12;
-            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
+            const culletConsumption = ((totalDailyMelt - (batchConsumption * 0.815));
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
             const totalProdWeight = (( line2Production * 2 * (line2WeightedThickness/line2Production) ) + ( line3Production * 2 * (line3WeightedThickness/line3Production) ));
