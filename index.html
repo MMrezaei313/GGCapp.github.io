@@ -17,28 +17,69 @@
             line-height: 1.6;
         }
 
-        /* استایل بخش لاگین */
+        /* استایل بخش لاگین - بهبود یافته */
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
         }
 
         .login-box {
             background: white;
             padding: 2rem;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             width: 90%;
             max-width: 400px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
         }
 
         .login-box h2 {
             margin-top: 0;
             text-align: center;
             color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .login-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .login-form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .login-form-group input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            outline: none;
         }
 
         .login-btn {
@@ -51,35 +92,60 @@
             width: 100%;
             font-size: 16px;
             margin-top: 1rem;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
         }
 
         .login-btn:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
         }
 
-        .welcome {
-            background: rgba(255,255,255,0.1);
-            padding: 0.5rem;
-            border-radius: 4px;
-            margin: 0.5rem 0;
-            text-align: center;
-            color: white;
+        .login-btn:active {
+            transform: translateY(0);
         }
 
-        .logout-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 15px;
+        .demo-accounts {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
             border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
             font-size: 14px;
+            color: #666;
+            border-right: 3px solid #3498db;
         }
 
-        .logout-btn:hover {
-            background: #c0392b;
+        .demo-accounts p {
+            margin: 0 0 10px 0;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .demo-accounts ul {
+            margin: 0;
+            padding-right: 20px;
+        }
+
+        .demo-accounts li {
+            margin-bottom: 5px;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% {transform: translateX(0);}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+            20%, 40%, 60%, 80% {transform: translateX(5px);}
         }
 
         /* استایل هدر */
@@ -402,6 +468,30 @@
             background-color: #219653;
         }
 
+        .welcome {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
         /* ریسپانسیو */
         @media (max-width: 768px) {
             .form-group {
@@ -469,6 +559,14 @@
             .input-group {
                 padding: 10px;
             }
+            
+            .login-box {
+                padding: 1.5rem;
+            }
+            
+            .login-box h2 {
+                font-size: 1.5rem;
+            }
         }
 
         /* چاپ */
@@ -510,20 +608,26 @@
 <body>
     <div id="login-section" class="login-container">
         <div class="login-box">
-            <h2>ورود به گزارش تولید</h2>
-            <div class="form-group">
+            <h2>ورود به سیستم گزارش تولید</h2>
+            <div class="login-form-group">
                 <label for="username">نام کاربری:</label>
-                <input type="text" id="username" placeholder="شناسه کاربری">
+                <input type="text" id="username" placeholder="شناسه کاربری خود را وارد کنید">
+                <div id="username-error" class="error-message">نام کاربری الزامی است</div>
             </div>
-            <div class="form-group">
+            <div class="login-form-group">
                 <label for="password">رمز عبور:</label>
-                <input type="password" id="password" placeholder="رمز عبور">
+                <input type="password" id="password" placeholder="رمز عبور خود را وارد کنید">
+                <div id="password-error" class="error-message">رمز عبور الزامی است</div>
             </div>
             <button class="login-btn" onclick="login()">ورود به سیستم</button>
-            <div style="margin-top: 20px; text-align: center; font-size: 14px; color: #666;">
-                <p>برای ورود به سیستم از اطلاعات زیر استفاده کنید:</p>
-                <p>نام کاربری: supervisor1 | رمز عبور: s123</p>
-                <p>نام کاربری: manager1 | رمز عبور: </p>
+            
+            <div class="demo-accounts">
+                <p>حساب‌های آزمایشی:</p>
+                <ul>
+                    <li>نام کاربری: supervisor1 | رمز عبور: s123</li>
+                    <li>نام کاربری: manager1 | رمز عبور: m789</li>
+                    <li>نام کاربری: director1 | رمز عبور: d012</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -868,28 +972,78 @@
         let k2Line2InputCounter = 1;
         let k2Line3InputCounter = 1;
 
-        // تابع ورود به سیستم
+        // تابع ورود به سیستم با اعتبارسنجی
         function login() {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
             
+            // پاک کردن خطاهای قبلی
+            document.getElementById('username-error').style.display = 'none';
+            document.getElementById('password-error').style.display = 'none';
+            
+            let isValid = true;
+            
+            // اعتبارسنجی فیلدها
+            if (!username) {
+                document.getElementById('username-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!password) {
+                document.getElementById('password-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // بررسی اعتبار کاربر
             if(users[username] && users[username].password === password) {
                 const user = users[username];
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('app-content').style.display = 'block';
-                
-                document.getElementById('welcome-message').innerHTML = `
-                    <p>کاربر گرامی: <strong>${user.name}</strong></p>
-                    <small>سطح دسترسی: ${getRoleName(user.role)}</small>
-                `;
-                
-                setupAccessControls(user.role);
-                loadPersianDatepicker();
+                // نمایش پیام موفقیت
+                showLoginSuccess(user.name);
             } else {
-                alert('نام کاربری یا رمز عبور نامعتبر است');
+                // نمایش خطا
+                document.getElementById('password-error').textContent = 'نام کاربری یا رمز عبور نامعتبر است';
+                document.getElementById('password-error').style.display = 'block';
+                
+                // لرزاندن فرم
+                document.querySelector('.login-box').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.querySelector('.login-box').style.animation = '';
+                }, 500);
             }
+        }
+
+        // نمایش پیام موفقیت آمیز بودن لاگین
+        function showLoginSuccess(userName) {
+            const loginBtn = document.querySelector('.login-btn');
+            const originalText = loginBtn.textContent;
+            
+            loginBtn.textContent = 'در حال ورود...';
+            loginBtn.disabled = true;
+            
+            setTimeout(() => {
+                loginBtn.innerHTML = '<span>✓</span> ورود موفق';
+                loginBtn.style.backgroundColor = '#27ae60';
+                
+                setTimeout(() => {
+                    // انتقال به صفحه اصلی
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('app-content').style.display = 'block';
+                    
+                    // بارگذاری اطلاعات کاربر
+                    const user = JSON.parse(localStorage.getItem('currentUser'));
+                    document.getElementById('welcome-message').innerHTML = `
+                        <p>کاربر گرامی: <strong>${user.name}</strong></p>
+                        <small>سطح دسترسی: ${getRoleName(user.role)}</small>
+                    `;
+                    
+                    setupAccessControls(user.role);
+                    loadPersianDatepicker();
+                }, 1000);
+            }, 1500);
         }
 
         function logout() {
@@ -1072,7 +1226,6 @@
                         <input type="number" id="${prefix}-hours-${counter}" step="0.1">
                     </div>
                     
-                    <div
                     <div class="form-group">
                         <label for="${prefix}-delivery-width-${counter}">عرض تحویلی (سانتی متر):</label>
                         <input type="number" id="${prefix}-delivery-width-${counter}" step="0.01">
@@ -1676,6 +1829,15 @@
                 modal.style.display = "none";
             }
         }
+
+        // امکان ورود با کلید Enter
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+        });
 
         // بررسی وضعیت لاگین هنگام بارگذاری صفحه
         window.onload = function() {
