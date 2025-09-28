@@ -402,60 +402,6 @@
             background-color: #219653;
         }
 
-        /* استایل برای مدیریت ابر */
-        .cloud-management {
-            background-color: #e8f4fd;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-            border: 1px solid #b3d9ff;
-        }
-
-        .cloud-management h3 {
-            margin-top: 0;
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-        }
-
-        .cloud-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .cloud-buttons button {
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .cloud-buttons button:hover {
-            background-color: #219653;
-        }
-
-        .cloud-buttons button.backup {
-            background-color: #3498db;
-        }
-
-        .cloud-buttons button.backup:hover {
-            background-color: #2980b9;
-        }
-
-        .cloud-buttons button.restore {
-            background-color: #e67e22;
-        }
-
-        .cloud-buttons button.restore:hover {
-            background-color: #d35400;
-        }
-
         /* ریسپانسیو */
         @media (max-width: 768px) {
             .form-group {
@@ -523,10 +469,6 @@
             .input-group {
                 padding: 10px;
             }
-
-            .cloud-buttons {
-                flex-direction: column;
-            }
         }
 
         /* چاپ */
@@ -562,16 +504,13 @@
             .add-input-btn, .remove-input-btn {
                 display: none;
             }
-            .cloud-management {
-                display: none;
-            }
         }
     </style>
 </head>
 <body>
     <div id="login-section" class="login-container">
         <div class="login-box">
-            <h2>ورود به سیستم گزارش تولید</h2>
+            <h2>ورود بهシステム گزارش تولید</h2>
             <div class="form-group">
                 <label for="username">نام کاربری:</label>
                 <input type="text" id="username" placeholder="شناسه کاربری">
@@ -595,17 +534,6 @@
             <h2>سیستم گزارش روزانه وضعیت عملیاتی کوره‌ها</h2>
             <div id="welcome-message" class="welcome"></div>
             <button class="logout-btn" onclick="logout()">خروج</button>
-        </div>
-
-        <!-- بخش مدیریت ابر -->
-        <div class="cloud-management">
-            <h3>مدیریت ذخیره‌سازی ابری</h3>
-            <div class="cloud-buttons">
-                <button class="backup" onclick="backupToCloud()">پشتیبان‌گیری در ابر</button>
-                <button class="restore" onclick="restoreFromCloud()">بازیابی از ابر</button>
-                <button onclick="showCloudInfo()">اطلاعات ابر</button>
-            </div>
-            <div id="cloud-status" style="margin-top: 10px; font-size: 14px;"></div>
         </div>
 
         <div class="tabs">
@@ -940,13 +868,6 @@
         let k2Line2InputCounter = 1;
         let k2Line3InputCounter = 1;
 
-        // تنظیمات ابری
-        const CLOUD_CONFIG = {
-            binId: '68d8be23d0ea881f408d758c', // این ID را می‌توانید تغییر دهید
-            apiKey: '$2a$10$pfqdbmjavY4uTuzMtN1e9.JaUEy8nEXob7Y3EZhD1T0xSSGLz18Uu', // کلید API نمونه
-            baseUrl: 'https://api.jsonbin.io/v3/b'
-        };
-
         // تابع ورود به سیستم
         function login() {
             const username = document.getElementById('username').value.trim();
@@ -966,7 +887,6 @@
                 
                 setupAccessControls(user.role);
                 loadPersianDatepicker();
-                checkCloudStatus();
             } else {
                 alert('نام کاربری یا رمز عبور نامعتبر است');
             }
@@ -987,10 +907,12 @@
         }
 
         function setupAccessControls(role) {
+            // تنظیم دسترسی‌ها بر اساس نقش کاربر
             const isSupervisor = role === 'supervisor';
             const isManager = role === 'manager';
             const isDirector = role === 'director';
             
+            // مثال: فقط مدیران می‌توانند گزارشات را ببینند
             const reportButtons = document.querySelectorAll('button[onclick*="Reports"]');
             reportButtons.forEach(btn => {
                 btn.style.display = (isManager || isDirector) ? 'inline-block' : 'none';
@@ -1005,127 +927,6 @@
             });
         }
 
-        // توابع مدیریت ابری
-        async function backupToCloud() {
-            try {
-                const backupData = {
-                    koor1Reports: koor1Reports,
-                    koor2Reports: koor2Reports,
-                    backupDate: new Date().toISOString(),
-                    backupBy: JSON.parse(localStorage.getItem('currentUser')).name
-                };
-
-                const response = await fetch(`${CLOUD_CONFIG.baseUrl}/${CLOUD_CONFIG.binId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': CLOUD_CONFIG.apiKey,
-                        'X-Bin-Versioning': 'false'
-                    },
-                    body: JSON.stringify(backupData)
-                });
-
-                if (response.ok) {
-                    showCloudStatus('پشتیبان‌گیری با موفقیت انجام شد', 'success');
-                    await checkCloudStatus();
-                } else {
-                    throw new Error('خطا در پشتیبان‌گیری');
-                }
-            } catch (error) {
-                console.error('Error backing up to cloud:', error);
-                showCloudStatus('خطا در پشتیبان‌گیری: ' + error.message, 'error');
-            }
-        }
-
-        async function restoreFromCloud() {
-            if (!confirm('آیا از بازیابی داده‌ها از ابر اطمینان دارید؟ داده‌های فعلی جایگزین خواهند شد.')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`${CLOUD_CONFIG.baseUrl}/${CLOUD_CONFIG.binId}/latest`, {
-                    headers: {
-                        'X-Master-Key': CLOUD_CONFIG.apiKey
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const backupData = data.record;
-
-                    koor1Reports = backupData.koor1Reports || [];
-                    koor2Reports = backupData.koor2Reports || [];
-
-                    localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
-                    localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
-
-                    showCloudStatus('بازیابی با موفقیت انجام شد', 'success');
-                    
-                    // نمایش اطلاعات بازیابی شده
-                    const backupDate = new Date(backupData.backupDate).toLocaleString('fa-IR');
-                    const backupBy = backupData.backupBy || 'نامشخص';
-                    
-                    setTimeout(() => {
-                        showCloudStatus(`آخرین پشتیبان: ${backupDate} توسط ${backupBy}`, 'info');
-                    }, 2000);
-
-                } else {
-                    throw new Error('خطا در بازیابی داده‌ها');
-                }
-            } catch (error) {
-                console.error('Error restoring from cloud:', error);
-                showCloudStatus('خطا در بازیابی: ' + error.message, 'error');
-            }
-        }
-
-        async function checkCloudStatus() {
-            try {
-                const response = await fetch(`${CLOUD_CONFIG.baseUrl}/${CLOUD_CONFIG.binId}/latest`, {
-                    headers: {
-                        'X-Master-Key': CLOUD_CONFIG.apiKey
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const backupData = data.record;
-                    
-                    if (backupData && backupData.backupDate) {
-                        const backupDate = new Date(backupData.backupDate).toLocaleString('fa-IR');
-                        const backupBy = backupData.backupBy || 'نامشخص';
-                        showCloudStatus(`آخرین پشتیبان: ${backupDate} توسط ${backupBy}`, 'info');
-                    } else {
-                        showCloudStatus('هیچ پشتیبانی در ابر موجود نیست', 'warning');
-                    }
-                } else {
-                    showCloudStatus('خطا در بررسی وضعیت ابر', 'error');
-                }
-            } catch (error) {
-                showCloudStatus('اتصال به ابر برقرار نشد', 'warning');
-            }
-        }
-
-        function showCloudInfo() {
-            const localKoor1Count = koor1Reports.length;
-            const localKoor2Count = koor2Reports.length;
-            
-            alert(`وضعیت ذخیره‌سازی:\n\n` +
-                  `گزارشات کوره ۱ (محلی): ${localKoor1Count} گزارش\n` +
-                  `گزارشات کوره ۲ (محلی): ${localKoor2Count} گزارش\n\n` +
-                  `برای همگام‌سازی با ابر از دکمه‌های پشتیبان‌گیری و بازیابی استفاده کنید.`);
-        }
-
-        function showCloudStatus(message, type = 'info') {
-            const statusDiv = document.getElementById('cloud-status');
-            statusDiv.innerHTML = message;
-            statusDiv.style.color = type === 'success' ? 'green' : 
-                                  type === 'error' ? 'red' : 
-                                  type === 'warning' ? 'orange' : 'blue';
-        }
-
-        // بقیه توابع بدون تغییر باقی می‌مانند...
-        // [کدهای قبلی مربوط به مدیریت گروه‌های ورودی، محاسبات کوره‌ها، و گزارش‌گیری]
-        
         // توابع مدیریت گروه‌های ورودی
         function addInputGroup(type) {
             let containerId, counter, prefix;
@@ -1151,6 +952,7 @@
             inputGroup.className = 'input-group';
             inputGroup.id = groupId;
             
+            // تعیین محتوای HTML بر اساس نوع گروه ورودی
             let htmlContent = '';
             if (type === 'k1') {
                 htmlContent = `
@@ -1219,6 +1021,7 @@
                     </div>
                 `;
             } else {
+                // برای کوره ۲ (هر دو خط)
                 htmlContent = `
                     <div class="input-group-header">
                         <span class="input-group-title">ورودی تولید ${prefix.includes('line2') ? 'خط ۲' : 'خط ۳'} - ${counter}</span>
@@ -1269,7 +1072,8 @@
                         <input type="number" id="${prefix}-hours-${counter}" step="0.1">
                     </div>
                     
-                    <div class="form-group">
+                    <div
+                                        <div class="form-group">
                         <label for="${prefix}-delivery-width-${counter}">عرض تحویلی (سانتی متر):</label>
                         <input type="number" id="${prefix}-delivery-width-${counter}" step="0.01">
                     </div>
@@ -1299,11 +1103,13 @@
 
         // توابع مربوط به کوره 1
         function calculateKoor1() {
+            // جمع‌آوری تمام گروه‌های ورودی
             const inputGroups = document.querySelectorAll('#k1-inputs-container .input-group');
             let totalDailyMelt = 0;
             let totalProduction = 0;
             let totalWeightedThickness = 0;
             
+            // محاسبه برای هر گروه ورودی
             inputGroups.forEach((group, index) => {
                 const i = index + 1;
                 const thickness = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
@@ -1321,7 +1127,7 @@
 
             const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
             const batchConsumption = batchCount * 649;
-            const culletConsumption = ((totalDailyMelt - (batchConsumption * 0.815));
+            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
             const avgThickness = totalProduction > 0 ? totalWeightedThickness / totalProduction : 0;
@@ -1383,6 +1189,7 @@
                 inputs: []
             };
 
+            // ذخیره اطلاعات هر ورودی
             inputGroups.forEach((group, index) => {
                 const i = index + 1;
                 window.koor1Results.inputs.push({
@@ -1432,13 +1239,15 @@
             modal.style.display = "block";
         }
 
-        // توابع مربوط به کوره 2
+        // توابع مربوط به کوره 2 - اصلاح شده
         function calculateKoor2() {
+            // جمع‌آوری تمام گروه‌های ورودی خط ۲
             const line2InputGroups = document.querySelectorAll('#k2-line2-inputs-container .input-group');
             let line2DailyMelt = 0;
             let line2Production = 0;
             let line2WeightedThickness = 0;
             
+            // محاسبه برای هر گروه ورودی خط ۲
             line2InputGroups.forEach((group, index) => {
                 const i = index + 1;
                 const thickness = parseFloat(document.getElementById(`k2-line2-thickness-${i}`).value) || 0;
@@ -1454,11 +1263,13 @@
                 line2WeightedThickness += production * thickness;
             });
 
+            // جمع‌آوری تمام گروه‌های ورودی خط ۳
             const line3InputGroups = document.querySelectorAll('#k2-line3-inputs-container .input-group');
             let line3DailyMelt = 0;
             let line3Production = 0;
             let line3WeightedThickness = 0;
             
+            // محاسبه برای هر گروه ورودی خط ۳
             line3InputGroups.forEach((group, index) => {
                 const i = index + 1;
                 const thickness = parseFloat(document.getElementById(`k2-line3-thickness-${i}`).value) || 0;
@@ -1479,7 +1290,7 @@
             
             const batchCount = parseInt(document.getElementById("k2-batch").value) || 0;
             const batchConsumption = batchCount * 1655.12;
-            const culletConsumption = ((totalDailyMelt - (batchConsumption * 0.815));
+            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
             const totalProdWeight = (( line2Production * 2 * (line2WeightedThickness/line2Production) ) + ( line3Production * 2 * (line3WeightedThickness/line3Production) ));
@@ -1558,6 +1369,7 @@
                 line3Inputs: []
             };
 
+            // ذخیره اطلاعات هر ورودی خط ۲
             line2InputGroups.forEach((group, index) => {
                 const i = index + 1;
                 window.koor2Results.line2Inputs.push({
@@ -1573,6 +1385,7 @@
                 });
             });
 
+            // ذخیره اطلاعات هر ورودی خط ۳
             line3InputGroups.forEach((group, index) => {
                 const i = index + 1;
                 window.koor2Results.line3Inputs.push({
@@ -1668,6 +1481,7 @@
             let totalEfficiency = 0;
 
             filteredReports.forEach(report => {
+                // محاسبه تولید کل از تمام ورودی‌ها
                 let production = 0;
                 if (report.inputs && report.inputs.length > 0) {
                     report.inputs.forEach(input => {
@@ -1769,6 +1583,7 @@
             let totalEfficiency = 0;
 
             filteredReports.forEach(report => {
+                // محاسبه تولید کل از تمام ورودی‌های خط ۲
                 let production1 = 0;
                 if (report.line2Inputs && report.line2Inputs.length > 0) {
                     report.line2Inputs.forEach(input => {
@@ -1776,6 +1591,7 @@
                     });
                 }
 
+                // محاسبه تولید کل از تمام ورودی‌های خط ۳
                 let production2 = 0;
                 if (report.line3Inputs && report.line3Inputs.length > 0) {
                     report.line3Inputs.forEach(input => {
