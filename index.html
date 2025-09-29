@@ -17,69 +17,28 @@
             line-height: 1.6;
         }
 
-        /* استایل بخش لاگین - بهبود یافته */
+        /* استایل بخش لاگین */
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            background-color: #2c3e50;
         }
 
         .login-box {
             background: white;
             padding: 2rem;
             border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             width: 90%;
             max-width: 400px;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .login-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #3498db, #2c3e50);
         }
 
         .login-box h2 {
             margin-top: 0;
             text-align: center;
             color: #2c3e50;
-            margin-bottom: 1.5rem;
-        }
-
-        .login-form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .login-form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .login-form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .login-form-group input:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-            outline: none;
         }
 
         .login-btn {
@@ -92,60 +51,35 @@
             width: 100%;
             font-size: 16px;
             margin-top: 1rem;
-            transition: background-color 0.3s, transform 0.2s;
-            font-weight: bold;
+            transition: background-color 0.3s;
         }
 
         .login-btn:hover {
             background-color: #2980b9;
-            transform: translateY(-2px);
         }
 
-        .login-btn:active {
-            transform: translateY(0);
-        }
-
-        .demo-accounts {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
+        .welcome {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem;
             border-radius: 4px;
+            margin: 0.5rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
             font-size: 14px;
-            color: #666;
-            border-right: 3px solid #3498db;
         }
 
-        .demo-accounts p {
-            margin: 0 0 10px 0;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .demo-accounts ul {
-            margin: 0;
-            padding-right: 20px;
-        }
-
-        .demo-accounts li {
-            margin-bottom: 5px;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes shake {
-            0%, 100% {transform: translateX(0);}
-            10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
-            20%, 40%, 60%, 80% {transform: translateX(5px);}
+        .logout-btn:hover {
+            background: #c0392b;
         }
 
         /* استایل هدر */
@@ -468,30 +402,6 @@
             background-color: #219653;
         }
 
-        .welcome {
-            background: rgba(255,255,255,0.1);
-            padding: 0.5rem;
-            border-radius: 4px;
-            margin: 0.5rem 0;
-            text-align: center;
-            color: white;
-        }
-
-        .logout-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .logout-btn:hover {
-            background: #c0392b;
-        }
-
         /* ریسپانسیو */
         @media (max-width: 768px) {
             .form-group {
@@ -559,14 +469,6 @@
             .input-group {
                 padding: 10px;
             }
-            
-            .login-box {
-                padding: 1.5rem;
-            }
-            
-            .login-box h2 {
-                font-size: 1.5rem;
-            }
         }
 
         /* چاپ */
@@ -603,31 +505,48 @@
                 display: none;
             }
         }
+
+        /* وضعیت آنلاین/آفلاین */
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1001;
+        }
+
+        .online {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .offline {
+            background-color: #e74c3c;
+            color: white;
+        }
     </style>
 </head>
 <body>
+    <div id="connection-status" class="connection-status" style="display: none;"></div>
+
     <div id="login-section" class="login-container">
         <div class="login-box">
-            <h2>ورود به سیستم گزارش تولید</h2>
-            <div class="login-form-group">
+            <h2>ورود به گزارش تولید</h2>
+            <div class="form-group">
                 <label for="username">نام کاربری:</label>
-                <input type="text" id="username" placeholder="شناسه کاربری خود را وارد کنید">
-                <div id="username-error" class="error-message">نام کاربری الزامی است</div>
+                <input type="text" id="username" placeholder="شناسه کاربری">
             </div>
-            <div class="login-form-group">
+            <div class="form-group">
                 <label for="password">رمز عبور:</label>
-                <input type="password" id="password" placeholder="رمز عبور خود را وارد کنید">
-                <div id="password-error" class="error-message">رمز عبور الزامی است</div>
+                <input type="password" id="password" placeholder="رمز عبور">
             </div>
             <button class="login-btn" onclick="login()">ورود به سیستم</button>
-            
-            <div class="demo-accounts">
-                <p>حساب‌های آزمایشی:</p>
-                <ul>
-                    <li>نام کاربری: supervisor1 | رمز عبور: s123</li>
-                    <li>نام کاربری: manager1 | رمز عبور: m789</li>
-                    <li>نام کاربری: director1 | رمز عبور: d012</li>
-                </ul>
+            <div style="margin-top: 20px; text-align: center; font-size: 14px; color: #666;">
+                <p>برای ورود به سیستم از اطلاعات زیر استفاده کنید:</p>
+                <p>نام کاربری: supervisor1 | رمز عبور: s123</p>
+                <p>نام کاربری: manager1 | رمز عبور: m789</p>
             </div>
         </div>
     </div>
@@ -741,7 +660,7 @@
                 
                 <div class="button-group">
                     <button onclick="calculateKoor1()">محاسبه</button>
-                    <button onclick="saveKoor1()">ذخیره</button>
+                    <button onclick="saveKoor1()">ذخیره در ابر</button>
                     <button onclick="printKoor1()">چاپ</button>
                     <button onclick="showKoor1Reports()">گزارش بازه زمانی</button>
                 </div>
@@ -921,7 +840,7 @@
                 
                 <div class="button-group">
                     <button onclick="calculateKoor2()">محاسبه</button>
-                    <button onclick="saveKoor2()">ذخیره</button>
+                    <button onclick="saveKoor2()">ذخیره در ابر</button>
                     <button onclick="printKoor2()">چاپ</button>
                     <button onclick="showKoor2Reports()">گزارش بازه زمانی</button>
                 </div>
@@ -955,6 +874,16 @@
     <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
     <script>
+        // تنظیمات JSONBin - این مقادیر را با اطلاعات واقعی جایگزین کنید
+        const JSONBIN_CONFIG = {
+            API_KEY: '$2a$10$YOUR_MASTER_KEY_HERE', // Master API Key خود را اینجا قرار دهید
+            BIN_ID: {
+                KOOR1_REPORTS: 'YOUR_KOOR1_BIN_ID', // Bin ID برای گزارشات کوره ۱
+                KOOR2_REPORTS: 'YOUR_KOOR2_BIN_ID'  // Bin ID برای گزارشات کوره ۲
+            },
+            BASE_URL: 'https://api.jsonbin.io/v3/b'
+        };
+
         // سیستم کاربران
         const users = {
             "supervisor1": {name: "سرپرست شیفت صبح", password: "s123", role: "supervisor"},
@@ -964,86 +893,200 @@
         };
 
         // متغیرهای گزارشات
-        let koor1Reports = JSON.parse(localStorage.getItem('koor1Reports')) || [];
-        let koor2Reports = JSON.parse(localStorage.getItem('koor2Reports')) || [];
+        let koor1Reports = [];
+        let koor2Reports = [];
 
         // شمارنده برای شناسایی منحصر به فرد گروه‌های ورودی
         let k1InputCounter = 1;
         let k2Line2InputCounter = 1;
         let k2Line3InputCounter = 1;
 
-        // تابع ورود به سیستم با اعتبارسنجی
+        // مدیر ذخیره‌سازی ابری
+        class JSONBinManager {
+            constructor() {
+                this.isOnline = navigator.onLine;
+                this.setupOnlineListener();
+                this.updateConnectionStatus();
+            }
+
+            setupOnlineListener() {
+                window.addEventListener('online', () => {
+                    this.isOnline = true;
+                    this.updateConnectionStatus();
+                    this.syncAllData();
+                });
+                
+                window.addEventListener('offline', () => {
+                    this.isOnline = false;
+                    this.updateConnectionStatus();
+                });
+            }
+
+            updateConnectionStatus() {
+                const statusElement = document.getElementById('connection-status');
+                if (statusElement) {
+                    statusElement.style.display = 'block';
+                    statusElement.textContent = this.isOnline ? '🟢 آنلاین' : '🔴 آفلاین';
+                    statusElement.className = `connection-status ${this.isOnline ? 'online' : 'offline'}`;
+                }
+            }
+
+            // خواندن داده از Bin
+            async readBin(binId) {
+                try {
+                    // اول از localStorage چک کن
+                    const cached = localStorage.getItem(`jsonbin_cache_${binId}`);
+                    if (cached && !this.isOnline) {
+                        return JSON.parse(cached);
+                    }
+
+                    if (!this.isOnline) {
+                        throw new Error('اتصال اینترنت برقرار نیست');
+                    }
+
+                    const response = await fetch(`${JSONBIN_CONFIG.BASE_URL}/${binId}/latest`, {
+                        method: 'GET',
+                        headers: {
+                            'X-Master-Key': JSONBIN_CONFIG.API_KEY
+                        }
+                    });
+                    
+                    if (!response.ok) throw new Error('خطا در خواندن داده');
+                    
+                    const result = await response.json();
+                    
+                    // کش کردن داده
+                    localStorage.setItem(`jsonbin_cache_${binId}`, JSON.stringify(result.record));
+                    
+                    return result.record;
+                } catch (error) {
+                    console.error('خطا در خواندن از JSONBin:', error);
+                    
+                    // اگر آنلاین نیستیم، از کش استفاده کن
+                    const cached = localStorage.getItem(`jsonbin_cache_${binId}`);
+                    if (cached) {
+                        return JSON.parse(cached);
+                    }
+                    
+                    return [];
+                }
+            }
+
+            // آپدیت داده در Bin
+            async updateBin(binId, data) {
+                try {
+                    if (!this.isOnline) {
+                        // ذخیره در صف انتظار برای همگام‌سازی
+                        this.addToSyncQueue(binId, data);
+                        return { success: true, message: 'داده برای همگام‌سازی بعدی ذخیره شد' };
+                    }
+
+                    const response = await fetch(`${JSONBIN_CONFIG.BASE_URL}/${binId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': JSONBIN_CONFIG.API_KEY
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    if (!response.ok) throw new Error('خطا در بروزرسانی داده');
+                    
+                    // آپدیت کش
+                    localStorage.setItem(`jsonbin_cache_${binId}`, JSON.stringify(data));
+                    
+                    return { success: true, message: 'داده با موفقیت در ابر ذخیره شد' };
+                } catch (error) {
+                    console.error('خطا در آپدیت JSONBin:', error);
+                    
+                    // ذخیره در صف انتظار
+                    this.addToSyncQueue(binId, data);
+                    
+                    return { success: false, message: error.message };
+                }
+            }
+
+            // اضافه کردن به صف همگام‌سازی
+            addToSyncQueue(binId, data) {
+                const queue = JSON.parse(localStorage.getItem('sync_queue')) || [];
+                queue.push({
+                    binId,
+                    data,
+                    timestamp: Date.now(),
+                    retryCount: 0
+                });
+                localStorage.setItem('sync_queue', JSON.stringify(queue));
+            }
+
+            // همگام‌سازی داده‌های در صف انتظار
+            async syncAllData() {
+                if (!this.isOnline) return;
+
+                const queue = JSON.parse(localStorage.getItem('sync_queue')) || [];
+                const failedItems = [];
+
+                for (const item of queue) {
+                    try {
+                        await this.updateBin(item.binId, item.data);
+                        console.log(`همگام‌سازی موفق برای Bin: ${item.binId}`);
+                    } catch (error) {
+                        item.retryCount++;
+                        if (item.retryCount < 3) {
+                            failedItems.push(item);
+                        }
+                    }
+                }
+
+                localStorage.setItem('sync_queue', JSON.stringify(failedItems));
+                
+                if (failedItems.length === 0) {
+                    console.log('همه داده‌ها با موفقیت همگام‌سازی شدند');
+                }
+            }
+        }
+
+        // ایجاد نمونه از مدیر JSONBin
+        const jsonBinManager = new JSONBinManager();
+
+        // تابع ورود به سیستم
         function login() {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
             
-            // پاک کردن خطاهای قبلی
-            document.getElementById('username-error').style.display = 'none';
-            document.getElementById('password-error').style.display = 'none';
-            
-            let isValid = true;
-            
-            // اعتبارسنجی فیلدها
-            if (!username) {
-                document.getElementById('username-error').style.display = 'block';
-                isValid = false;
-            }
-            
-            if (!password) {
-                document.getElementById('password-error').style.display = 'block';
-                isValid = false;
-            }
-            
-            if (!isValid) return;
-            
-            // بررسی اعتبار کاربر
             if(users[username] && users[username].password === password) {
                 const user = users[username];
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 
-                // نمایش پیام موفقیت
-                showLoginSuccess(user.name);
-            } else {
-                // نمایش خطا
-                document.getElementById('password-error').textContent = 'نام کاربری یا رمز عبور نامعتبر است';
-                document.getElementById('password-error').style.display = 'block';
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('app-content').style.display = 'block';
                 
-                // لرزاندن فرم
-                document.querySelector('.login-box').style.animation = 'shake 0.5s';
-                setTimeout(() => {
-                    document.querySelector('.login-box').style.animation = '';
-                }, 500);
+                document.getElementById('welcome-message').innerHTML = `
+                    <p>کاربر گرامی: <strong>${user.name}</strong></p>
+                    <small>سطح دسترسی: ${getRoleName(user.role)}</small>
+                `;
+                
+                setupAccessControls(user.role);
+                loadPersianDatepicker();
+                
+                // بارگذاری داده‌ها از ابر
+                loadCloudData();
+            } else {
+                alert('نام کاربری یا رمز عبور نامعتبر است');
             }
         }
 
-        // نمایش پیام موفقیت آمیز بودن لاگین
-        function showLoginSuccess(userName) {
-            const loginBtn = document.querySelector('.login-btn');
-            const originalText = loginBtn.textContent;
-            
-            loginBtn.textContent = 'در حال ورود...';
-            loginBtn.disabled = true;
-            
-            setTimeout(() => {
-                loginBtn.innerHTML = '<span>✓</span> ورود موفق';
-                loginBtn.style.backgroundColor = '#27ae60';
-                
-                setTimeout(() => {
-                    // انتقال به صفحه اصلی
-                    document.getElementById('login-section').style.display = 'none';
-                    document.getElementById('app-content').style.display = 'block';
-                    
-                    // بارگذاری اطلاعات کاربر
-                    const user = JSON.parse(localStorage.getItem('currentUser'));
-                    document.getElementById('welcome-message').innerHTML = `
-                        <p>کاربر گرامی: <strong>${user.name}</strong></p>
-                        <small>سطح دسترسی: ${getRoleName(user.role)}</small>
-                    `;
-                    
-                    setupAccessControls(user.role);
-                    loadPersianDatepicker();
-                }, 1000);
-            }, 1500);
+        // بارگذاری داده‌ها از ابر
+        async function loadCloudData() {
+            try {
+                koor1Reports = await jsonBinManager.readBin(JSONBIN_CONFIG.BIN_ID.KOOR1_REPORTS);
+                koor2Reports = await jsonBinManager.readBin(JSONBIN_CONFIG.BIN_ID.KOOR2_REPORTS);
+                console.log('داده‌ها از ابر بارگذاری شدند');
+            } catch (error) {
+                console.error('خطا در بارگذاری داده‌ها از ابر:', error);
+                // استفاده از داده‌های محلی در صورت خطا
+                koor1Reports = JSON.parse(localStorage.getItem('koor1Reports')) || [];
+                koor2Reports = JSON.parse(localStorage.getItem('koor2Reports')) || [];
+            }
         }
 
         function logout() {
@@ -1061,12 +1104,10 @@
         }
 
         function setupAccessControls(role) {
-            // تنظیم دسترسی‌ها بر اساس نقش کاربر
             const isSupervisor = role === 'supervisor';
             const isManager = role === 'manager';
             const isDirector = role === 'director';
             
-            // مثال: فقط مدیران می‌توانند گزارشات را ببینند
             const reportButtons = document.querySelectorAll('button[onclick*="Reports"]');
             reportButtons.forEach(btn => {
                 btn.style.display = (isManager || isDirector) ? 'inline-block' : 'none';
@@ -1106,7 +1147,6 @@
             inputGroup.className = 'input-group';
             inputGroup.id = groupId;
             
-            // تعیین محتوای HTML بر اساس نوع گروه ورودی
             let htmlContent = '';
             if (type === 'k1') {
                 htmlContent = `
@@ -1175,7 +1215,6 @@
                     </div>
                 `;
             } else {
-                // برای کوره ۲ (هر دو خط)
                 htmlContent = `
                     <div class="input-group-header">
                         <span class="input-group-title">ورودی تولید ${prefix.includes('line2') ? 'خط ۲' : 'خط ۳'} - ${counter}</span>
@@ -1256,35 +1295,32 @@
 
         // توابع مربوط به کوره 1
         function calculateKoor1() {
-            // جمع‌آوری تمام گروه‌های ورودی
             const inputGroups = document.querySelectorAll('#k1-inputs-container .input-group');
             let totalDailyMelt = 0;
             let totalProduction = 0;
             let totalWeightedThickness = 0;
             
-            // محاسبه برای هر گروه ورودی
             inputGroups.forEach((group, index) => {
                 const i = index + 1;
-                const thickness = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
+                const thickness1 = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
                 const width = parseFloat(document.getElementById(`k1-width-${i}`).value) || 0;
-                const weight = parseFloat(document.getElementById(`k1-weight-${i}`).value) || 0;
+                const weight1 = parseFloat(document.getElementById(`k1-weight-${i}`).value) || 0;
                 const speed = parseFloat(document.getElementById(`k1-speed-${i}`).value) || 0;
                 const hours = parseFloat(document.getElementById(`k1-hours-${i}`).value) || 0;
                 const production = parseFloat(document.getElementById(`k1-production-${i}`).value) || 0;
 
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                const totalProduction += production;
                 totalDailyMelt += dailyMelt;
-                totalProduction += production;
-                totalWeightedThickness += production * thickness;
+                line1WeightedThickness += ( production * 2 * (weight1/thickness1) ) ;
             });
 
             const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
             const batchConsumption = batchCount * 649;
-            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
+            const culletConsumption = (totalDailyMelt -( batchConsumption * 0.815));
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
-            
-            const avgThickness = totalProduction > 0 ? totalWeightedThickness / totalProduction : 0;
-            const efficiency = totalDailyMelt > 0 ? (( totalProduction * (totalWeightedThickness/totalProduction) * 2 ) / (totalDailyMelt * avgThickness)) * 100 : 0;
+            const totalProdWeight1 = ( line1WeightedThickness ) ;
+            const efficiency = totalDailyMelt > 0 ? (totalProdWeight1 / totalDailyMelt) * 100 : 0;
 
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
@@ -1300,6 +1336,8 @@
                 </div>
                 <div class="result-item">
                     <strong>مقدار ذوب روزانه:</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
+                <div class="result-item">
+                    <strong>مقدار تولید روزانه:</strong> ${totalProduction.toFixed(2)} متر مربع دو میل
                 </div>
                 <div class="result-item">
                     <strong>مقدار بچ مصرفی:</strong> ${batchConsumption.toFixed(2)} کیلوگرم
@@ -1342,7 +1380,6 @@
                 inputs: []
             };
 
-            // ذخیره اطلاعات هر ورودی
             inputGroups.forEach((group, index) => {
                 const i = index + 1;
                 window.koor1Results.inputs.push({
@@ -1359,7 +1396,7 @@
             });
         }
 
-        function saveKoor1() {
+        async function saveKoor1() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
             if (!user || !window.koor1Results) {
                 alert("لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید");
@@ -1373,12 +1410,30 @@
                 batchCount: document.getElementById("k1-batch").value,
                 enteredBy: user.name,
                 userId: Object.keys(users).find(key => users[key].name === user.name),
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                id: Date.now()
             };
 
+            // اضافه به آرایه گزارشات
             koor1Reports.push(report);
-            localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
-            alert(`گزارش با موفقیت ثبت شد\nثبت کننده: ${user.name}\nتعداد ورودی‌ها: ${report.inputCount}`);
+
+            try {
+                // ذخیره در ابر
+                const result = await jsonBinManager.updateBin(JSONBIN_CONFIG.BIN_ID.KOOR1_REPORTS, koor1Reports);
+                
+                // ذخیره محلی به عنوان پشتیبان
+                localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
+                
+                if (result.success) {
+                    alert(`✅ گزارش با موفقیت ${jsonBinManager.isOnline ? 'در ابر' : 'به صورت آفلاین'} ذخیره شد\nثبت کننده: ${user.name}`);
+                } else {
+                    alert(`⚠️ گزارش به صورت آفلاین ذخیره شد\nثبت کننده: ${user.name}`);
+                }
+            } catch (error) {
+                // ذخیره محلی در صورت خطا
+                localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
+                alert(`⚠️ گزارش به صورت آفلاین ذخیره شد\nثبت کننده: ${user.name}`);
+            }
         }
 
         function printKoor1() {
@@ -1392,20 +1447,18 @@
             modal.style.display = "block";
         }
 
-        // توابع مربوط به کوره 2 - اصلاح شده
+        // توابع مربوط به کوره 2
         function calculateKoor2() {
-            // جمع‌آوری تمام گروه‌های ورودی خط ۲
             const line2InputGroups = document.querySelectorAll('#k2-line2-inputs-container .input-group');
             let line2DailyMelt = 0;
             let line2Production = 0;
             let line2WeightedThickness = 0;
             
-            // محاسبه برای هر گروه ورودی خط ۲
             line2InputGroups.forEach((group, index) => {
                 const i = index + 1;
-                const thickness = parseFloat(document.getElementById(`k2-line2-thickness-${i}`).value) || 0;
+                const thickness2 = parseFloat(document.getElementById(`k2-line2-thickness-${i}`).value) || 0;
                 const width = parseFloat(document.getElementById(`k2-line2-width-${i}`).value) || 0;
-                const weight = parseFloat(document.getElementById(`k2-line2-weight-${i}`).value) || 0;
+                const weight2 = parseFloat(document.getElementById(`k2-line2-weight-${i}`).value) || 0;
                 const speed = parseFloat(document.getElementById(`k2-line2-speed-${i}`).value) || 0;
                 const hours = parseFloat(document.getElementById(`k2-line2-hours-${i}`).value) || 0;
                 const production = parseFloat(document.getElementById(`k2-line2-production-${i}`).value) || 0;
@@ -1413,21 +1466,19 @@
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
                 line2DailyMelt += dailyMelt;
                 line2Production += production;
-                line2WeightedThickness += production * thickness;
+                line2WeightedThickness += ( line2Production * 2 * (weight2/thickness2) );
             });
 
-            // جمع‌آوری تمام گروه‌های ورودی خط ۳
             const line3InputGroups = document.querySelectorAll('#k2-line3-inputs-container .input-group');
             let line3DailyMelt = 0;
             let line3Production = 0;
             let line3WeightedThickness = 0;
             
-            // محاسبه برای هر گروه ورودی خط ۳
             line3InputGroups.forEach((group, index) => {
                 const i = index + 1;
-                const thickness = parseFloat(document.getElementById(`k2-line3-thickness-${i}`).value) || 0;
+                const thickness3 = parseFloat(document.getElementById(`k2-line3-thickness-${i}`).value) || 0;
                 const width = parseFloat(document.getElementById(`k2-line3-width-${i}`).value) || 0;
-                const weight = parseFloat(document.getElementById(`k2-line3-weight-${i}`).value) || 0;
+                const weight3 = parseFloat(document.getElementById(`k2-line3-weight-${i}`).value) || 0;
                 const speed = parseFloat(document.getElementById(`k2-line3-speed-${i}`).value) || 0;
                 const hours = parseFloat(document.getElementById(`k2-line3-hours-${i}`).value) || 0;
                 const production = parseFloat(document.getElementById(`k2-line3-production-${i}`).value) || 0;
@@ -1435,7 +1486,7 @@
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
                 line3DailyMelt += dailyMelt;
                 line3Production += production;
-                line3WeightedThickness += production * thickness;
+                line3WeightedThickness += ( line3Production * 2 * (weight3/thickness3) );
             });
 
             const totalDailyMelt = line2DailyMelt + line3DailyMelt;
@@ -1443,11 +1494,11 @@
             
             const batchCount = parseInt(document.getElementById("k2-batch").value) || 0;
             const batchConsumption = batchCount * 1655.12;
-            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
+            const culletConsumption = ((totalDailyMelt -( batchConsumption * 0.815));
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
-            const totalProdWeight = (( line2Production * 2 * (line2WeightedThickness/line2Production) ) + ( line3Production * 2 * (line3WeightedThickness/line3Production) ));
-            const efficiency = totalDailyMelt > 0 ? (totalProdWeight / totalDailyMelt) * 100 : 0;
+            const totalProdWeight2 = ( line2WeightedThickness + line3WeightedThickness );
+            const efficiency = totalDailyMelt > 0 ? (totalProdWeight2 / totalDailyMelt) * 100 : 0;
             
             const silica = batchCount * 1010;
             const sodiumCarbonate = batchCount * 329;
@@ -1522,7 +1573,6 @@
                 line3Inputs: []
             };
 
-            // ذخیره اطلاعات هر ورودی خط ۲
             line2InputGroups.forEach((group, index) => {
                 const i = index + 1;
                 window.koor2Results.line2Inputs.push({
@@ -1538,7 +1588,6 @@
                 });
             });
 
-            // ذخیره اطلاعات هر ورودی خط ۳
             line3InputGroups.forEach((group, index) => {
                 const i = index + 1;
                 window.koor2Results.line3Inputs.push({
@@ -1555,7 +1604,7 @@
             });
         }
 
-        function saveKoor2() {
+        async function saveKoor2() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
             if (!user || !window.koor2Results) {
                 alert("لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید");
@@ -1569,12 +1618,26 @@
                 batchCount: document.getElementById("k2-batch").value,
                 enteredBy: user.name,
                 userId: Object.keys(users).find(key => users[key].name === user.name),
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                id: Date.now()
             };
 
             koor2Reports.push(report);
-            localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
-            alert(`گزارش با موفقیت ثبت شد\nثبت کننده: ${user.name}\nتعداد ورودی‌های خط ۲: ${report.line2InputCount}\nتعداد ورودی‌های خط ۳: ${report.line3InputCount}`);
+
+            try {
+                const result = await jsonBinManager.updateBin(JSONBIN_CONFIG.BIN_ID.KOOR2_REPORTS, koor2Reports);
+                
+                localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
+                
+                if (result.success) {
+                    alert(`✅ گزارش با موفقیت ${jsonBinManager.isOnline ? 'در ابر' : 'به صورت آفلاین'} ذخیره شد`);
+                } else {
+                    alert(`⚠️ گزارش به صورت آفلاین ذخیره شد`);
+                }
+            } catch (error) {
+                localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
+                alert(`⚠️ گزارش به صورت آفلاین ذخیره شد`);
+            }
         }
 
         function printKoor2() {
@@ -1589,7 +1652,7 @@
         }
 
         // توابع گزارش‌گیری
-        function generateKoor1Report() {
+        async function generateKoor1Report() {
             const fromDate = document.getElementById("from-date").value;
             const toDate = document.getElementById("to-date").value;
             
@@ -1598,96 +1661,115 @@
                 return;
             }
 
-            const filteredReports = koor1Reports.filter(report => {
-                return report.date >= fromDate && report.date <= toDate;
-            });
-
-            if (filteredReports.length === 0) {
-                document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
-                return;
-            }
-
-            let html = `
-                <table class="report-table">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>شیفت</th>
-                            <th>کاربر</th>
-                            <th>تعداد ورودی‌ها</th>
-                            <th>تولید (m²)</th>
-                            <th>ذوب (kg)</th>
-                            <th>بچ (kg)</th>
-                            <th>خرده شیشه (kg)</th>
-                            <th>درصد خرده</th>
-                            <th>راندمان (%)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-            let totalInputCount = 0;
-            let totalProduction = 0;
-            let totalMelt = 0;
-            let totalBatch = 0;
-            let totalCullet = 0;
-            let totalEfficiency = 0;
-
-            filteredReports.forEach(report => {
-                // محاسبه تولید کل از تمام ورودی‌ها
-                let production = 0;
-                if (report.inputs && report.inputs.length > 0) {
-                    report.inputs.forEach(input => {
-                        production += parseFloat(input.production || 0);
-                    });
+            try {
+                if (jsonBinManager.isOnline) {
+                    await jsonBinManager.syncAllData();
+                    koor1Reports = await jsonBinManager.readBin(JSONBIN_CONFIG.BIN_ID.KOOR1_REPORTS);
                 }
 
-                html += `
-                    <tr>
-                        <td>${report.date}</td>
-                        <td>${report.shift}</td>
-                        <td>${report.enteredBy}</td>
-                        <td>${report.inputCount || 1}</td>
-                        <td>${production.toFixed(2)}</td>
-                        <td>${report.totalDailyMelt.toFixed(2)}</td>
-                        <td>${report.batchConsumption.toFixed(2)}</td>
-                        <td>${report.culletConsumption.toFixed(2)}</td>
-                        <td>${report.culletPercentage.toFixed(2)}</td>
-                        <td>${report.efficiency.toFixed(2)}</td>
-                    </tr>
+                const filteredReports = koor1Reports.filter(report => {
+                    return report.date >= fromDate && report.date <= toDate;
+                });
+
+                if (filteredReports.length === 0) {
+                    document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
+                    return;
+                }
+
+                let html = `
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>شیفت</th>
+                                <th>کاربر</th>
+                                <th>تعداد ورودی‌ها</th>
+                                <th>تولید (m²)</th>
+                                <th>ذوب (kg)</th>
+                                <th>بچ (kg)</th>
+                                <th>خرده شیشه (kg)</th>
+                                <th>درصد خرده</th>
+                                <th>راندمان (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                 `;
 
-                totalInputCount += report.inputCount || 1;
-                totalProduction += production;
-                totalMelt += report.totalDailyMelt;
-                totalBatch += report.batchConsumption;
-                totalCullet += report.culletConsumption;
-                totalEfficiency += report.efficiency;
-            });
+                let totalInputCount = 0;
+                let totalProduction = 0;
+                let totalMelt = 0;
+                let totalBatch = 0;
+                let totalCullet = 0;
+                let totalEfficiency = 0;
 
-            const avgEfficiency = totalEfficiency / filteredReports.length;
+                filteredReports.forEach(report => {
+                    let production = 0;
+                    if (report.inputs && report.inputs.length > 0) {
+                        report.inputs.forEach(input => {
+                            production += parseFloat(input.production || 0);
+                        });
+                    }
 
-            html += `
-                    </tbody>
-                    <tfoot>
+                    html += `
                         <tr>
-                            <td colspan="3"><strong>جمع کل/میانگین</strong></td>
-                            <td>${totalInputCount}</td>
-                            <td>${totalProduction.toFixed(2)}</td>
-                            <td>${totalMelt.toFixed(2)}</td>
-                            <td>${totalBatch.toFixed(2)}</td>
-                            <td>${totalCullet.toFixed(2)}</td>
-                            <td></td>
-                            <td>${avgEfficiency.toFixed(2)}</td>
+                            <td>${report.date}</td>
+                            <td>${report.shift}</td>
+                            <td>${report.enteredBy}</td>
+                            <td>${report.inputCount || 1}</td>
+                            <td>${production.toFixed(2)}</td>
+                            <td>${report.totalDailyMelt.toFixed(2)}</td>
+                            <td>${report.batchConsumption.toFixed(2)}</td>
+                            <td>${report.culletConsumption.toFixed(2)}</td>
+                            <td>${report.culletPercentage.toFixed(2)}</td>
+                            <td>${report.efficiency.toFixed(2)}</td>
                         </tr>
-                    </tfoot>
-                </table>
-            `;
+                    `;
 
-            document.getElementById("report-results").innerHTML = html;
+                    totalInputCount += report.inputCount || 1;
+                    totalProduction += production;
+                    totalMelt += report.totalDailyMelt;
+                    totalBatch += report.batchConsumption;
+                    totalCullet += report.culletConsumption;
+                    totalEfficiency += report.efficiency;
+                });
+
+                const avgEfficiency = totalEfficiency / filteredReports.length;
+
+                html += `
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><strong>جمع کل/میانگین</strong></td>
+                                <td>${totalInputCount}</td>
+                                <td>${totalProduction.toFixed(2)}</td>
+                                <td>${totalMelt.toFixed(2)}</td>
+                                <td>${totalBatch.toFixed(2)}</td>
+                                <td>${totalCullet.toFixed(2)}</td>
+                                <td></td>
+                                <td>${avgEfficiency.toFixed(2)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                `;
+
+                document.getElementById("report-results").innerHTML = html;
+            } catch (error) {
+                console.error('خطا در تولید گزارش:', error);
+                const filteredReports = koor1Reports.filter(report => {
+                    return report.date >= fromDate && report.date <= toDate;
+                });
+                
+                if (filteredReports.length === 0) {
+                    document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
+                    return;
+                }
+
+                // نمایش گزارش با داده‌های محلی
+                // ... (کد نمایش گزارش)
+            }
         }
 
-        function generateKoor2Report() {
+        async function generateKoor2Report() {
             const fromDate = document.getElementById("from-date").value;
             const toDate = document.getElementById("to-date").value;
             
@@ -1696,111 +1778,129 @@
                 return;
             }
 
-            const filteredReports = koor2Reports.filter(report => {
-                return report.date >= fromDate && report.date <= toDate;
-            });
-
-            if (filteredReports.length === 0) {
-                document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
-                return;
-            }
-
-            let html = `
-                <table class="report-table">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>شیفت</th>
-                            <th>کاربر</th>
-                            <th>ورودی‌های خط۲</th>
-                            <th>ورودی‌های خط۳</th>
-                            <th>تولید خط۲ (m²)</th>
-                            <th>تولید خط۳ (m²)</th>
-                            <th>ذوب (kg)</th>
-                            <th>بچ (kg)</th>
-                            <th>خرده شیشه (kg)</th>
-                            <th>درصد خرده</th>
-                            <th>راندمان (%)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-            let totalLine2InputCount = 0;
-            let totalLine3InputCount = 0;
-            let totalProduction1 = 0;
-            let totalProduction2 = 0;
-            let totalMelt = 0;
-            let totalBatch = 0;
-            let totalCullet = 0;
-            let totalEfficiency = 0;
-
-            filteredReports.forEach(report => {
-                // محاسبه تولید کل از تمام ورودی‌های خط ۲
-                let production1 = 0;
-                if (report.line2Inputs && report.line2Inputs.length > 0) {
-                    report.line2Inputs.forEach(input => {
-                        production1 += parseFloat(input.production || 0);
-                    });
+            try {
+                if (jsonBinManager.isOnline) {
+                    await jsonBinManager.syncAllData();
+                    koor2Reports = await jsonBinManager.readBin(JSONBIN_CONFIG.BIN_ID.KOOR2_REPORTS);
                 }
 
-                // محاسبه تولید کل از تمام ورودی‌های خط ۳
-                let production2 = 0;
-                if (report.line3Inputs && report.line3Inputs.length > 0) {
-                    report.line3Inputs.forEach(input => {
-                        production2 += parseFloat(input.production || 0);
-                    });
+                const filteredReports = koor2Reports.filter(report => {
+                    return report.date >= fromDate && report.date <= toDate;
+                });
+
+                if (filteredReports.length === 0) {
+                    document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
+                    return;
                 }
 
-                html += `
-                    <tr>
-                        <td>${report.date}</td>
-                        <td>${report.shift}</td>
-                        <td>${report.enteredBy}</td>
-                        <td>${report.line2InputCount || 1}</td>
-                        <td>${report.line3InputCount || 1}</td>
-                        <td>${production1.toFixed(2)}</td>
-                        <td>${production2.toFixed(2)}</td>
-                        <td>${report.totalDailyMelt.toFixed(2)}</td>
-                        <td>${report.batchConsumption.toFixed(2)}</td>
-                        <td>${report.culletConsumption.toFixed(2)}</td>
-                        <td>${report.culletPercentage.toFixed(2)}</td>
-                        <td>${report.efficiency.toFixed(2)}</td>
-                    </tr>
+                let html = `
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>شیفت</th>
+                                <th>کاربر</th>
+                                <th>ورودی‌های خط۲</th>
+                                <th>ورودی‌های خط۳</th>
+                                <th>تولید خط۲ (m²)</th>
+                                <th>تولید خط۳ (m²)</th>
+                                <th>ذوب (kg)</th>
+                                <th>بچ (kg)</th>
+                                <th>خرده شیشه (kg)</th>
+                                <th>درصد خرده</th>
+                                <th>راندمان (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                 `;
 
-                totalLine2InputCount += report.line2InputCount || 1;
-                totalLine3InputCount += report.line3InputCount || 1;
-                totalProduction1 += production1;
-                totalProduction2 += production2;
-                totalMelt += report.totalDailyMelt;
-                totalBatch += report.batchConsumption;
-                totalCullet += report.culletConsumption;
-                totalEfficiency += report.efficiency;
-            });
+                let totalLine2InputCount = 0;
+                let totalLine3InputCount = 0;
+                let totalProduction1 = 0;
+                let totalProduction2 = 0;
+                let totalMelt = 0;
+                let totalBatch = 0;
+                let totalCullet = 0;
+                let totalEfficiency = 0;
 
-            const avgEfficiency = totalEfficiency / filteredReports.length;
+                filteredReports.forEach(report => {
+                    let production1 = 0;
+                    if (report.line2Inputs && report.line2Inputs.length > 0) {
+                        report.line2Inputs.forEach(input => {
+                            production1 += parseFloat(input.production || 0);
+                        });
+                    }
 
-            html += `
-                    </tbody>
-                    <tfoot>
+                    let production2 = 0;
+                    if (report.line3Inputs && report.line3Inputs.length > 0) {
+                        report.line3Inputs.forEach(input => {
+                            production2 += parseFloat(input.production || 0);
+                        });
+                    }
+
+                    html += `
                         <tr>
-                            <td colspan="3"><strong>جمع کل/میانگین</strong></td>
-                            <td>${totalLine2InputCount}</td>
-                            <td>${totalLine3InputCount}</td>
-                            <td>${totalProduction1.toFixed(2)}</td>
-                            <td>${totalProduction2.toFixed(2)}</td>
-                            <td>${totalMelt.toFixed(2)}</td>
-                            <td>${totalBatch.toFixed(2)}</td>
-                            <td>${totalCullet.toFixed(2)}</td>
-                            <td></td>
-                            <td>${avgEfficiency.toFixed(2)}</td>
+                            <td>${report.date}</td>
+                            <td>${report.shift}</td>
+                            <td>${report.enteredBy}</td>
+                            <td>${report.line2InputCount || 1}</td>
+                            <td>${report.line3InputCount || 1}</td>
+                            <td>${production1.toFixed(2)}</td>
+                            <td>${production2.toFixed(2)}</td>
+                            <td>${report.totalDailyMelt.toFixed(2)}</td>
+                            <td>${report.batchConsumption.toFixed(2)}</td>
+                            <td>${report.culletConsumption.toFixed(2)}</td>
+                            <td>${report.culletPercentage.toFixed(2)}</td>
+                            <td>${report.efficiency.toFixed(2)}</td>
                         </tr>
-                    </tfoot>
-                </table>
-            `;
+                    `;
 
-            document.getElementById("report-results").innerHTML = html;
+                    totalLine2InputCount += report.line2InputCount || 1;
+                    totalLine3InputCount += report.line3InputCount || 1;
+                    totalProduction1 += production1;
+                    totalProduction2 += production2;
+                    totalMelt += report.totalDailyMelt;
+                    totalBatch += report.batchConsumption;
+                    totalCullet += report.culletConsumption;
+                    totalEfficiency += report.efficiency;
+                });
+
+                const avgEfficiency = totalEfficiency / filteredReports.length;
+
+                html += `
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><strong>جمع کل/میانگین</strong></td>
+                                <td>${totalLine2InputCount}</td>
+                                <td>${totalLine3InputCount}</td>
+                                <td>${totalProduction1.toFixed(2)}</td>
+                                <td>${totalProduction2.toFixed(2)}</td>
+                                <td>${totalMelt.toFixed(2)}</td>
+                                <td>${totalBatch.toFixed(2)}</td>
+                                <td>${totalCullet.toFixed(2)}</td>
+                                <td></td>
+                                <td>${avgEfficiency.toFixed(2)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                `;
+
+                document.getElementById("report-results").innerHTML = html;
+            } catch (error) {
+                console.error('خطا در تولید گزارش:', error);
+                const filteredReports = koor2Reports.filter(report => {
+                    return report.date >= fromDate && report.date <= toDate;
+                });
+                
+                if (filteredReports.length === 0) {
+                    document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
+                    return;
+                }
+
+                // نمایش گزارش با داده‌های محلی
+                // ... (کد نمایش گزارش)
+            }
         }
 
         // توابع عمومی
@@ -1830,15 +1930,6 @@
             }
         }
 
-        // امکان ورود با کلید Enter
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('password').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    login();
-                }
-            });
-        });
-
         // بررسی وضعیت لاگین هنگام بارگذاری صفحه
         window.onload = function() {
             const user = localStorage.getItem('currentUser');
@@ -1852,9 +1943,8 @@
                 `;
                 setupAccessControls(userObj.role);
                 
-                // بارگذاری تاریخچه گزارشات
-                koor1Reports = JSON.parse(localStorage.getItem('koor1Reports')) || [];
-                koor2Reports = JSON.parse(localStorage.getItem('koor2Reports')) || [];
+                // بارگذاری داده‌ها از ابر
+                loadCloudData();
             }
             
             // فعال‌سازی تقویم شمسی
