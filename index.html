@@ -1144,17 +1144,17 @@
             
             inputGroups.forEach((group, index) => {
                 const i = index + 1;
-                const thickness1 = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
-                const width = parseFloat(document.getElementById(`k1-width-${i}`).value) || 0;
-                const weight1 = parseFloat(document.getElementById(`k1-weight-${i}`).value) || 0;
+                const thickness = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
+                const width1 = parseFloat(document.getElementById(`k1-width-${i}`).value) || 0;
+                const weight = parseFloat(document.getElementById(`k1-weight-${i}`).value) || 0;
                 const speed = parseFloat(document.getElementById(`k1-speed-${i}`).value) || 0;
                 const hours = parseFloat(document.getElementById(`k1-hours-${i}`).value) || 0;
-                const production1 = parseFloat(document.getElementById(`k1-production-${i}`).value) || 0;
+                const production = parseFloat(document.getElementById(`k1-production-${i}`).value) || 0;
 
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
                 totalDailyMelt += dailyMelt;
-                totalProduction += production1;
-                totalWeightedThickness += ( production * weight ) / thickness1;
+                totalProduction += production;
+                totalWeightedThickness += ( production * weight ) / thickness;
             });
 
             const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
@@ -1177,6 +1177,9 @@
                 </div>
                 <div class="result-item">
                     <strong>مقدار ذوب روزانه:</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
+                </div>
+                <div class="result-item">
+                    <strong>مقدار تولید روزانه:</strong> ${totalProduction.toFixed(2)} متر مربع 2میل
                 </div>
                 <div class="result-item">
                     <strong>مقدار بچ مصرفی:</strong> ${batchConsumption.toFixed(2)} کیلوگرم
