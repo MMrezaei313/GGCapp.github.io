@@ -3,1776 +3,876 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستم گزارش تولید - کارخانجات شیشه قزوین</title>
-    <meta name="theme-color" content="#2c3e50">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+    <title>سیستم مدیریت کوره</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* استایل عمومی */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-top: 20px;
         }
 
-        /* استایل بخش لاگین */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #2c3e50;
-        }
-
-        .login-box {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .login-box h2 {
-            margin-top: 0;
-            text-align: center;
-            color: #2c3e50;
-        }
-
-        .login-btn {
-            background-color: #3498db;
-            color: white;
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border: none;
-            padding: 12px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            margin-top: 1rem;
-            transition: background-color 0.3s;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
 
-        .login-btn:hover {
-            background-color: #2980b9;
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .welcome {
-            background: rgba(255,255,255,0.1);
-            padding: 0.5rem;
-            border-radius: 4px;
-            margin: 0.5rem 0;
-            text-align: center;
-            color: white;
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
         }
 
-        .logout-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .btn {
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
             margin-top: 10px;
-            font-size: 14px;
+            border-right: 4px solid var(--secondary-color);
         }
 
-        .logout-btn:hover {
-            background: #c0392b;
-        }
-
-        /* استایل هدر */
-        .header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
-        }
-
-        .header h2 {
-            margin: 10px 0 0;
-            font-size: 18px;
-            font-weight: normal;
-        }
-
-        /* تب‌ها */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .tab-button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 0 5px;
-            border-radius: 5px 5px 0 0;
-            transition: background-color 0.3s;
-        }
-
-        .tab-button:hover {
-            background-color: #2980b9;
-        }
-
-        .tab-button.active {
-            background-color: #2c3e50;
-        }
-
-        /* محتوای تب‌ها */
-        .tab-content {
-            display: none;
-            padding: 20px;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin: 0 auto;
-            max-width: 900px;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* فرم‌ها */
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .form-group label {
-            width: 200px;
-            text-align: left;
-            margin-left: 15px;
-            font-weight: bold;
-        }
-
-        .form-group input, 
-        .form-group select {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .date-picker {
-            width: 150px !important;
-        }
-
-        /* دکمه‌ها */
-        .button-group {
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .button-group button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            margin: 0 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        .button-group button:hover {
-            background-color: #2980b9;
-        }
-
-        /* نتایج */
-        .results {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-            border: 1px solid #ddd;
-        }
-
-        .results h3 {
-            margin-top: 0;
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-        }
-
-        .results h4 {
-            color: #2c3e50;
-            margin-top: 20px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .result-item {
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+        .report-item {
             border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
+            padding: 10px 0;
         }
 
-        .result-item:last-child {
+        .report-item:last-child {
             border-bottom: none;
         }
-
-        .result-item strong {
-            color: #2c3e50;
-        }
-
-        /* مودال */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 25px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 900px;
-            border-radius: 8px;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-
-        .close {
-            color: #aaa;
-            float: left;
-            font-size: 28px;
+        
+        .navbar-brand {
             font-weight: bold;
-            cursor: pointer;
-            position: absolute;
-            left: 15px;
-            top: 10px;
+            font-size: 1.5rem;
         }
-
-        .close:hover {
-            color: black;
+        
+        .furnace-icon {
+            font-size: 1.2rem;
+            margin-left: 5px;
         }
-
-        .modal-body {
-            margin-top: 20px;
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
         }
-
-        .date-range {
+        
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .furnace-control {
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        /* استایل مخصوص پرینت */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            body {
+                background: white !important;
+            }
+            
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+            
+            .btn {
+                display: none !important;
+            }
+        }
+        
+        /* انیمیشن‌ها */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* دکمه‌های اکشن */
+        .action-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        
+        .floating-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .date-range label {
-            font-weight: bold;
-        }
-
-        .date-range input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        #generate-report {
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        #generate-report:hover {
-            background-color: #219653;
-        }
-
-        /* جدول گزارشات */
-        .report-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-
-        .report-table th, 
-        .report-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .report-table th {
-            background-color: #2c3e50;
-            color: white;
-            font-weight: bold;
-        }
-
-        .report-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .report-table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .report-table tfoot {
-            font-weight: bold;
-            background-color: #eaf2f8;
-        }
-
-        /* استایل برای ورودی‌های چندگانه */
-        .input-group {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            position: relative;
-        }
-
-        .input-group-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .input-group-title {
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .remove-input-btn {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .remove-input-btn:hover {
-            background-color: #c0392b;
-        }
-
-        .add-input-btn {
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-
-        .add-input-btn:hover {
-            background-color: #219653;
-        }
-
-        /* ریسپانسیو */
-        @media (max-width: 768px) {
-            .form-group {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .form-group label {
-                width: auto;
-                margin-bottom: 5px;
-                margin-left: 0;
-            }
-            
-            .form-group input, 
-            .form-group select {
-                width: 100%;
-            }
-            
-            .date-range {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .date-range label {
-                margin: 5px 0;
-            }
-            
-            .button-group {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .button-group button {
-                margin: 0;
-                width: 100%;
-            }
-            
-            .modal-content {
-                width: 95%;
-                margin: 10% auto;
-                padding: 15px;
-            }
-            
-            .tabs {
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            .tab-button {
-                width: 100%;
-                margin: 2px 0;
-                border-radius: 5px;
-            }
-            
-            .report-table {
-                font-size: 12px;
-            }
-            
-            .report-table th, 
-            .report-table td {
-                padding: 6px;
-            }
-            
-            .input-group {
-                padding: 10px;
-            }
-        }
-
-        /* چاپ */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .tab-content.active, .tab-content.active * {
-                visibility: visible;
-            }
-            .tab-content.active {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: auto;
-                margin: 0;
-                padding: 20px;
-                box-shadow: none;
-            }
-            .button-group {
-                display: none;
-            }
-            .tabs {
-                display: none;
-            }
-            .header {
-                display: none;
-            }
-            .logout-btn {
-                display: none;
-            }
-            .add-input-btn, .remove-input-btn {
-                display: none;
-            }
-        }
-
-        /* وضعیت آنلاین/آفلاین */
-        .connection-status {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            z-index: 1001;
-        }
-
-        .online {
-            background-color: #27ae60;
-            color: white;
-        }
-
-        .offline {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        .sync-status {
-            position: fixed;
-            top: 40px;
-            left: 10px;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            z-index: 1001;
-            background-color: #3498db;
-            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
-    <div id="connection-status" class="connection-status" style="display: none;"></div>
-    <div id="sync-status" class="sync-status" style="display: none;"></div>
-
-    <div id="login-section" class="login-container">
-        <div class="login-box">
-            <h2>ورود به گزارش تولید</h2>
-            <div class="form-group">
-                <label for="username">نام کاربری:</label>
-                <input type="text" id="username" placeholder="شناسه کاربری">
-            </div>
-            <div class="form-group">
-                <label for="password">رمز عبور:</label>
-                <input type="password" id="password" placeholder="رمز عبور">
-            </div>
-            <button class="login-btn" onclick="login()">ورود به سیستم</button>
-            <div style="margin-top: 20px; text-align: center; font-size: 14px; color: #666;">
-                <p>برای ورود به سیستم از اطلاعات زیر استفاده کنید:</p>
-                <p>نام کاربری: supervisor1 | رمز عبور: s123</p>
-                <p>نام کاربری: manager1 | رمز عبور: m789</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="app-content" style="display:none;">
-        <div class="header">
-            <h1>کارخانجات شیشه قزوین</h1>
-            <h2>سیستم گزارش روزانه وضعیت عملیاتی کوره‌ها</h2>
-            <div id="welcome-message" class="welcome"></div>
-            <button class="logout-btn" onclick="logout()">خروج</button>
-        </div>
-
-        <div class="tabs">
-            <button class="tab-button active" onclick="openTab(event, 'koor1')">کوره ۱</button>
-            <button class="tab-button" onclick="openTab(event, 'koor2')">کوره ۲</button>
-        </div>
-
-        <div id="koor1" class="tab-content active">
-            <div class="form-container">
-                <div class="form-group">
-                    <label for="k1-date">تاریخ:</label>
-                    <input type="text" id="k1-date" class="date-picker">
+    <div class="container-fluid">
+        <!-- نوار ناوبری -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded mb-4 no-print">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-fire furnace-icon"></i>
+                    سیستم مدیریت کوره
+                </a>
+                <div class="navbar-text">
+                    <span id="currentDateTime"></span>
                 </div>
-                
-                <div class="form-group">
-                    <label for="k1-shift">شیفت کاری:</label>
-                    <select id="k1-shift">
-                        <option value="6-14">۶ تا ۱۴</option>
-                        <option value="14-22">۱۴ تا ۲۲</option>
-                        <option value="22-6">۲۲ تا ۶</option>
-                    </select>
-                </div>
+            </div>
+        </nav>
 
-                <h3>خط تولید ۱</h3>
-                
-                <div id="k1-inputs-container">
-                    <!-- اولین گروه ورودی -->
-                    <div class="input-group" id="k1-input-group-1">
-                        <div class="input-group-header">
-                            <span class="input-group-title">ورودی تولید ۱</span>
-                            <button class="remove-input-btn" onclick="removeInputGroup('k1-input-group-1')">حذف</button>
+        <!-- بخش اصلی -->
+        <div class="container">
+            <!-- فرم ورود -->
+            <div id="loginSection">
+                <div class="login-container">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i>ورود به سیستم</h5>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="k1-width-1">عرض با کناره (سانتی متر):</label>
-                            <input type="number" id="k1-width-1" step="0.01">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k1-weight-1">وزن یک متر مربع شیشه (کیلوگرم):</label>
-                            <input type="number" id="k1-weight-1" step="0.001">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k1-thickness-1">ضخامت (میلیمتر):</label>
-                            <input type="number" id="k1-thickness-1" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k1-design-1">نوع طرح:</label>
-                            <select id="k1-design-1">
-                                <option value="برفی">برفی</option>
-                                <option value="کاراتاچی">کاراتاچی</option>
-                                <option value="برگ بیدی">برگ بیدی</option>
-                                <option value="بازوبندی">بازوبندی</option>
-                                <option value="بادی">بادی</option>
-                                <option value="شاپرکی">شاپرکی</option>
-                                <option value="الماسی">الماسی</option>
-                                <option value="ماتریکس">ماتریکس</option>
-                                <option value="نی ریز">نی ریز</option>
-                                <option value="حبابی">حبابی</option>
-                                <option value="بامبو">بامبو</option>
-                                <option value="مدادی">مدادی</option>
-                                <option value="راه مات">راه مات</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k1-speed-1">سرعت (اینچ/دقیقه):</label>
-                            <input type="number" id="k1-speed-1" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k1-hours-1">ساعات کارکرد:</label>
-                            <input type="number" id="k1-hours-1" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k1-delivery-width-1">عرض تحویلی (سانتی متر):</label>
-                            <input type="number" id="k1-delivery-width-1" step="0.01">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k1-delivery-length-1">طول تحویلی (سانتی متر):</label>
-                            <input type="number" id="k1-delivery-length-1" step="0.01">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k1-production-1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
-                            <input type="number" id="k1-production-1" step="0.01">
+                        <div class="card-body">
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">نام کاربری</label>
+                                    <input type="text" class="form-control" id="username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">رمز عبور</label>
+                                    <input type="password" class="form-control" id="password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-sign-in-alt me-2"></i>ورود به سیستم
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                
-                <button class="add-input-btn" onclick="addInputGroup('k1')">+ افزودن ورودی جدید</button>
-                
-                <div class="form-group">
-                    <label for="k1-batch">تعداد بچ مصرفی:</label>
-                    <input type="number" id="k1-batch">
-                </div>
-                
-                <div class="button-group">
-                    <button onclick="calculateKoor1()">محاسبه</button>
-                    <button onclick="saveKoor1()">ذخیره در ابر</button>
-                    <button onclick="printKoor1()">چاپ</button>
-                    <button onclick="showKoor1Reports()">گزارش بازه زمانی</button>
-                </div>
-                
-                <div id="k1-results" class="results">
-                    <!-- نتایج محاسبات اینجا نمایش داده می‌شود -->
-                </div>
             </div>
-        </div>
 
-        <div id="koor2" class="tab-content">
-            <div class="form-container">
-                <div class="form-group">
-                    <label for="k2-date">تاریخ:</label>
-                    <input type="text" id="k2-date" class="date-picker">
-                </div>
-                
-                <div class="form-group">
-                    <label for="k2-shift">شیفت کاری:</label>
-                    <select id="k2-shift">
-                        <option value="6-14">۶ تا ۱۴</option>
-                        <option value="14-22">۱۴ تا ۲۲</option>
-                        <option value="22-6">۲۲ تا ۶</option>
-                    </select>
-                </div>
-
-                <h3>خط تولید ۲</h3>
-                
-                <div id="k2-line2-inputs-container">
-                    <!-- اولین گروه ورودی برای خط ۲ -->
-                    <div class="input-group" id="k2-line2-input-group-1">
-                        <div class="input-group-header">
-                            <span class="input-group-title">ورودی تولید خط ۲ - ۱</span>
-                            <button class="remove-input-btn" onclick="removeInputGroup('k2-line2-input-group-1')">حذف</button>
+            <!-- داشبورد اصلی (مخفی شده) -->
+            <div id="dashboard" class="d-none">
+                <!-- خلاصه آمار -->
+                <div class="dashboard-header text-white">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-value" id="totalCalculations">0</div>
+                                <div class="stat-label">محاسبات انجام شده</div>
+                            </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line2-width-1">عرض با کناره (سانتی متر):</label>
-                            <input type="number" id="k2-line2-width-1" step="0.01">
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-value" id="avgEfficiency">0%</div>
+                                <div class="stat-label">میانگین راندمان</div>
+                            </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line2-weight-1">وزن یک متر مربع شیشه (کیلوگرم):</label>
-                            <input type="number" id="k2-line2-weight-1" step="0.001">
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-value" id="savedReports">0</div>
+                                <div class="stat-label">گزارش ذخیره شده</div>
+                            </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line2-thickness-1">ضخامت (میلیمتر):</label>
-                            <input type="number" id="k2-line2-thickness-1" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line2-design-1">نوع طرح:</label>
-                            <select id="k2-line2-design-1">
-                                <option value="برفی">برفی</option>
-                                <option value="کاراتاچی">کاراتاچی</option>
-                                <option value="برگ بیدی">برگ بیدی</option>
-                                <option value="بازوبندی">بازوبندی</option>
-                                <option value="بادی">بادی</option>
-                                <option value="شاپرکی">شاپرکی</option>
-                                <option value="الماسی">الماسی</option>
-                                <option value="ماتریکس">ماتریکس</option>
-                                <option value="نی ریز">نی ریز</option>
-                                <option value="حبابی">حبابی</option>
-                                <option value="بامبو">بامبو</option>
-                                <option value="مدادی">مدادی</option>
-                                <option value="راه مات">راه مات</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line2-speed-1">سرعت (اینچ/دقیقه):</label>
-                            <input type="number" id="k2-line2-speed-1" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line2-hours-1">ساعات کارکرد:</label>
-                            <input type="number" id="k2-line2-hours-1" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line2-delivery-width-1">عرض تحویلی (سانتی متر):</label>
-                            <input type="number" id="k2-line2-delivery-width-1" step="0.01">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line2-delivery-length-1">طول تحویلی (سانتی متر):</label>
-                            <input type="number" id="k2-line2-delivery-length-1" step="0.01">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line2-production-1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
-                            <input type="number" id="k2-line2-production-1" step="0.01">
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-value" id="activeFurnaces">2</div>
+                                <div class="stat-label">کوره فعال</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <button class="add-input-btn" onclick="addInputGroup('k2-line2')">+ افزودن ورودی جدید برای خط ۲</button>
 
-                <h3>خط تولید ۳</h3>
-                
-                <div id="k2-line3-inputs-container">
-                    <!-- اولین گروه ورودی برای خط ۳ -->
-                    <div class="input-group" id="k2-line3-input-group-1">
-                        <div class="input-group-header">
-                            <span class="input-group-title">ورودی تولید خط ۳ - ۱</span>
-                            <button class="remove-input-btn" onclick="removeInputGroup('k2-line3-input-group-1')">حذف</button>
+                <!-- کنترل پنل کوره‌ها -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h6><i class="fas fa-fire me-2"></i>کوره یک</h6>
+                            </div>
+                            <div class="card-body furnace-control">
+                                <form id="furnace1Form">
+                                    <div class="mb-2">
+                                        <label>دمای کوره (°C)</label>
+                                        <input type="number" class="form-control furnace1-temp" value="1200" min="800" max="1600" step="10">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label>مصرف سوخت (لیتر/ساعت)</label>
+                                        <input type="number" class="form-control furnace1-fuel" value="150" min="50" max="300" step="5">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label>مواد اولیه (کیلوگرم)</label>
+                                        <input type="number" class="form-control furnace1-material" value="500" min="100" max="1000" step="50">
+                                    </div>
+                                    <button type="submit" class="btn btn-success mt-2 w-100">
+                                        <i class="fas fa-calculator me-2"></i>محاسبه راندمان
+                                    </button>
+                                </form>
+                                <div id="furnace1Result" class="mt-3"></div>
+                            </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line3-width-1">عرض با کناره (سانتی متر):</label>
-                            <input type="number" id="k2-line3-width-1" step="0.01">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line3-weight-1">وزن یک متر مربع شیشه (کیلوگرم):</label>
-                            <input type="number" id="k2-line3-weight-1" step="0.001">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line3-thickness-1">ضخامت (میلیمتر):</label>
-                            <input type="number" id="k2-line3-thickness-1" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line3-design-1">نوع طرح:</label>
-                            <select id="k2-line3-design-1">
-                                <option value="برفی">برفی</option>
-                                <option value="کاراتاچی">کاراتاچی</option>
-                                <option value="برگ بیدی">برگ بیدی</option>
-                                <option value="بازوبندی">بازوبندی</option>
-                                <option value="بادی">بادی</option>
-                                <option value="شاپرکی">شاپرکی</option>
-                                <option value="الماسی">الماسی</option>
-                                <option value="ماتریکس">ماتریکس</option>
-                                <option value="نی ریز">نی ریز</option>
-                                <option value="حبابی">حبابی</option>
-                                <option value="بامبو">بامبو</option>
-                                <option value="مدادی">مدادی</option>
-                                <option value="راه مات">راه مات</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line3-speed-1">سرعت (اینچ/دقیقه):</label>
-                            <input type="number" id="k2-line3-speed-1" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line3-hours-1">ساعات کارکرد:</label>
-                            <input type="number" id="k2-line3-hours-1" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line3-delivery-width-1">عرض تحویلی (سانتی متر):</label>
-                            <input type="number" id="k2-line3-delivery-width-1" step="0.01">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line3-delivery-length-1">طول تحویلی (سانتی متر):</label>
-                            <input type="number" id="k2-line3-delivery-length-1" step="0.01">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="k2-line3-production-1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
-                            <input type="number" id="k2-line3-production-1" step="0.01">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-warning text-dark">
+                                <h6><i class="fas fa-fire me-2"></i>کوره دو</h6>
+                            </div>
+                            <div class="card-body furnace-control">
+                                <form id="furnace2Form">
+                                    <div class="mb-2">
+                                        <label>دمای کوره (°C)</label>
+                                        <input type="number" class="form-control furnace2-temp" value="1100" min="800" max="1600" step="10">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label>مصرف سوخت (لیتر/ساعت)</label>
+                                        <input type="number" class="form-control furnace2-fuel" value="140" min="50" max="300" step="5">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label>مواد اولیه (کیلوگرم)</label>
+                                        <input type="number" class="form-control furnace2-material" value="450" min="100" max="1000" step="50">
+                                    </div>
+                                    <button type="submit" class="btn btn-warning mt-2 w-100">
+                                        <i class="fas fa-calculator me-2"></i>محاسبه راندمان
+                                    </button>
+                                </form>
+                                <div id="furnace2Result" class="mt-3"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <button class="add-input-btn" onclick="addInputGroup('k2-line3')">+ افزودن ورودی جدید برای خط ۳</button>
-                
-                <div class="form-group">
-                    <label for="k2-batch">تعداد بچ مصرفی:</label>
-                    <input type="number" id="k2-batch">
-                </div>
-                
-                <div class="button-group">
-                    <button onclick="calculateKoor2()">محاسبه</button>
-                    <button onclick="saveKoor2()">ذخیره در ابر</button>
-                    <button onclick="printKoor2()">چاپ</button>
-                    <button onclick="showKoor2Reports()">گزارش بازه زمانی</button>
-                </div>
-                
-                <div id="k2-results" class="results">
-                    <!-- نتایج محاسبات اینجا نمایش داده می‌شود -->
-                </div>
-            </div>
-        </div>
 
-        <!-- مودال گزارشات -->
-        <div id="report-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <h2 id="modal-title">گزارش بازه زمانی</h2>
-                <div class="modal-body">
-                    <div class="date-range">
-                        <label for="from-date">از تاریخ:</label>
-                        <input type="text" id="from-date" class="date-picker">
-                        <label for="to-date">تا تاریخ:</label>
-                        <input type="text" id="to-date" class="date-picker">
-                        <button id="generate-report">تولید گزارش</button>
+                <!-- بخش گزارش‌ها -->
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h6><i class="fas fa-chart-bar me-2"></i>گزارش‌های زمانی</h6>
                     </div>
-                    <div id="report-results"></div>
+                    <div class="card-body">
+                        <form id="reportForm">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>از تاریخ</label>
+                                    <input type="datetime-local" class="form-control" id="startDate" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>تا تاریخ</label>
+                                    <input type="datetime-local" class="form-control" id="endDate" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>نوع گزارش</label>
+                                    <select class="form-control" id="reportType">
+                                        <option value="daily">روزانه</option>
+                                        <option value="weekly">هفتگی</option>
+                                        <option value="monthly">ماهانه</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>&nbsp;</label>
+                                    <button type="submit" class="btn btn-info d-block w-100">
+                                        <i class="fas fa-file-alt me-2"></i>ایجاد گزارش
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="reportResults" class="mt-3"></div>
+                    </div>
+                </div>
+
+                <!-- دکمه‌های اکشن -->
+                <div class="action-buttons no-print">
+                    <button id="printBtn" class="btn btn-warning floating-btn" title="پرینت گزارش">
+                        <i class="fas fa-print"></i>
+                    </button>
+                    <button id="saveReportBtn" class="btn btn-secondary floating-btn" title="ذخیره گزارش">
+                        <i class="fas fa-save"></i>
+                    </button>
+                    <button id="exportDataBtn" class="btn btn-success floating-btn" title="خروجی داده">
+                        <i class="fas fa-download"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
     <script>
-        // سیستم کاربران
-        const users = {
-            "supervisor1": {name: "سرپرست شیفت صبح", password: "s123", role: "supervisor"},
-            "supervisor2": {name: "سرپرست شیفت عصر", password: "s456", role: "supervisor"},
-            "manager1": {name: "مدیر تولید", password: "m789", role: "manager"},
-            "director1": {name: "رییس واحد تولید", password: "d012", role: "director"}
+        // مدیریت وضعیت برنامه
+        const AppState = {
+            currentUser: null,
+            reports: [],
+            furnaceData: {
+                furnace1: [],
+                furnace2: []
+            },
+            calculationsCount: 0
         };
 
-        // متغیرهای گزارشات
-        let koor1Reports = JSON.parse(localStorage.getItem('koor1Reports')) || [];
-        let koor2Reports = JSON.parse(localStorage.getItem('koor2Reports')) || [];
-
-        // شمارنده برای شناسایی منحصر به فرد گروه‌های ورودی
-        let k1InputCounter = 1;
-        let k2Line2InputCounter = 1;
-        let k2Line3InputCounter = 1;
-
-        // تابع ورود به سیستم
-        function login() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-            
-            if(users[username] && users[username].password === password) {
-                const user = users[username];
-                localStorage.setItem('currentUser', JSON.stringify(user));
+        // توابع محاسبات کوره یک
+        function calculateFurnaceOne(data) {
+            try {
+                const efficiency = (data.temperature / 1500) * 100;
+                const fuelEfficiency = data.fuelConsumption > 0 ? (data.temperature / data.fuelConsumption) * 10 : 0;
+                const productionRate = data.inputMaterial * (data.temperature / 1500);
+                const quality = data.temperature > 1300 ? 'عالی' : data.temperature > 1100 ? 'خوب' : 'متوسط';
                 
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('app-content').style.display = 'block';
-                
-                document.getElementById('welcome-message').innerHTML = `
-                    <p>کاربر گرامی: <strong>${user.name}</strong></p>
-                    <small>سطح دسترسی: ${getRoleName(user.role)}</small>
-                `;
-                
-                setupAccessControls(user.role);
-                loadPersianDatepicker();
-                
-                // نمایش وضعیت اتصال
-                updateConnectionStatus();
-            } else {
-                alert('نام کاربری یا رمز عبور نامعتبر است');
+                return {
+                    efficiency: Math.min(efficiency, 100).toFixed(2),
+                    fuelEfficiency: fuelEfficiency.toFixed(2),
+                    productionRate: productionRate.toFixed(2),
+                    quality: quality,
+                    status: efficiency > 80 ? 'بهینه' : efficiency > 60 ? 'متوسط' : 'نیاز به تنظیم'
+                };
+            } catch (error) {
+                console.error('خطا در محاسبات کوره یک:', error);
+                return null;
             }
         }
 
-        function logout() {
-            localStorage.removeItem('currentUser');
-            location.reload();
+        // توابع محاسبات کوره دو (مشابه کوره یک)
+        function calculateFurnaceTwo(data) {
+            try {
+                const efficiency = (data.temperature / 1400) * 100;
+                const fuelEfficiency = data.fuelConsumption > 0 ? (data.temperature / data.fuelConsumption) * 9.5 : 0;
+                const productionRate = data.inputMaterial * (data.temperature / 1400);
+                const quality = data.temperature > 1250 ? 'عالی' : data.temperature > 1050 ? 'خوب' : 'متوسط';
+                
+                return {
+                    efficiency: Math.min(efficiency, 100).toFixed(2),
+                    fuelEfficiency: fuelEfficiency.toFixed(2),
+                    productionRate: productionRate.toFixed(2),
+                    quality: quality,
+                    status: efficiency > 80 ? 'بهینه' : efficiency > 60 ? 'متوسط' : 'نیاز به تنظیم'
+                };
+            } catch (error) {
+                console.error('خطا در محاسبات کوره دو:', error);
+                return null;
+            }
         }
 
-        function getRoleName(role) {
-            const roles = {
-                'supervisor': 'سرپرست تولید',
-                'manager': 'مدیر تولید',
-                'director': 'رییس واحد'
+        // سیستم گزارش‌گیری بازه‌های زمانی
+        function generateTimeRangeReport(startDate, endDate, reportType) {
+            try {
+                const savedReports = JSON.parse(localStorage.getItem('furnaceReports') || '[]');
+                
+                const filteredReports = savedReports.filter(report => {
+                    const reportDate = new Date(report.timestamp);
+                    return reportDate >= new Date(startDate) && reportDate <= new Date(endDate);
+                });
+
+                let groupedReports = {};
+                
+                if (reportType === 'daily') {
+                    groupedReports = groupByDay(filteredReports);
+                } else if (reportType === 'weekly') {
+                    groupedReports = groupByWeek(filteredReports);
+                } else if (reportType === 'monthly') {
+                    groupedReports = groupByMonth(filteredReports);
+                }
+
+                return {
+                    success: true,
+                    data: groupedReports,
+                    totalRecords: filteredReports.length,
+                    timeRange: { startDate, endDate }
+                };
+            } catch (error) {
+                console.error('خطا در تولید گزارش:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // توابع گروه‌بندی
+        function groupByDay(reports) {
+            const groups = {};
+            reports.forEach(report => {
+                const date = new Date(report.timestamp).toLocaleDateString('fa-IR');
+                if (!groups[date]) groups[date] = [];
+                groups[date].push(report);
+            });
+            return groups;
+        }
+
+        function groupByWeek(reports) {
+            const groups = {};
+            reports.forEach(report => {
+                const date = new Date(report.timestamp);
+                const weekNumber = getWeekNumber(date);
+                const key = `هفته ${weekNumber} - ${date.getFullYear()}`;
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(report);
+            });
+            return groups;
+        }
+
+        function groupByMonth(reports) {
+            const groups = {};
+            reports.forEach(report => {
+                const date = new Date(report.timestamp);
+                const key = date.toLocaleDateString('fa-IR', { year: 'numeric', month: 'long' });
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(report);
+            });
+            return groups;
+        }
+
+        function getWeekNumber(date) {
+            const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+            const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+            return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+        }
+
+        // مدیریت ذخیره و بازیابی گزارش‌ها
+        function saveReportToStorage(reportData) {
+            try {
+                const reports = JSON.parse(localStorage.getItem('furnaceReports') || '[]');
+                const newReport = {
+                    ...reportData,
+                    id: generateId(),
+                    timestamp: new Date().toISOString(),
+                    user: AppState.currentUser
+                };
+                
+                reports.push(newReport);
+                localStorage.setItem('furnaceReports', JSON.stringify(reports));
+                
+                return { success: true, id: newReport.id };
+            } catch (error) {
+                console.error('خطا در ذخیره گزارش:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        function loadReportsFromStorage() {
+            try {
+                return JSON.parse(localStorage.getItem('furnaceReports') || '[]');
+            } catch (error) {
+                console.error('خطا در بارگذاری گزارش‌ها:', error);
+                return [];
+            }
+        }
+
+        // تابع کمکی برای تولید ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // مدیریت رویدادها
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // به روز رسانی تاریخ و ساعت
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // رویداد ورود با اینتر
+            document.getElementById('loginForm').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleLogin();
+                }
+            });
+
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleLogin();
+            });
+
+            // رویدادهای فرم کوره‌ها
+            document.getElementById('furnace1Form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleFurnace1Calculation();
+            });
+
+            document.getElementById('furnace2Form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleFurnace2Calculation();
+            });
+
+            // رویداد فرم گزارش
+            document.getElementById('reportForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleReportGeneration();
+            });
+
+            // رویداد دکمه پرینت
+            document.getElementById('printBtn').addEventListener('click', handlePrint);
+
+            // رویداد ذخیره گزارش
+            document.getElementById('saveReportBtn').addEventListener('click', handleSaveReport);
+            
+            // رویداد خروجی داده
+            document.getElementById('exportDataBtn').addEventListener('click', handleExportData);
+
+            // تنظیم تاریخ‌های پیش‌فرض
+            setDefaultDates();
+            
+            // بارگذاری آمار
+            updateStats();
+        }
+        
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
             };
-            return roles[role] || role;
+            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('fa-IR', options);
         }
-
-        function setupAccessControls(role) {
-            const isSupervisor = role === 'supervisor';
-            const isManager = role === 'manager';
-            const isDirector = role === 'director';
+        
+        function updateStats() {
+            const reports = loadReportsFromStorage();
+            document.getElementById('savedReports').textContent = reports.length;
             
-            const reportButtons = document.querySelectorAll('button[onclick*="Reports"]');
-            reportButtons.forEach(btn => {
-                btn.style.display = (isManager || isDirector) ? 'inline-block' : 'none';
+            // محاسبه میانگین راندمان
+            let totalEfficiency = 0;
+            let count = 0;
+            
+            reports.forEach(report => {
+                if (report.result && report.result.efficiency) {
+                    totalEfficiency += parseFloat(report.result.efficiency);
+                    count++;
+                }
             });
+            
+            const avgEfficiency = count > 0 ? (totalEfficiency / count).toFixed(1) : 0;
+            document.getElementById('avgEfficiency').textContent = `${avgEfficiency}%`;
+            document.getElementById('totalCalculations').textContent = AppState.calculationsCount;
         }
 
-        function loadPersianDatepicker() {
-            $(".date-picker").persianDatepicker({
-                format: 'YYYY/MM/DD',
-                observer: true,
-                initialValue: false
-            });
-        }
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-        // توابع مدیریت گروه‌های ورودی
-        function addInputGroup(type) {
-            let containerId, counter, prefix;
-            
-            if (type === 'k1') {
-                containerId = 'k1-inputs-container';
-                counter = ++k1InputCounter;
-                prefix = 'k1';
-            } else if (type === 'k2-line2') {
-                containerId = 'k2-line2-inputs-container';
-                counter = ++k2Line2InputCounter;
-                prefix = 'k2-line2';
-            } else if (type === 'k2-line3') {
-                containerId = 'k2-line3-inputs-container';
-                counter = ++k2Line3InputCounter;
-                prefix = 'k2-line3';
-            }
-            
-            const groupId = `${prefix}-input-group-${counter}`;
-            const container = document.getElementById(containerId);
-            
-            const inputGroup = document.createElement('div');
-            inputGroup.className = 'input-group';
-            inputGroup.id = groupId;
-            
-            let htmlContent = '';
-            if (type === 'k1') {
-                htmlContent = `
-                    <div class="input-group-header">
-                        <span class="input-group-title">ورودی تولید ${counter}</span>
-                        <button class="remove-input-btn" onclick="removeInputGroup('${groupId}')">حذف</button>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-width-${counter}">عرض با کناره (سانتی متر):</label>
-                        <input type="number" id="${prefix}-width-${counter}" step="0.01">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-weight-${counter}">وزن یک متر مربع شیشه (کیلوگرم):</label>
-                        <input type="number" id="${prefix}-weight-${counter}" step="0.001">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-thickness-${counter}">ضخامت (میلیمتر):</label>
-                        <input type="number" id="${prefix}-thickness-${counter}" step="0.1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-design-${counter}">نوع طرح:</label>
-                        <select id="${prefix}-design-${counter}">
-                            <option value="برفی">برفی</option>
-                            <option value="کاراتاچی">کاراتاچی</option>
-                            <option value="برگ بیدی">برگ بیدی</option>
-                            <option value="بازوبندی">بازوبندی</option>
-                            <option value="بادی">بادی</option>
-                            <option value="شاپرکی">شاپرکی</option>
-                            <option value="الماسی">الماسی</option>
-                            <option value="ماتریکس">ماتریکس</option>
-                            <option value="نی ریز">نی ریز</option>
-                            <option value="حبابی">حبابی</option>
-                            <option value="بامبو">بامبو</option>
-                            <option value="مدادی">مدادی</option>
-                            <option value="راه مات">راه مات</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-speed-${counter}">سرعت (اینچ/دقیقه):</label>
-                        <input type="number" id="${prefix}-speed-${counter}" step="0.1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-hours-${counter}">ساعات کارکرد:</label>
-                        <input type="number" id="${prefix}-hours-${counter}" step="0.1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-delivery-width-${counter}">عرض تحویلی (سانتی متر):</label>
-                        <input type="number" id="${prefix}-delivery-width-${counter}" step="0.01">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-delivery-length-${counter}">طول تحویلی (سانتی متر):</label>
-                        <input type="number" id="${prefix}-delivery-length-${counter}" step="0.01">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-production-${counter}">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
-                        <input type="number" id="${prefix}-production-${counter}" step="0.01">
-                    </div>
-                `;
+            if (username && password) {
+                AppState.currentUser = username;
+                document.getElementById('loginSection').classList.add('d-none');
+                document.getElementById('dashboard').classList.remove('d-none');
+                showNotification('ورود موفقیت‌آمیز بود', 'success');
+                updateStats();
             } else {
-                htmlContent = `
-                    <div class="input-group-header">
-                        <span class="input-group-title">ورودی تولید ${prefix.includes('line2') ? 'خط ۲' : 'خط ۳'} - ${counter}</span>
-                        <button class="remove-input-btn" onclick="removeInputGroup('${groupId}')">حذف</button>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-width-${counter}">عرض با کناره (سانتی متر):</label>
-                        <input type="number" id="${prefix}-width-${counter}" step="0.01">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-weight-${counter}">وزن یک متر مربع شیشه (کیلوگرم):</label>
-                        <input type="number" id="${prefix}-weight-${counter}" step="0.001">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-thickness-${counter}">ضخامت (میلیمتر):</label>
-                        <input type="number" id="${prefix}-thickness-${counter}" step="0.1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-design-${counter}">نوع طرح:</label>
-                        <select id="${prefix}-design-${counter}">
-                            <option value="برفی">برفی</option>
-                            <option value="کاراتاچی">کاراتاچی</option>
-                            <option value="برگ بیدی">برگ بیدی</option>
-                            <option value="بازوبندی">بازوبندی</option>
-                            <option value="بادی">بادی</option>
-                            <option value="شاپرکی">شاپرکی</option>
-                            <option value="الماسی">الماسی</option>
-                            <option value="ماتریکس">ماتریکس</option>
-                            <option value="نی ریز">نی ریز</option>
-                            <option value="حبابی">حبابی</option>
-                            <option value="بامبو">بامبو</option>
-                            <option value="مدادی">مدادی</option>
-                            <option value="راه مات">راه مات</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-speed-${counter}">سرعت (اینچ/دقیقه):</label>
-                        <input type="number" id="${prefix}-speed-${counter}" step="0.1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-hours-${counter}">ساعات کارکرد:</label>
-                        <input type="number" id="${prefix}-hours-${counter}" step="0.1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-delivery-width-${counter}">عرض تحویلی (سانتی متر):</label>
-                        <input type="number" id="${prefix}-delivery-width-${counter}" step="0.01">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-delivery-length-${counter}">طول تحویلی (سانتی متر):</label>
-                        <input type="number" id="${prefix}-delivery-length-${counter}" step="0.01">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="${prefix}-production-${counter}">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
-                        <input type="number" id="${prefix}-production-${counter}" step="0.01">
-                    </div>
-                `;
-            }
-            
-            inputGroup.innerHTML = htmlContent;
-            container.appendChild(inputGroup);
-        }
-
-        function removeInputGroup(groupId) {
-            const group = document.getElementById(groupId);
-            if (group) {
-                group.remove();
+                showNotification('لطفا نام کاربری و رمز عبور را وارد کنید', 'error');
             }
         }
 
-        // توابع مربوط به کوره 1
-        function calculateKoor1() {
-            const inputGroups = document.querySelectorAll('#k1-inputs-container .input-group');
-            let totalDailyMelt = 0;
-            let totalProduction = 0;
-            let totalWeightedThickness = 0;
+        function handleFurnace1Calculation() {
+            const temp = parseFloat(document.querySelector('.furnace1-temp').value);
+            const fuel = parseFloat(document.querySelector('.furnace1-fuel').value);
+            const material = parseFloat(document.querySelector('.furnace1-material').value);
             
-            inputGroups.forEach((group, index) => {
-                const i = index + 1;
-                const thickness = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
-                const width = parseFloat(document.getElementById(`k1-width-${i}`).value) || 0;
-                const weight = parseFloat(document.getElementById(`k1-weight-${i}`).value) || 0;
-                const speed = parseFloat(document.getElementById(`k1-speed-${i}`).value) || 0;
-                const hours = parseFloat(document.getElementById(`k1-hours-${i}`).value) || 0;
-                const production = parseFloat(document.getElementById(`k1-production-${i}`).value) || 0;
-
-                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
-                const WeightedThickness = ( production * weight ) / thickness;
-                totalDailyMelt += dailyMelt;
-                totalProduction += production;
-                totalWeightedThickness += WeightedThickness;
+            const result = calculateFurnaceOne({
+                temperature: temp,
+                fuelConsumption: fuel,
+                inputMaterial: material
             });
 
-            const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
-            const batchConsumption = batchCount * 649;
-            const culletConsumption = (totalDailyMelt - ( batchConsumption * 0.815 ));
-            const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
-            const efficiency = totalDailyMelt > 0 ? ((totalWeightedThickness * 2 ) / (totalDailyMelt )) * 100 : 0;
+            if (result) {
+                displayFurnaceResult('furnace1Result', result, 'کوره یک');
+                saveFurnaceData('furnace1', { 
+                    temperature: temp, 
+                    fuelConsumption: fuel, 
+                    inputMaterial: material,
+                    result 
+                });
+                AppState.calculationsCount++;
+                updateStats();
+            }
+        }
 
-            const silica = batchCount * 393;
-            const sodiumCarbonate = batchCount * 129;
-            const dolomite = batchCount * 122;
-            const sodiumSulfate = batchCount * 4.883;
-            const coal = batchCount * 0.117;
+        function handleFurnace2Calculation() {
+            const temp = parseFloat(document.querySelector('.furnace2-temp').value);
+            const fuel = parseFloat(document.querySelector('.furnace2-fuel').value);
+            const material = parseFloat(document.querySelector('.furnace2-material').value);
+            
+            const result = calculateFurnaceTwo({
+                temperature: temp,
+                fuelConsumption: fuel,
+                inputMaterial: material
+            });
 
-            const resultsDiv = document.getElementById("k1-results");
-            resultsDiv.innerHTML = `
-                <h3>نتایج محاسبات</h3>
-                <div class="result-item">
-                    <strong>تعداد ورودی‌های تولید:</strong> ${inputGroups.length}
-                </div>
-                <div class="result-item">
-                    <strong>مقدار ذوب روزانه:</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>مقدار تولید روزانه:</strong> ${totalProduction.toFixed(2)} متر مربع 2میل
-                </div>
-                <div class="result-item">
-                    <strong>مقدار بچ مصرفی:</strong> ${batchConsumption.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>مقدار خرده شیشه مصرفی:</strong> ${culletConsumption.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>درصد خرده شیشه مصرفی:</strong> ${culletPercentage.toFixed(2)}%
-                </div>
-                <div class="result-item">
-                    <strong>راندمان کوره:</strong> ${efficiency.toFixed(2)}%
-                </div>
-                <h4>مصرف مواد</h4>
-                <div class="result-item">
-                    <strong>پودر سیلیس:</strong> ${silica.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>کربنات سدیم:</strong> ${sodiumCarbonate.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>دولومیت:</strong> ${dolomite.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>سولفات سدیم:</strong> ${sodiumSulfate.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>ذغال:</strong> ${coal.toFixed(3)} کیلوگرم
+            if (result) {
+                displayFurnaceResult('furnace2Result', result, 'کوره دو');
+                saveFurnaceData('furnace2', { 
+                    temperature: temp, 
+                    fuelConsumption: fuel, 
+                    inputMaterial: material,
+                    result 
+                });
+                AppState.calculationsCount++;
+                updateStats();
+            }
+        }
+
+        function displayFurnaceResult(elementId, result, furnaceName) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `
+                <div class="result-box fade-in">
+                    <h6>نتایج ${furnaceName}:</h6>
+                    <div class="row">
+                        <div class="col-6">راندمان: <strong>${result.efficiency}%</strong></div>
+                        <div class="col-6">بازدهی سوخت: <strong>${result.fuelEfficiency}</strong></div>
+                        <div class="col-6">نرخ تولید: <strong>${result.productionRate}</strong></div>
+                        <div class="col-6">کیفیت: <strong>${result.quality}</strong></div>
+                    </div>
+                    <div class="mt-2">وضعیت: <span class="badge ${getStatusBadgeClass(result.status)}">${result.status}</span></div>
                 </div>
             `;
-
-            window.koor1Results = {
-                inputCount: inputGroups.length,
-                totalDailyMelt, 
-                batchConsumption, 
-                culletConsumption,
-                culletPercentage, 
-                efficiency,
-                materials: { silica, sodiumCarbonate, dolomite, sodiumSulfate, coal },
-                inputs: []
-            };
-
-            inputGroups.forEach((group, index) => {
-                const i = index + 1;
-                window.koor1Results.inputs.push({
-                    width: document.getElementById(`k1-width-${i}`).value,
-                    weight: document.getElementById(`k1-weight-${i}`).value,
-                    thickness: document.getElementById(`k1-thickness-${i}`).value,
-                    design: document.getElementById(`k1-design-${i}`).value,
-                    speed: document.getElementById(`k1-speed-${i}`).value,
-                    hours: document.getElementById(`k1-hours-${i}`).value,
-                    deliveryWidth: document.getElementById(`k1-delivery-width-${i}`).value,
-                    deliveryLength: document.getElementById(`k1-delivery-length-${i}`).value,
-                    production: document.getElementById(`k1-production-${i}`).value
-                });
-            });
         }
 
-        function saveKoor1() {
-            const user = JSON.parse(localStorage.getItem('currentUser'));
-            if (!user || !window.koor1Results) {
-                alert("لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید");
-                return;
+        function getStatusBadgeClass(status) {
+            switch (status) {
+                case 'بهینه': return 'bg-success';
+                case 'متوسط': return 'bg-warning';
+                case 'نیاز به تنظیم': return 'bg-danger';
+                default: return 'bg-secondary';
             }
-
-            const report = {
-                ...window.koor1Results,
-                date: document.getElementById("k1-date").value,
-                shift: document.getElementById("k1-shift").value,
-                batchCount: document.getElementById("k1-batch").value,
-                enteredBy: user.name,
-                userId: Object.keys(users).find(key => users[key].name === user.name),
-                timestamp: new Date().toISOString()
-            };
-
-            koor1Reports.push(report);
-            localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
-            
-            // شبیه‌سازی ذخیره در ابر
-            simulateCloudSave('koor1', report);
-            
-            alert(`گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد\nثبت کننده: ${user.name}\nتعداد ورودی‌ها: ${report.inputCount}`);
         }
 
-        function printKoor1() {
+        function saveFurnaceData(furnace, data) {
+            AppState.furnaceData[furnace].push({
+                ...data,
+                timestamp: new Date().toISOString(),
+                furnace: furnace
+            });
+            
+            // ذخیره در localStorage
+            const reports = JSON.parse(localStorage.getItem('furnaceReports') || '[]');
+            reports.push({
+                id: generateId(),
+                furnace: furnace,
+                data: data,
+                timestamp: new Date().toISOString(),
+                user: AppState.currentUser
+            });
+            localStorage.setItem('furnaceReports', JSON.stringify(reports));
+        }
+
+        function handleReportGeneration() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const reportType = document.getElementById('reportType').value;
+
+            const report = generateTimeRangeReport(startDate, endDate, reportType);
+            
+            if (report.success) {
+                displayReportResults(report);
+            } else {
+                showNotification('خطا در تولید گزارش', 'error');
+            }
+        }
+
+        function displayReportResults(report) {
+            const element = document.getElementById('reportResults');
+            let html = '<h6>نتایج گزارش:</h6>';
+            
+            if (Object.keys(report.data).length === 0) {
+                html += '<div class="alert alert-warning">هیچ داده‌ای برای بازه زمانی انتخاب شده یافت نشد.</div>';
+            } else {
+                for (const [period, reports] of Object.entries(report.data)) {
+                    html += `
+                        <div class="report-period mb-3">
+                            <h6 class="text-primary">${period}</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>تاریخ</th>
+                                            <th>کوره</th>
+                                            <th>دما</th>
+                                            <th>سوخت</th>
+                                            <th>مواد اولیه</th>
+                                            <th>راندمان</th>
+                                            <th>وضعیت</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${reports.map(report => `
+                                            <tr>
+                                                <td>${new Date(report.timestamp).toLocaleString('fa-IR')}</td>
+                                                <td>${report.furnace || 'نامشخص'}</td>
+                                                <td>${report.data?.temperature || '-'}</td>
+                                                <td>${report.data?.fuelConsumption || '-'}</td>
+                                                <td>${report.data?.inputMaterial || '-'}</td>
+                                                <td>${report.data?.result?.efficiency || '-'}%</td>
+                                                <td><span class="badge ${getStatusBadgeClass(report.data?.result?.status)}">${report.data?.result?.status || '-'}</span></td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            element.innerHTML = html;
+        }
+
+        function handlePrint() {
             window.print();
         }
 
-        function showKoor1Reports() {
-            const modal = document.getElementById("report-modal");
-            document.getElementById("modal-title").textContent = "گزارش بازه زمانی کوره ۱";
-            document.getElementById("generate-report").onclick = generateKoor1Report;
-            modal.style.display = "block";
-        }
+        function handleSaveReport() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const reportType = document.getElementById('reportType').value;
 
-        // توابع مربوط به کوره 2
-        function calculateKoor2() {
-            const line2InputGroups = document.querySelectorAll('#k2-line2-inputs-container .input-group');
-            let line2DailyMelt = 0;
-            let line2Production = 0;
-            let line2WeightedThickness = 0;
-            
-            line2InputGroups.forEach((group, index) => {
-                const i = index + 1;
-                const thickness = parseFloat(document.getElementById(`k2-line2-thickness-${i}`).value) || 0;
-                const width = parseFloat(document.getElementById(`k2-line2-width-${i}`).value) || 0;
-                const weight = parseFloat(document.getElementById(`k2-line2-weight-${i}`).value) || 0;
-                const speed = parseFloat(document.getElementById(`k2-line2-speed-${i}`).value) || 0;
-                const hours = parseFloat(document.getElementById(`k2-line2-hours-${i}`).value) || 0;
-                const production = parseFloat(document.getElementById(`k2-line2-production-${i}`).value) || 0;
-
-                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
-                line2DailyMelt += dailyMelt;
-                line2Production += production;
-                line2WeightedThickness += production * thickness;
-            });
-
-            const line3InputGroups = document.querySelectorAll('#k2-line3-inputs-container .input-group');
-            let line3DailyMelt = 0;
-            let line3Production = 0;
-            let line3WeightedThickness = 0;
-            
-            line3InputGroups.forEach((group, index) => {
-                const i = index + 1;
-                const thickness = parseFloat(document.getElementById(`k2-line3-thickness-${i}`).value) || 0;
-                const width = parseFloat(document.getElementById(`k2-line3-width-${i}`).value) || 0;
-                const weight = parseFloat(document.getElementById(`k2-line3-weight-${i}`).value) || 0;
-                const speed = parseFloat(document.getElementById(`k2-line3-speed-${i}`).value) || 0;
-                const hours = parseFloat(document.getElementById(`k2-line3-hours-${i}`).value) || 0;
-                const production = parseFloat(document.getElementById(`k2-line3-production-${i}`).value) || 0;
-
-                const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
-                line3DailyMelt += dailyMelt;
-                line3Production += production;
-                line3WeightedThickness += production * thickness;
-            });
-
-            const totalDailyMelt = line2DailyMelt + line3DailyMelt;
-            const totalProduction = line2Production + line3Production;
-            
-            const batchCount = parseInt(document.getElementById("k2-batch").value) || 0;
-            const batchConsumption = batchCount * 1655.12;
-            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
-            const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
-            
-            const totalProdWeight = (( line2Production * 2 * (line2WeightedThickness/line2Production) ) + ( line3Production * 2 * (line3WeightedThickness/line3Production) ));
-            const efficiency = totalDailyMelt > 0 ? (totalProdWeight / totalDailyMelt) * 100 : 0;
-            
-            const silica = batchCount * 1010;
-            const sodiumCarbonate = batchCount * 329;
-            const dolomite = batchCount * 279;
-            const lime = batchCount * 27;
-            const sodiumSulfate = batchCount * 9.9;
-            const coal = batchCount * 0.220;
-
-            const resultsDiv = document.getElementById("k2-results");
-            resultsDiv.innerHTML = `
-                <h3>نتایج محاسبات</h3>
-                <div class="result-item">
-                    <strong>تعداد ورودی‌های خط ۲:</strong> ${line2InputGroups.length}
-                </div>
-                <div class="result-item">
-                    <strong>تعداد ورودی‌های خط ۳:</strong> ${line3InputGroups.length}
-                </div>
-                <div class="result-item">
-                    <strong>مقدار ذوب روزانه خط ۲:</strong> ${line2DailyMelt.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>مقدار ذوب روزانه خط ۳:</strong> ${line3DailyMelt.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>مقدار ذوب کل کوره:</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>مقدار بچ مصرفی:</strong> ${batchConsumption.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>مقدار خرده شیشه مصرفی:</strong> ${culletConsumption.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>درصد خرده شیشه مصرفی:</strong> ${culletPercentage.toFixed(2)}%
-                </div>
-                <div class="result-item">
-                    <strong>راندمان کوره:</strong> ${efficiency.toFixed(2)}%
-                </div>
-                <h4>مصرف مواد</h4>
-                <div class="result-item">
-                    <strong>پودر سیلیس:</strong> ${silica.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>کربنات سدیم:</strong> ${sodiumCarbonate.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>دولومیت:</strong> ${dolomite.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>آهک:</strong> ${lime.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>سولفات سدیم:</strong> ${sodiumSulfate.toFixed(2)} کیلوگرم
-                </div>
-                <div class="result-item">
-                    <strong>ذغال:</strong> ${coal.toFixed(3)} کیلوگرم
-                </div>
-            `;
-
-            window.koor2Results = {
-                line2InputCount: line2InputGroups.length,
-                line3InputCount: line3InputGroups.length,
-                line2DailyMelt, 
-                line3DailyMelt, 
-                totalDailyMelt,
-                batchConsumption, 
-                culletConsumption,
-                culletPercentage, 
-                efficiency,
-                materials: { silica, sodiumCarbonate, dolomite, lime, sodiumSulfate, coal },
-                line2Inputs: [],
-                line3Inputs: []
+            const reportData = {
+                startDate,
+                endDate,
+                reportType,
+                generatedAt: new Date().toISOString()
             };
 
-            line2InputGroups.forEach((group, index) => {
-                const i = index + 1;
-                window.koor2Results.line2Inputs.push({
-                    width: document.getElementById(`k2-line2-width-${i}`).value,
-                    weight: document.getElementById(`k2-line2-weight-${i}`).value,
-                    thickness: document.getElementById(`k2-line2-thickness-${i}`).value,
-                    design: document.getElementById(`k2-line2-design-${i}`).value,
-                    speed: document.getElementById(`k2-line2-speed-${i}`).value,
-                    hours: document.getElementById(`k2-line2-hours-${i}`).value,
-                    deliveryWidth: document.getElementById(`k2-line2-delivery-width-${i}`).value,
-                    deliveryLength: document.getElementById(`k2-line2-delivery-length-${i}`).value,
-                    production: document.getElementById(`k2-line2-production-${i}`).value
-                });
-            });
-
-            line3InputGroups.forEach((group, index) => {
-                const i = index + 1;
-                window.koor2Results.line3Inputs.push({
-                    width: document.getElementById(`k2-line3-width-${i}`).value,
-                    weight: document.getElementById(`k2-line3-weight-${i}`).value,
-                    thickness: document.getElementById(`k2-line3-thickness-${i}`).value,
-                    design: document.getElementById(`k2-line3-design-${i}`).value,
-                    speed: document.getElementById(`k2-line3-speed-${i}`).value,
-                    hours: document.getElementById(`k2-line3-hours-${i}`).value,
-                    deliveryWidth: document.getElementById(`k2-line3-delivery-width-${i}`).value,
-                    deliveryLength: document.getElementById(`k2-line3-delivery-length-${i}`).value,
-                    production: document.getElementById(`k2-line3-production-${i}`).value
-                });
-            });
-        }
-
-        function saveKoor2() {
-            const user = JSON.parse(localStorage.getItem('currentUser'));
-            if (!user || !window.koor2Results) {
-                alert("لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید");
-                return;
-            }
-
-            const report = {
-                ...window.koor2Results,
-                date: document.getElementById("k2-date").value,
-                shift: document.getElementById("k2-shift").value,
-                batchCount: document.getElementById("k2-batch").value,
-                enteredBy: user.name,
-                userId: Object.keys(users).find(key => users[key].name === user.name),
-                timestamp: new Date().toISOString()
-            };
-
-            koor2Reports.push(report);
-            localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
+            const result = saveReportToStorage(reportData);
             
-            // شبیه‌سازی ذخیره در ابر
-            simulateCloudSave('koor2', report);
-            
-            alert(`گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد\nثبت کننده: ${user.name}\nتعداد ورودی‌های خط ۲: ${report.line2InputCount}\nتعداد ورودی‌های خط ۳: ${report.line3InputCount}`);
-        }
-
-        function printKoor2() {
-            window.print();
-        }
-
-        function showKoor2Reports() {
-            const modal = document.getElementById("report-modal");
-            document.getElementById("modal-title").textContent = "گزارش بازه زمانی کوره ۲";
-            document.getElementById("generate-report").onclick = generateKoor2Report;
-            modal.style.display = "block";
-        }
-
-        // شبیه‌سازی ذخیره در ابر
-        function simulateCloudSave(koorType, report) {
-            const syncStatus = document.getElementById('sync-status');
-            syncStatus.style.display = 'block';
-            
-            if (navigator.onLine) {
-                syncStatus.textContent = '🔄 در حال ذخیره در ابر...';
-                syncStatus.style.backgroundColor = '#3498db';
-                
-                // شبیه‌سازی تاخیر شبکه
-                setTimeout(() => {
-                    syncStatus.textContent = '✅ ذخیره در ابر موفق';
-                    syncStatus.style.backgroundColor = '#27ae60';
-                    
-                    setTimeout(() => {
-                        syncStatus.style.display = 'none';
-                    }, 3000);
-                }, 2000);
+            if (result.success) {
+                showNotification('گزارش با موفقیت ذخیره شد', 'success');
+                updateStats();
             } else {
-                syncStatus.textContent = '⚠️ داده به صورت آفلاین ذخیره شد';
-                syncStatus.style.backgroundColor = '#f39c12';
-                
-                setTimeout(() => {
-                    syncStatus.style.display = 'none';
-                }, 3000);
+                showNotification('خطا در ذخیره گزارش', 'error');
             }
         }
-
-        // به روزرسانی وضعیت اتصال
-        function updateConnectionStatus() {
-            const statusElement = document.getElementById('connection-status');
-            statusElement.style.display = 'block';
-            statusElement.textContent = navigator.onLine ? '🟢 آنلاین' : '🔴 آفلاین';
-            statusElement.className = `connection-status ${navigator.onLine ? 'online' : 'offline'}`;
-        }
-
-        // گوش دادن به تغییرات وضعیت اتصال
-        window.addEventListener('online', updateConnectionStatus);
-        window.addEventListener('offline', updateConnectionStatus);
-
-        // توابع گزارش‌گیری
-        function generateKoor1Report() {
-            const fromDate = document.getElementById("from-date").value;
-            const toDate = document.getElementById("to-date").value;
+        
+        function handleExportData() {
+            const data = exportDataToOtherSystems('json');
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `furnace-data-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             
-            if (!fromDate || !toDate) {
-                alert("لطفاً بازه زمانی را مشخص کنید");
-                return;
-            }
-
-            const filteredReports = koor1Reports.filter(report => {
-                return report.date >= fromDate && report.date <= toDate;
-            });
-
-            if (filteredReports.length === 0) {
-                document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
-                return;
-            }
-
-            let html = `
-                <table class="report-table">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>شیفت</th>
-                            <th>کاربر</th>
-                            <th>تعداد ورودی‌ها</th>
-                            <th>تولید (m²)</th>
-                            <th>ذوب (kg)</th>
-                            <th>بچ (kg)</th>
-                            <th>خرده شیشه (kg)</th>
-                            <th>درصد خرده</th>
-                            <th>راندمان (%)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-            let totalInputCount = 0;
-            let totalProduction = 0;
-            let totalMelt = 0;
-            let totalBatch = 0;
-            let totalCullet = 0;
-            let totalEfficiency = 0;
-
-            filteredReports.forEach(report => {
-                let production = 0;
-                if (report.inputs && report.inputs.length > 0) {
-                    report.inputs.forEach(input => {
-                        production += parseFloat(input.production || 0);
-                    });
-                }
-
-                html += `
-                    <tr>
-                        <td>${report.date}</td>
-                        <td>${report.shift}</td>
-                        <td>${report.enteredBy}</td>
-                        <td>${report.inputCount || 1}</td>
-                        <td>${production.toFixed(2)}</td>
-                        <td>${report.totalDailyMelt.toFixed(2)}</td>
-                        <td>${report.batchConsumption.toFixed(2)}</td>
-                        <td>${report.culletConsumption.toFixed(2)}</td>
-                        <td>${report.culletPercentage.toFixed(2)}</td>
-                        <td>${report.efficiency.toFixed(2)}</td>
-                    </tr>
-                `;
-
-                totalInputCount += report.inputCount || 1;
-                totalProduction += production;
-                totalMelt += report.totalDailyMelt;
-                totalBatch += report.batchConsumption;
-                totalCullet += report.culletConsumption;
-                totalEfficiency += report.efficiency;
-            });
-
-            const avgEfficiency = totalEfficiency / filteredReports.length;
-
-            html += `
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3"><strong>جمع کل/میانگین</strong></td>
-                            <td>${totalInputCount}</td>
-                            <td>${totalProduction.toFixed(2)}</td>
-                            <td>${totalMelt.toFixed(2)}</td>
-                            <td>${totalBatch.toFixed(2)}</td>
-                            <td>${totalCullet.toFixed(2)}</td>
-                            <td></td>
-                            <td>${avgEfficiency.toFixed(2)}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            `;
-
-            document.getElementById("report-results").innerHTML = html;
+            showNotification('داده‌ها با موفقیت استخراج شدند', 'success');
         }
 
-        function generateKoor2Report() {
-            const fromDate = document.getElementById("from-date").value;
-            const toDate = document.getElementById("to-date").value;
+        function setDefaultDates() {
+            const now = new Date();
+            const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
             
-            if (!fromDate || !toDate) {
-                alert("لطفاً بازه زمانی را مشخص کنید");
-                return;
-            }
+            document.getElementById('startDate').value = formatDateForInput(oneWeekAgo);
+            document.getElementById('endDate').value = formatDateForInput(now);
+        }
 
-            const filteredReports = koor2Reports.filter(report => {
-                return report.date >= fromDate && report.date <= toDate;
-            });
+        function formatDateForInput(date) {
+            return date.toISOString().slice(0, 16);
+        }
 
-            if (filteredReports.length === 0) {
-                document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
-                return;
-            }
-
-            let html = `
-                <table class="report-table">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>شیفت</th>
-                            <th>کاربر</th>
-                            <th>ورودی‌های خط۲</th>
-                            <th>ورودی‌های خط۳</th>
-                            <th>تولید خط۲ (m²)</th>
-                            <th>تولید خط۳ (m²)</th>
-                            <th>ذوب (kg)</th>
-                            <th>بچ (kg)</th>
-                            <th>خرده شیشه (kg)</th>
-                            <th>درصد خرده</th>
-                            <th>راندمان (%)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        function showNotification(message, type) {
+            // ایجاد نوتیفیکیشن ساده
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
-
-            let totalLine2InputCount = 0;
-            let totalLine3InputCount = 0;
-            let totalProduction1 = 0;
-            let totalProduction2 = 0;
-            let totalMelt = 0;
-            let totalBatch = 0;
-            let totalCullet = 0;
-            let totalEfficiency = 0;
-
-            filteredReports.forEach(report => {
-                let production1 = 0;
-                if (report.line2Inputs && report.line2Inputs.length > 0) {
-                    report.line2Inputs.forEach(input => {
-                        production1 += parseFloat(input.production || 0);
-                    });
+            
+            document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.container').firstChild);
+            
+            // حذف خودکار نوتیفیکیشن بعد از 5 ثانیه
+            setTimeout(() => {
+                if (alertDiv.parentElement) {
+                    alertDiv.remove();
                 }
-
-                let production2 = 0;
-                if (report.line3Inputs && report.line3Inputs.length > 0) {
-                    report.line3Inputs.forEach(input => {
-                        production2 += parseFloat(input.production || 0);
-                    });
-                }
-
-                html += `
-                    <tr>
-                        <td>${report.date}</td>
-                        <td>${report.shift}</td>
-                        <td>${report.enteredBy}</td>
-                        <td>${report.line2InputCount || 1}</td>
-                        <td>${report.line3InputCount || 1}</td>
-                        <td>${production1.toFixed(2)}</td>
-                        <td>${production2.toFixed(2)}</td>
-                        <td>${report.totalDailyMelt.toFixed(2)}</td>
-                        <td>${report.batchConsumption.toFixed(2)}</td>
-                        <td>${report.culletConsumption.toFixed(2)}</td>
-                        <td>${report.culletPercentage.toFixed(2)}</td>
-                        <td>${report.efficiency.toFixed(2)}</td>
-                    </tr>
-                `;
-
-                totalLine2InputCount += report.line2InputCount || 1;
-                totalLine3InputCount += report.line3InputCount || 1;
-                totalProduction1 += production1;
-                totalProduction2 += production2;
-                totalMelt += report.totalDailyMelt;
-                totalBatch += report.batchConsumption;
-                totalCullet += report.culletConsumption;
-                totalEfficiency += report.efficiency;
-            });
-
-            const avgEfficiency = totalEfficiency / filteredReports.length;
-
-            html += `
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3"><strong>جمع کل/میانگین</strong></td>
-                            <td>${totalLine2InputCount}</td>
-                            <td>${totalLine3InputCount}</td>
-                            <td>${totalProduction1.toFixed(2)}</td>
-                            <td>${totalProduction2.toFixed(2)}</td>
-                            <td>${totalMelt.toFixed(2)}</td>
-                            <td>${totalBatch.toFixed(2)}</td>
-                            <td>${totalCullet.toFixed(2)}</td>
-                            <td></td>
-                            <td>${avgEfficiency.toFixed(2)}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            `;
-
-            document.getElementById("report-results").innerHTML = html;
+            }, 5000);
         }
 
-        // توابع عمومی
-        function openTab(evt, tabName) {
-            const tabContents = document.getElementsByClassName("tab-content");
-            for (let i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove("active");
-            }
-
-            const tabButtons = document.getElementsByClassName("tab-button");
-            for (let i = 0; i < tabButtons.length; i++) {
-                tabButtons[i].classList.remove("active");
-            }
-
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
-
-        function closeModal() {
-            document.getElementById("report-modal").style.display = "none";
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById("report-modal");
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // بررسی وضعیت لاگین هنگام بارگذاری صفحه
-        window.onload = function() {
-            const user = localStorage.getItem('currentUser');
-            if(user) {
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('app-content').style.display = 'block';
-                const userObj = JSON.parse(user);
-                document.getElementById('welcome-message').innerHTML = `
-                    <p>کاربر گرامی: <strong>${userObj.name}</strong></p>
-                    <small>سطح دسترسی: ${getRoleName(userObj.role)}</small>
-                `;
-                setupAccessControls(userObj.role);
-                
-                // به روزرسانی وضعیت اتصال
-                updateConnectionStatus();
+        // تابع برای استخراج داده از سیستم‌های دیگر
+        function exportDataToOtherSystems(format = 'json') {
+            const allReports = loadReportsFromStorage();
+            
+            if (format === 'json') {
+                return JSON.stringify(allReports, null, 2);
+            } else if (format === 'csv') {
+                return convertToCSV(allReports);
             }
             
-            // فعال‌سازی تقویم شمسی
-            $(".date-picker").persianDatepicker({
-                format: 'YYYY/MM/DD',
-                observer: true,
-                initialValue: false
-            });
-        };
+            return null;
+        }
+
+        function convertToCSV(data) {
+            if (data.length === 0) return '';
+            
+            const headers = ['تاریخ', 'کوره', 'دما', 'مصرف سوخت', 'مواد اولیه', 'راندمان', 'وضعیت'];
+            const rows = data.map(item => [
+                new Date(item.timestamp).toLocaleString('fa-IR'),
+                item.furnace || 'نامشخص',
+                item.data?.temperature || '-',
+                item.data?.fuelConsumption || '-',
+                item.data?.inputMaterial || '-',
+                item.data?.result?.efficiency || '-',
+                item.data?.result?.status || '-'
+            ]);
+            
+            return [headers, ...rows].map(row => row.join(',')).join('\n');
+        }
     </script>
 </body>
 </html>
