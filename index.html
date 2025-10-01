@@ -6,14 +6,30 @@
     <title>سیستم گزارش تولید - کارخانجات شیشه قزوین</title>
     <meta name="theme-color" content="#2c3e50">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* استایل عمومی */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+        }
+        
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: var(--light-color);
+            color: var(--dark-color);
             line-height: 1.6;
         }
 
@@ -23,26 +39,30 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, var(--primary-color), #1a2530);
+            animation: fadeIn 1s ease;
         }
 
         .login-box {
             background: white;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             width: 90%;
             max-width: 400px;
+            transform: translateY(0);
+            animation: slideUp 0.5s ease;
         }
 
         .login-box h2 {
             margin-top: 0;
             text-align: center;
-            color: #2c3e50;
+            color: var(--primary-color);
+            font-size: 1.8rem;
         }
 
         .login-btn {
-            background-color: #3498db;
+            background-color: var(--secondary-color);
             color: white;
             border: none;
             padding: 12px 15px;
@@ -52,10 +72,13 @@
             font-size: 16px;
             margin-top: 1rem;
             transition: background-color 0.3s;
+            font-weight: bold;
         }
 
         .login-btn:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .welcome {
@@ -68,7 +91,7 @@
         }
 
         .logout-btn {
-            background: #e74c3c;
+            background: var(--danger-color);
             color: white;
             border: none;
             padding: 8px 15px;
@@ -80,27 +103,62 @@
 
         .logout-btn:hover {
             background: #c0392b;
+            transform: translateY(-2px);
         }
 
         /* استایل هدر */
         .header {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, var(--primary-color), #1a2530);
             color: white;
             padding: 20px;
             text-align: center;
             margin-bottom: 20px;
             position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .header h1 {
             margin: 0;
             font-size: 28px;
+            animation: fadeIn 1s ease;
         }
 
         .header h2 {
             margin: 10px 0 0;
             font-size: 18px;
             font-weight: normal;
+            animation: fadeIn 1.2s ease;
+        }
+
+        /* آمار زنده */
+        .live-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            animation: fadeIn 1.5s ease;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
         }
 
         /* تب‌ها */
@@ -108,26 +166,32 @@
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .tab-button {
-            background-color: #3498db;
+            background-color: var(--secondary-color);
             color: white;
             border: none;
             padding: 12px 24px;
             cursor: pointer;
             font-size: 16px;
-            margin: 0 5px;
+            margin: 0 5px 5px;
             border-radius: 5px 5px 0 0;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .tab-button:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
         }
 
         .tab-button.active {
-            background-color: #2c3e50;
+            background-color: var(--primary-color);
+            box-shadow: 0 -3px 10px rgba(0,0,0,0.1);
         }
 
         /* محتوای تب‌ها */
@@ -139,6 +203,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             margin: 0 auto;
             max-width: 900px;
+            animation: fadeIn 0.5s ease;
         }
 
         .tab-content.active {
@@ -173,6 +238,13 @@
             font-size: 14px;
         }
 
+        .form-group input:focus, 
+        .form-group select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
         .date-picker {
             width: 150px !important;
         }
@@ -181,22 +253,46 @@
         .button-group {
             margin: 20px 0;
             text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
         }
 
         .button-group button {
-            background-color: #3498db;
+            background-color: var(--secondary-color);
             color: white;
             border: none;
             padding: 12px 24px;
-            margin: 0 10px;
             cursor: pointer;
             border-radius: 5px;
             font-size: 16px;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .button-group button:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .button-group button.success {
+            background-color: var(--success-color);
+        }
+
+        .button-group button.success:hover {
+            background-color: #219653;
+        }
+
+        .button-group button.warning {
+            background-color: var(--warning-color);
+        }
+
+        .button-group button.warning:hover {
+            background-color: #e67e22;
         }
 
         /* نتایج */
@@ -206,17 +302,18 @@
             border-radius: 5px;
             margin-top: 20px;
             border: 1px solid #ddd;
+            animation: fadeIn 0.8s ease;
         }
 
         .results h3 {
             margin-top: 0;
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
             padding-bottom: 10px;
         }
 
         .results h4 {
-            color: #2c3e50;
+            color: var(--primary-color);
             margin-top: 20px;
             border-bottom: 1px solid #ddd;
             padding-bottom: 5px;
@@ -235,7 +332,7 @@
         }
 
         .result-item strong {
-            color: #2c3e50;
+            color: var(--primary-color);
         }
 
         /* مودال */
@@ -249,6 +346,7 @@
             height: 100%;
             overflow: auto;
             background-color: rgba(0,0,0,0.4);
+            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
@@ -261,6 +359,7 @@
             border-radius: 8px;
             position: relative;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: slideUp 0.4s ease;
         }
 
         .close {
@@ -302,17 +401,21 @@
         }
 
         #generate-report {
-            background-color: #27ae60;
+            background-color: var(--success-color);
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         #generate-report:hover {
             background-color: #219653;
+            transform: translateY(-2px);
         }
 
         /* جدول گزارشات */
@@ -321,6 +424,7 @@
             border-collapse: collapse;
             margin-top: 20px;
             font-size: 14px;
+            animation: fadeIn 0.8s ease;
         }
 
         .report-table th, 
@@ -331,7 +435,7 @@
         }
 
         .report-table th {
-            background-color: #2c3e50;
+            background-color: var(--primary-color);
             color: white;
             font-weight: bold;
         }
@@ -357,6 +461,7 @@
             border-radius: 5px;
             background-color: #f9f9f9;
             position: relative;
+            animation: fadeIn 0.5s ease;
         }
 
         .input-group-header {
@@ -370,11 +475,11 @@
 
         .input-group-title {
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--primary-color);
         }
 
         .remove-input-btn {
-            background-color: #e74c3c;
+            background-color: var(--danger-color);
             color: white;
             border: none;
             padding: 5px 10px;
@@ -385,10 +490,11 @@
 
         .remove-input-btn:hover {
             background-color: #c0392b;
+            transform: translateY(-2px);
         }
 
         .add-input-btn {
-            background-color: #27ae60;
+            background-color: var(--success-color);
             color: white;
             border: none;
             padding: 8px 15px;
@@ -396,10 +502,151 @@
             cursor: pointer;
             margin-bottom: 15px;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .add-input-btn:hover {
             background-color: #219653;
+            transform: translateY(-2px);
+        }
+
+        /* وضعیت آنلاین/آفلاین */
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1001;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .online {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .offline {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .sync-status {
+            position: fixed;
+            top: 40px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1001;
+            background-color: var(--secondary-color);
+            color: white;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* نوتیفیکیشن */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideInRight 0.5s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        .notification.success {
+            background-color: var(--success-color);
+        }
+
+        .notification.error {
+            background-color: var(--danger-color);
+        }
+
+        .notification.warning {
+            background-color: var(--warning-color);
+        }
+
+        .notification.info {
+            background-color: var(--secondary-color);
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        /* دکمه‌های شناور */
+        .floating-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        .floating-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .floating-btn.success {
+            background-color: var(--success-color);
+        }
+
+        .floating-btn.warning {
+            background-color: var(--warning-color);
+        }
+
+        .floating-btn.danger {
+            background-color: var(--danger-color);
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         /* ریسپانسیو */
@@ -469,6 +716,19 @@
             .input-group {
                 padding: 10px;
             }
+            
+            .live-stats {
+                flex-direction: column;
+            }
+            
+            .stat-item {
+                margin-bottom: 15px;
+            }
+            
+            .floating-buttons {
+                bottom: 20px;
+                right: 20px;
+            }
         }
 
         /* چاپ */
@@ -504,58 +764,62 @@
             .add-input-btn, .remove-input-btn {
                 display: none;
             }
+            .floating-buttons {
+                display: none;
+            }
+            .live-stats {
+                display: none;
+            }
+            .connection-status, .sync-status {
+                display: none;
+            }
         }
 
-        /* وضعیت آنلاین/آفلاین */
-        .connection-status {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            z-index: 1001;
+        /* مدیریت خطا */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
         }
 
-        .online {
-            background-color: #27ae60;
-            color: white;
-        }
-
-        .offline {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        .sync-status {
-            position: fixed;
-            top: 40px;
-            left: 10px;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            z-index: 1001;
-            background-color: #3498db;
-            color: white;
+        .input-error {
+            border-color: var(--danger-color) !important;
+            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2) !important;
         }
     </style>
 </head>
 <body>
     <div id="connection-status" class="connection-status" style="display: none;"></div>
     <div id="sync-status" class="sync-status" style="display: none;"></div>
+    <div id="notification-area"></div>
+
+    <div class="floating-buttons">
+        <button class="floating-btn" title="گزارش سریع" onclick="showQuickReport()">
+            <i class="fas fa-chart-bar"></i>
+        </button>
+        <button class="floating-btn success" title="ذخیره سریع" onclick="quickSave()">
+            <i class="fas fa-save"></i>
+        </button>
+        <button class="floating-btn warning" title="پرینت" onclick="quickPrint()">
+            <i class="fas fa-print"></i>
+        </button>
+    </div>
 
     <div id="login-section" class="login-container">
         <div class="login-box">
-            <h2>ورود به گزارش تولید</h2>
+            <h2><i class="fas fa-industry"></i> ورود به گزارش تولید</h2>
             <div class="form-group">
-                <label for="username">نام کاربری:</label>
+                <label for="username"><i class="fas fa-user"></i> نام کاربری:</label>
                 <input type="text" id="username" placeholder="شناسه کاربری">
+                <div class="error-message" id="username-error"></div>
             </div>
             <div class="form-group">
-                <label for="password">رمز عبور:</label>
+                <label for="password"><i class="fas fa-lock"></i> رمز عبور:</label>
                 <input type="password" id="password" placeholder="رمز عبور">
+                <div class="error-message" id="password-error"></div>
             </div>
-            <button class="login-btn" onclick="login()">ورود به سیستم</button>
+            <button class="login-btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> ورود به سیستم</button>
             <div style="margin-top: 20px; text-align: center; font-size: 14px; color: #666;">
                 <p>برای ورود به سیستم از اطلاعات زیر استفاده کنید:</p>
                 <p>نام کاربری: supervisor1 | رمز عبور: s123</p>
@@ -566,26 +830,53 @@
 
     <div id="app-content" style="display:none;">
         <div class="header">
-            <h1>کارخانجات شیشه قزوین</h1>
+            <h1><i class="fas fa-industry"></i> کارخانجات شیشه قزوین</h1>
             <h2>سیستم گزارش روزانه وضعیت عملیاتی کوره‌ها</h2>
+            <div id="datetime" style="margin-top: 10px; font-size: 16px;"></div>
             <div id="welcome-message" class="welcome"></div>
-            <button class="logout-btn" onclick="logout()">خروج</button>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+
+        <div class="live-stats">
+            <div class="stat-item">
+                <div class="stat-value" id="total-reports">0</div>
+                <div class="stat-label">گزارشات ثبت شده</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="today-production">0</div>
+                <div class="stat-label">تولید امروز (m²)</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="avg-efficiency">0%</div>
+                <div class="stat-label">میانگین راندمان</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="monthly-total">0</div>
+                <div class="stat-label">تولید ماه جاری</div>
+            </div>
         </div>
 
         <div class="tabs">
-            <button class="tab-button active" onclick="openTab(event, 'koor1')">کوره ۱</button>
-            <button class="tab-button" onclick="openTab(event, 'koor2')">کوره ۲</button>
+            <button class="tab-button active" onclick="openTab(event, 'koor1')">
+                <i class="fas fa-fire"></i> کوره ۱
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'koor2')">
+                <i class="fas fa-fire"></i> کوره ۲
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'reports')">
+                <i class="fas fa-chart-line"></i> گزارشات
+            </button>
         </div>
 
         <div id="koor1" class="tab-content active">
             <div class="form-container">
                 <div class="form-group">
-                    <label for="k1-date">تاریخ:</label>
+                    <label for="k1-date"><i class="fas fa-calendar-alt"></i> تاریخ:</label>
                     <input type="text" id="k1-date" class="date-picker">
                 </div>
                 
                 <div class="form-group">
-                    <label for="k1-shift">شیفت کاری:</label>
+                    <label for="k1-shift"><i class="fas fa-clock"></i> شیفت کاری:</label>
                     <select id="k1-shift">
                         <option value="6-14">۶ تا ۱۴</option>
                         <option value="14-22">۱۴ تا ۲۲</option>
@@ -593,7 +884,7 @@
                     </select>
                 </div>
 
-                <h3>خط تولید ۱</h3>
+                <h3><i class="fas fa-industry"></i> خط تولید ۱</h3>
                 
                 <div id="k1-inputs-container">
                     <!-- اولین گروه ورودی -->
@@ -606,16 +897,19 @@
                         <div class="form-group">
                             <label for="k1-width-1">عرض با کناره (سانتی متر):</label>
                             <input type="number" id="k1-width-1" step="0.01">
+                            <div class="error-message" id="k1-width-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k1-weight-1">وزن یک متر مربع شیشه (کیلوگرم):</label>
                             <input type="number" id="k1-weight-1" step="0.001">
+                            <div class="error-message" id="k1-weight-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k1-thickness-1">ضخامت (میلیمتر):</label>
                             <input type="number" id="k1-thickness-1" step="0.1">
+                            <div class="error-message" id="k1-thickness-1-error"></div>
                         </div>
                         
                         <div class="form-group">
@@ -640,42 +934,58 @@
                         <div class="form-group">
                             <label for="k1-speed-1">سرعت (اینچ/دقیقه):</label>
                             <input type="number" id="k1-speed-1" step="0.1">
+                            <div class="error-message" id="k1-speed-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k1-hours-1">ساعات کارکرد:</label>
                             <input type="number" id="k1-hours-1" step="0.1">
+                            <div class="error-message" id="k1-hours-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k1-delivery-width-1">عرض تحویلی (سانتی متر):</label>
                             <input type="number" id="k1-delivery-width-1" step="0.01">
+                            <div class="error-message" id="k1-delivery-width-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k1-delivery-length-1">طول تحویلی (سانتی متر):</label>
                             <input type="number" id="k1-delivery-length-1" step="0.01">
+                            <div class="error-message" id="k1-delivery-length-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k1-production-1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
                             <input type="number" id="k1-production-1" step="0.01">
+                            <div class="error-message" id="k1-production-1-error"></div>
                         </div>
                     </div>
                 </div>
                 
-                <button class="add-input-btn" onclick="addInputGroup('k1')">+ افزودن ورودی جدید</button>
+                <button class="add-input-btn" onclick="addInputGroup('k1')">
+                    <i class="fas fa-plus"></i> افزودن ورودی جدید
+                </button>
                 
                 <div class="form-group">
                     <label for="k1-batch">تعداد بچ مصرفی:</label>
                     <input type="number" id="k1-batch">
+                    <div class="error-message" id="k1-batch-error"></div>
                 </div>
                 
                 <div class="button-group">
-                    <button onclick="calculateKoor1()">محاسبه</button>
-                    <button onclick="saveKoor1()">ذخیره در ابر</button>
-                    <button onclick="printKoor1()">چاپ</button>
-                    <button onclick="showKoor1Reports()">گزارش بازه زمانی</button>
+                    <button onclick="calculateKoor1()">
+                        <i class="fas fa-calculator"></i> محاسبه
+                    </button>
+                    <button class="success" onclick="saveKoor1()">
+                        <i class="fas fa-cloud-upload-alt"></i> ذخیره در ابر
+                    </button>
+                    <button class="warning" onclick="printKoor1()">
+                        <i class="fas fa-print"></i> چاپ
+                    </button>
+                    <button onclick="exportKoor1Data()">
+                        <i class="fas fa-file-export"></i> خروجی JSON
+                    </button>
                 </div>
                 
                 <div id="k1-results" class="results">
@@ -687,12 +997,12 @@
         <div id="koor2" class="tab-content">
             <div class="form-container">
                 <div class="form-group">
-                    <label for="k2-date">تاریخ:</label>
+                    <label for="k2-date"><i class="fas fa-calendar-alt"></i> تاریخ:</label>
                     <input type="text" id="k2-date" class="date-picker">
                 </div>
                 
                 <div class="form-group">
-                    <label for="k2-shift">شیفت کاری:</label>
+                    <label for="k2-shift"><i class="fas fa-clock"></i> شیفت کاری:</label>
                     <select id="k2-shift">
                         <option value="6-14">۶ تا ۱۴</option>
                         <option value="14-22">۱۴ تا ۲۲</option>
@@ -700,7 +1010,7 @@
                     </select>
                 </div>
 
-                <h3>خط تولید ۲</h3>
+                <h3><i class="fas fa-industry"></i> خط تولید ۲</h3>
                 
                 <div id="k2-line2-inputs-container">
                     <!-- اولین گروه ورودی برای خط ۲ -->
@@ -713,16 +1023,19 @@
                         <div class="form-group">
                             <label for="k2-line2-width-1">عرض با کناره (سانتی متر):</label>
                             <input type="number" id="k2-line2-width-1" step="0.01">
+                            <div class="error-message" id="k2-line2-width-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line2-weight-1">وزن یک متر مربع شیشه (کیلوگرم):</label>
                             <input type="number" id="k2-line2-weight-1" step="0.001">
+                            <div class="error-message" id="k2-line2-weight-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line2-thickness-1">ضخامت (میلیمتر):</label>
                             <input type="number" id="k2-line2-thickness-1" step="0.1">
+                            <div class="error-message" id="k2-line2-thickness-1-error"></div>
                         </div>
                         
                         <div class="form-group">
@@ -747,33 +1060,40 @@
                         <div class="form-group">
                             <label for="k2-line2-speed-1">سرعت (اینچ/دقیقه):</label>
                             <input type="number" id="k2-line2-speed-1" step="0.1">
+                            <div class="error-message" id="k2-line2-speed-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line2-hours-1">ساعات کارکرد:</label>
                             <input type="number" id="k2-line2-hours-1" step="0.1">
+                            <div class="error-message" id="k2-line2-hours-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line2-delivery-width-1">عرض تحویلی (سانتی متر):</label>
                             <input type="number" id="k2-line2-delivery-width-1" step="0.01">
+                            <div class="error-message" id="k2-line2-delivery-width-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line2-delivery-length-1">طول تحویلی (سانتی متر):</label>
                             <input type="number" id="k2-line2-delivery-length-1" step="0.01">
+                            <div class="error-message" id="k2-line2-delivery-length-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line2-production-1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
                             <input type="number" id="k2-line2-production-1" step="0.01">
+                            <div class="error-message" id="k2-line2-production-1-error"></div>
                         </div>
                     </div>
                 </div>
                 
-                <button class="add-input-btn" onclick="addInputGroup('k2-line2')">+ افزودن ورودی جدید برای خط ۲</button>
+                <button class="add-input-btn" onclick="addInputGroup('k2-line2')">
+                    <i class="fas fa-plus"></i> افزودن ورودی جدید برای خط ۲
+                </button>
 
-                <h3>خط تولید ۳</h3>
+                <h3><i class="fas fa-industry"></i> خط تولید ۳</h3>
                 
                 <div id="k2-line3-inputs-container">
                     <!-- اولین گروه ورودی برای خط ۳ -->
@@ -786,16 +1106,19 @@
                         <div class="form-group">
                             <label for="k2-line3-width-1">عرض با کناره (سانتی متر):</label>
                             <input type="number" id="k2-line3-width-1" step="0.01">
+                            <div class="error-message" id="k2-line3-width-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line3-weight-1">وزن یک متر مربع شیشه (کیلوگرم):</label>
                             <input type="number" id="k2-line3-weight-1" step="0.001">
+                            <div class="error-message" id="k2-line3-weight-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line3-thickness-1">ضخامت (میلیمتر):</label>
                             <input type="number" id="k2-line3-thickness-1" step="0.1">
+                            <div class="error-message" id="k2-line3-thickness-1-error"></div>
                         </div>
                         
                         <div class="form-group">
@@ -820,46 +1143,87 @@
                         <div class="form-group">
                             <label for="k2-line3-speed-1">سرعت (اینچ/دقیقه):</label>
                             <input type="number" id="k2-line3-speed-1" step="0.1">
+                            <div class="error-message" id="k2-line3-speed-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line3-hours-1">ساعات کارکرد:</label>
                             <input type="number" id="k2-line3-hours-1" step="0.1">
+                            <div class="error-message" id="k2-line3-hours-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line3-delivery-width-1">عرض تحویلی (سانتی متر):</label>
                             <input type="number" id="k2-line3-delivery-width-1" step="0.01">
+                            <div class="error-message" id="k2-line3-delivery-width-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line3-delivery-length-1">طول تحویلی (سانتی متر):</label>
                             <input type="number" id="k2-line3-delivery-length-1" step="0.01">
+                            <div class="error-message" id="k2-line3-delivery-length-1-error"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="k2-line3-production-1">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
                             <input type="number" id="k2-line3-production-1" step="0.01">
+                            <div class="error-message" id="k2-line3-production-1-error"></div>
                         </div>
                     </div>
                 </div>
                 
-                <button class="add-input-btn" onclick="addInputGroup('k2-line3')">+ افزودن ورودی جدید برای خط ۳</button>
+                <button class="add-input-btn" onclick="addInputGroup('k2-line3')">
+                    <i class="fas fa-plus"></i> افزودن ورودی جدید برای خط ۳
+                </button>
                 
                 <div class="form-group">
                     <label for="k2-batch">تعداد بچ مصرفی:</label>
                     <input type="number" id="k2-batch">
+                    <div class="error-message" id="k2-batch-error"></div>
                 </div>
                 
                 <div class="button-group">
-                    <button onclick="calculateKoor2()">محاسبه</button>
-                    <button onclick="saveKoor2()">ذخیره در ابر</button>
-                    <button onclick="printKoor2()">چاپ</button>
-                    <button onclick="showKoor2Reports()">گزارش بازه زمانی</button>
+                    <button onclick="calculateKoor2()">
+                        <i class="fas fa-calculator"></i> محاسبه
+                    </button>
+                    <button class="success" onclick="saveKoor2()">
+                        <i class="fas fa-cloud-upload-alt"></i> ذخیره در ابر
+                    </button>
+                    <button class="warning" onclick="printKoor2()">
+                        <i class="fas fa-print"></i> چاپ
+                    </button>
+                    <button onclick="exportKoor2Data()">
+                        <i class="fas fa-file-export"></i> خروجی JSON
+                    </button>
                 </div>
                 
                 <div id="k2-results" class="results">
                     <!-- نتایج محاسبات اینجا نمایش داده می‌شود -->
+                </div>
+            </div>
+        </div>
+
+        <div id="reports" class="tab-content">
+            <div class="form-container">
+                <h3><i class="fas fa-chart-line"></i> گزارشات تولید</h3>
+                
+                <div class="button-group">
+                    <button onclick="showDailyReport()">
+                        <i class="fas fa-calendar-day"></i> گزارش روزانه
+                    </button>
+                    <button onclick="showWeeklyReport()">
+                        <i class="fas fa-calendar-week"></i> گزارش هفتگی
+                    </button>
+                    <button onclick="showMonthlyReport()">
+                        <i class="fas fa-calendar-alt"></i> گزارش ماهانه
+                    </button>
+                    <button onclick="showCustomReport()">
+                        <i class="fas fa-filter"></i> گزارش سفارشی
+                    </button>
+                </div>
+                
+                <div id="reports-results" class="results">
+                    <!-- نتایج گزارشات اینجا نمایش داده می‌شود -->
                 </div>
             </div>
         </div>
@@ -875,7 +1239,9 @@
                         <input type="text" id="from-date" class="date-picker">
                         <label for="to-date">تا تاریخ:</label>
                         <input type="text" id="to-date" class="date-picker">
-                        <button id="generate-report">تولید گزارش</button>
+                        <button id="generate-report" onclick="generateCustomReport()">
+                            <i class="fas fa-chart-bar"></i> تولید گزارش
+                        </button>
                     </div>
                     <div id="report-results"></div>
                 </div>
@@ -909,6 +1275,29 @@
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
             
+            // اعتبارسنجی
+            let isValid = true;
+            
+            if (!username) {
+                showError('username-error', 'لطفاً نام کاربری را وارد کنید');
+                document.getElementById('username').classList.add('input-error');
+                isValid = false;
+            } else {
+                hideError('username-error');
+                document.getElementById('username').classList.remove('input-error');
+            }
+            
+            if (!password) {
+                showError('password-error', 'لطفاً رمز عبور را وارد کنید');
+                document.getElementById('password').classList.add('input-error');
+                isValid = false;
+            } else {
+                hideError('password-error');
+                document.getElementById('password').classList.remove('input-error');
+            }
+            
+            if (!isValid) return;
+            
             if(users[username] && users[username].password === password) {
                 const user = users[username];
                 localStorage.setItem('currentUser', JSON.stringify(user));
@@ -923,17 +1312,31 @@
                 
                 setupAccessControls(user.role);
                 loadPersianDatepicker();
+                updateLiveStats();
+                startClock();
                 
                 // نمایش وضعیت اتصال
                 updateConnectionStatus();
+                
+                showNotification('success', 'ورود موفق', 'با موفقیت وارد سیستم شدید');
             } else {
-                alert('نام کاربری یا رمز عبور نامعتبر است');
+                showNotification('error', 'خطا در ورود', 'نام کاربری یا رمز عبور نامعتبر است');
             }
         }
 
+        // فعال کردن ورود با اینتر
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+
         function logout() {
             localStorage.removeItem('currentUser');
-            location.reload();
+            showNotification('info', 'خروج از سیستم', 'با موفقیت از سیستم خارج شدید');
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
         }
 
         function getRoleName(role) {
@@ -1000,16 +1403,19 @@
                     <div class="form-group">
                         <label for="${prefix}-width-${counter}">عرض با کناره (سانتی متر):</label>
                         <input type="number" id="${prefix}-width-${counter}" step="0.01">
+                        <div class="error-message" id="${prefix}-width-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-weight-${counter}">وزن یک متر مربع شیشه (کیلوگرم):</label>
                         <input type="number" id="${prefix}-weight-${counter}" step="0.001">
+                        <div class="error-message" id="${prefix}-weight-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-thickness-${counter}">ضخامت (میلیمتر):</label>
                         <input type="number" id="${prefix}-thickness-${counter}" step="0.1">
+                        <div class="error-message" id="${prefix}-thickness-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
@@ -1034,26 +1440,31 @@
                     <div class="form-group">
                         <label for="${prefix}-speed-${counter}">سرعت (اینچ/دقیقه):</label>
                         <input type="number" id="${prefix}-speed-${counter}" step="0.1">
+                        <div class="error-message" id="${prefix}-speed-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-hours-${counter}">ساعات کارکرد:</label>
                         <input type="number" id="${prefix}-hours-${counter}" step="0.1">
+                        <div class="error-message" id="${prefix}-hours-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-delivery-width-${counter}">عرض تحویلی (سانتی متر):</label>
                         <input type="number" id="${prefix}-delivery-width-${counter}" step="0.01">
+                        <div class="error-message" id="${prefix}-delivery-width-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-delivery-length-${counter}">طول تحویلی (سانتی متر):</label>
                         <input type="number" id="${prefix}-delivery-length-${counter}" step="0.01">
+                        <div class="error-message" id="${prefix}-delivery-length-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-production-${counter}">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
                         <input type="number" id="${prefix}-production-${counter}" step="0.01">
+                        <div class="error-message" id="${prefix}-production-${counter}-error"></div>
                     </div>
                 `;
             } else {
@@ -1066,16 +1477,19 @@
                     <div class="form-group">
                         <label for="${prefix}-width-${counter}">عرض با کناره (سانتی متر):</label>
                         <input type="number" id="${prefix}-width-${counter}" step="0.01">
+                        <div class="error-message" id="${prefix}-width-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-weight-${counter}">وزن یک متر مربع شیشه (کیلوگرم):</label>
                         <input type="number" id="${prefix}-weight-${counter}" step="0.001">
+                        <div class="error-message" id="${prefix}-weight-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-thickness-${counter}">ضخامت (میلیمتر):</label>
                         <input type="number" id="${prefix}-thickness-${counter}" step="0.1">
+                        <div class="error-message" id="${prefix}-thickness-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
@@ -1100,26 +1514,31 @@
                     <div class="form-group">
                         <label for="${prefix}-speed-${counter}">سرعت (اینچ/دقیقه):</label>
                         <input type="number" id="${prefix}-speed-${counter}" step="0.1">
+                        <div class="error-message" id="${prefix}-speed-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-hours-${counter}">ساعات کارکرد:</label>
                         <input type="number" id="${prefix}-hours-${counter}" step="0.1">
+                        <div class="error-message" id="${prefix}-hours-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-delivery-width-${counter}">عرض تحویلی (سانتی متر):</label>
                         <input type="number" id="${prefix}-delivery-width-${counter}" step="0.01">
+                        <div class="error-message" id="${prefix}-delivery-width-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-delivery-length-${counter}">طول تحویلی (سانتی متر):</label>
                         <input type="number" id="${prefix}-delivery-length-${counter}" step="0.01">
+                        <div class="error-message" id="${prefix}-delivery-length-${counter}-error"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="${prefix}-production-${counter}">مقدار تولید واقعی (متر مربع برحسب 2میل):</label>
                         <input type="number" id="${prefix}-production-${counter}" step="0.01">
+                        <div class="error-message" id="${prefix}-production-${counter}-error"></div>
                     </div>
                 `;
             }
@@ -1137,6 +1556,12 @@
 
         // توابع مربوط به کوره 1
         function calculateKoor1() {
+            // اعتبارسنجی داده‌ها
+            if (!validateKoor1Inputs()) {
+                showNotification('error', 'خطا در داده‌ها', 'لطفاً تمام فیلدهای ضروری را پر کنید');
+                return;
+            }
+            
             const inputGroups = document.querySelectorAll('#k1-inputs-container .input-group');
             let totalDailyMelt = 0;
             let totalProduction = 0;
@@ -1237,12 +1662,14 @@
                     production: document.getElementById(`k1-production-${i}`).value
                 });
             });
+            
+            showNotification('success', 'محاسبه موفق', 'محاسبات کوره ۱ با موفقیت انجام شد');
         }
 
         function saveKoor1() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
             if (!user || !window.koor1Results) {
-                alert("لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید");
+                showNotification('error', 'خطا در ذخیره', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
                 return;
             }
 
@@ -1262,22 +1689,43 @@
             // شبیه‌سازی ذخیره در ابر
             simulateCloudSave('koor1', report);
             
-            alert(`گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد\nثبت کننده: ${user.name}\nتعداد ورودی‌ها: ${report.inputCount}`);
+            showNotification('success', 'ذخیره موفق', `گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد`);
+            
+            // به روزرسانی آمار زنده
+            updateLiveStats();
         }
 
         function printKoor1() {
             window.print();
         }
 
-        function showKoor1Reports() {
-            const modal = document.getElementById("report-modal");
-            document.getElementById("modal-title").textContent = "گزارش بازه زمانی کوره ۱";
-            document.getElementById("generate-report").onclick = generateKoor1Report;
-            modal.style.display = "block";
+        function exportKoor1Data() {
+            if (!window.koor1Results) {
+                showNotification('error', 'خطا در خروجی', 'لطفاً ابتدا محاسبات را انجام دهید');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(window.koor1Results, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `koor1_data_${new Date().toISOString().slice(0,10)}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('success', 'خروجی موفق', 'داده‌های کوره ۱ با موفقیت استخراج شد');
         }
 
         // توابع مربوط به کوره 2
         function calculateKoor2() {
+            // اعتبارسنجی داده‌ها
+            if (!validateKoor2Inputs()) {
+                showNotification('error', 'خطا در داده‌ها', 'لطفاً تمام فیلدهای ضروری را پر کنید');
+                return;
+            }
+            
             const line2InputGroups = document.querySelectorAll('#k2-line2-inputs-container .input-group');
             let line2DailyMelt = 0;
             let line2Production = 0;
@@ -1431,12 +1879,14 @@
                     production: document.getElementById(`k2-line3-production-${i}`).value
                 });
             });
+            
+            showNotification('success', 'محاسبه موفق', 'محاسبات کوره ۲ با موفقیت انجام شد');
         }
 
         function saveKoor2() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
             if (!user || !window.koor2Results) {
-                alert("لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید");
+                showNotification('error', 'خطا در ذخیره', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
                 return;
             }
 
@@ -1456,18 +1906,33 @@
             // شبیه‌سازی ذخیره در ابر
             simulateCloudSave('koor2', report);
             
-            alert(`گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد\nثبت کننده: ${user.name}\nتعداد ورودی‌های خط ۲: ${report.line2InputCount}\nتعداد ورودی‌های خط ۳: ${report.line3InputCount}`);
+            showNotification('success', 'ذخیره موفق', `گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد`);
+            
+            // به روزرسانی آمار زنده
+            updateLiveStats();
         }
 
         function printKoor2() {
             window.print();
         }
 
-        function showKoor2Reports() {
-            const modal = document.getElementById("report-modal");
-            document.getElementById("modal-title").textContent = "گزارش بازه زمانی کوره ۲";
-            document.getElementById("generate-report").onclick = generateKoor2Report;
-            modal.style.display = "block";
+        function exportKoor2Data() {
+            if (!window.koor2Results) {
+                showNotification('error', 'خطا در خروجی', 'لطفاً ابتدا محاسبات را انجام دهید');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(window.koor2Results, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `koor2_data_${new Date().toISOString().slice(0,10)}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('success', 'خروجی موفق', 'داده‌های کوره ۲ با موفقیت استخراج شد');
         }
 
         // شبیه‌سازی ذخیره در ابر
@@ -1511,32 +1976,77 @@
         window.addEventListener('offline', updateConnectionStatus);
 
         // توابع گزارش‌گیری
-        function generateKoor1Report() {
+        function showDailyReport() {
+            const today = new persianDate().format('YYYY/MM/DD');
+            const filteredReports = [...koor1Reports, ...koor2Reports].filter(report => {
+                return report.date === today;
+            });
+
+            displayReports(filteredReports, 'گزارش روزانه - ' + today);
+        }
+
+        function showWeeklyReport() {
+            const today = new persianDate();
+            const weekStart = today.subtract('day', today.day()).format('YYYY/MM/DD');
+            const weekEnd = today.add('day', 6 - today.day()).format('YYYY/MM/DD');
+            
+            const filteredReports = [...koor1Reports, ...koor2Reports].filter(report => {
+                return report.date >= weekStart && report.date <= weekEnd;
+            });
+
+            displayReports(filteredReports, `گزارش هفتگی - از ${weekStart} تا ${weekEnd}`);
+        }
+
+        function showMonthlyReport() {
+            const today = new persianDate();
+            const monthStart = today.format('YYYY/MM/01');
+            const monthEnd = today.endOf('month').format('YYYY/MM/DD');
+            
+            const filteredReports = [...koor1Reports, ...koor2Reports].filter(report => {
+                return report.date >= monthStart && report.date <= monthEnd;
+            });
+
+            displayReports(filteredReports, `گزارش ماهانه - ${today.format('YYYY/MM')}`);
+        }
+
+        function showCustomReport() {
+            const modal = document.getElementById("report-modal");
+            document.getElementById("modal-title").textContent = "گزارش سفارشی";
+            modal.style.display = "block";
+        }
+
+        function generateCustomReport() {
             const fromDate = document.getElementById("from-date").value;
             const toDate = document.getElementById("to-date").value;
             
             if (!fromDate || !toDate) {
-                alert("لطفاً بازه زمانی را مشخص کنید");
+                showNotification('error', 'خطا در گزارش', 'لطفاً بازه زمانی را مشخص کنید');
                 return;
             }
 
-            const filteredReports = koor1Reports.filter(report => {
+            const filteredReports = [...koor1Reports, ...koor2Reports].filter(report => {
                 return report.date >= fromDate && report.date <= toDate;
             });
 
-            if (filteredReports.length === 0) {
-                document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
+            displayReports(filteredReports, `گزارش سفارشی - از ${fromDate} تا ${toDate}`);
+            closeModal();
+        }
+
+        function displayReports(reports, title) {
+            if (reports.length === 0) {
+                document.getElementById("reports-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
                 return;
             }
 
             let html = `
+                <h3>${title}</h3>
                 <table class="report-table">
                     <thead>
                         <tr>
                             <th>تاریخ</th>
                             <th>شیفت</th>
+                            <th>کوره</th>
                             <th>کاربر</th>
-                            <th>تعداد ورودی‌ها</th>
                             <th>تولید (m²)</th>
                             <th>ذوب (kg)</th>
                             <th>بچ (kg)</th>
@@ -1548,27 +2058,42 @@
                     <tbody>
             `;
 
-            let totalInputCount = 0;
             let totalProduction = 0;
             let totalMelt = 0;
             let totalBatch = 0;
             let totalCullet = 0;
             let totalEfficiency = 0;
 
-            filteredReports.forEach(report => {
+            reports.forEach(report => {
                 let production = 0;
-                if (report.inputs && report.inputs.length > 0) {
+                let koorType = 'کوره ۱';
+                
+                if (report.inputs) {
+                    // کوره ۱
                     report.inputs.forEach(input => {
                         production += parseFloat(input.production || 0);
                     });
+                } else {
+                    // کوره ۲
+                    koorType = 'کوره ۲';
+                    if (report.line2Inputs) {
+                        report.line2Inputs.forEach(input => {
+                            production += parseFloat(input.production || 0);
+                        });
+                    }
+                    if (report.line3Inputs) {
+                        report.line3Inputs.forEach(input => {
+                            production += parseFloat(input.production || 0);
+                        });
+                    }
                 }
 
                 html += `
                     <tr>
                         <td>${report.date}</td>
                         <td>${report.shift}</td>
+                        <td>${koorType}</td>
                         <td>${report.enteredBy}</td>
-                        <td>${report.inputCount || 1}</td>
                         <td>${production.toFixed(2)}</td>
                         <td>${report.totalDailyMelt.toFixed(2)}</td>
                         <td>${report.batchConsumption.toFixed(2)}</td>
@@ -1578,7 +2103,6 @@
                     </tr>
                 `;
 
-                totalInputCount += report.inputCount || 1;
                 totalProduction += production;
                 totalMelt += report.totalDailyMelt;
                 totalBatch += report.batchConsumption;
@@ -1586,14 +2110,13 @@
                 totalEfficiency += report.efficiency;
             });
 
-            const avgEfficiency = totalEfficiency / filteredReports.length;
+            const avgEfficiency = totalEfficiency / reports.length;
 
             html += `
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3"><strong>جمع کل/میانگین</strong></td>
-                            <td>${totalInputCount}</td>
+                            <td colspan="4"><strong>جمع کل/میانگین</strong></td>
                             <td>${totalProduction.toFixed(2)}</td>
                             <td>${totalMelt.toFixed(2)}</td>
                             <td>${totalBatch.toFixed(2)}</td>
@@ -1605,121 +2128,7 @@
                 </table>
             `;
 
-            document.getElementById("report-results").innerHTML = html;
-        }
-
-        function generateKoor2Report() {
-            const fromDate = document.getElementById("from-date").value;
-            const toDate = document.getElementById("to-date").value;
-            
-            if (!fromDate || !toDate) {
-                alert("لطفاً بازه زمانی را مشخص کنید");
-                return;
-            }
-
-            const filteredReports = koor2Reports.filter(report => {
-                return report.date >= fromDate && report.date <= toDate;
-            });
-
-            if (filteredReports.length === 0) {
-                document.getElementById("report-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
-                return;
-            }
-
-            let html = `
-                <table class="report-table">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>شیفت</th>
-                            <th>کاربر</th>
-                            <th>ورودی‌های خط۲</th>
-                            <th>ورودی‌های خط۳</th>
-                            <th>تولید خط۲ (m²)</th>
-                            <th>تولید خط۳ (m²)</th>
-                            <th>ذوب (kg)</th>
-                            <th>بچ (kg)</th>
-                            <th>خرده شیشه (kg)</th>
-                            <th>درصد خرده</th>
-                            <th>راندمان (%)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-            let totalLine2InputCount = 0;
-            let totalLine3InputCount = 0;
-            let totalProduction1 = 0;
-            let totalProduction2 = 0;
-            let totalMelt = 0;
-            let totalBatch = 0;
-            let totalCullet = 0;
-            let totalEfficiency = 0;
-
-            filteredReports.forEach(report => {
-                let production1 = 0;
-                if (report.line2Inputs && report.line2Inputs.length > 0) {
-                    report.line2Inputs.forEach(input => {
-                        production1 += parseFloat(input.production || 0);
-                    });
-                }
-
-                let production2 = 0;
-                if (report.line3Inputs && report.line3Inputs.length > 0) {
-                    report.line3Inputs.forEach(input => {
-                        production2 += parseFloat(input.production || 0);
-                    });
-                }
-
-                html += `
-                    <tr>
-                        <td>${report.date}</td>
-                        <td>${report.shift}</td>
-                        <td>${report.enteredBy}</td>
-                        <td>${report.line2InputCount || 1}</td>
-                        <td>${report.line3InputCount || 1}</td>
-                        <td>${production1.toFixed(2)}</td>
-                        <td>${production2.toFixed(2)}</td>
-                        <td>${report.totalDailyMelt.toFixed(2)}</td>
-                        <td>${report.batchConsumption.toFixed(2)}</td>
-                        <td>${report.culletConsumption.toFixed(2)}</td>
-                        <td>${report.culletPercentage.toFixed(2)}</td>
-                        <td>${report.efficiency.toFixed(2)}</td>
-                    </tr>
-                `;
-
-                totalLine2InputCount += report.line2InputCount || 1;
-                totalLine3InputCount += report.line3InputCount || 1;
-                totalProduction1 += production1;
-                totalProduction2 += production2;
-                totalMelt += report.totalDailyMelt;
-                totalBatch += report.batchConsumption;
-                totalCullet += report.culletConsumption;
-                totalEfficiency += report.efficiency;
-            });
-
-            const avgEfficiency = totalEfficiency / filteredReports.length;
-
-            html += `
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3"><strong>جمع کل/میانگین</strong></td>
-                            <td>${totalLine2InputCount}</td>
-                            <td>${totalLine3InputCount}</td>
-                            <td>${totalProduction1.toFixed(2)}</td>
-                            <td>${totalProduction2.toFixed(2)}</td>
-                            <td>${totalMelt.toFixed(2)}</td>
-                            <td>${totalBatch.toFixed(2)}</td>
-                            <td>${totalCullet.toFixed(2)}</td>
-                            <td></td>
-                            <td>${avgEfficiency.toFixed(2)}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            `;
-
-            document.getElementById("report-results").innerHTML = html;
+            document.getElementById("reports-results").innerHTML = html;
         }
 
         // توابع عمومی
@@ -1749,6 +2158,318 @@
             }
         }
 
+        // آمار زنده
+        function updateLiveStats() {
+            const totalReports = koor1Reports.length + koor2Reports.length;
+            document.getElementById('total-reports').textContent = totalReports;
+            
+            // محاسبه تولید امروز
+            const today = new persianDate().format('YYYY/MM/DD');
+            let todayProduction = 0;
+            
+            koor1Reports.forEach(report => {
+                if (report.date === today) {
+                    report.inputs.forEach(input => {
+                        todayProduction += parseFloat(input.production || 0);
+                    });
+                }
+            });
+            
+            koor2Reports.forEach(report => {
+                if (report.date === today) {
+                    if (report.line2Inputs) {
+                        report.line2Inputs.forEach(input => {
+                            todayProduction += parseFloat(input.production || 0);
+                        });
+                    }
+                    if (report.line3Inputs) {
+                        report.line3Inputs.forEach(input => {
+                            todayProduction += parseFloat(input.production || 0);
+                        });
+                    }
+                }
+            });
+            
+            document.getElementById('today-production').textContent = todayProduction.toFixed(2);
+            
+            // محاسبه میانگین راندمان
+            let totalEfficiency = 0;
+            let efficiencyCount = 0;
+            
+            koor1Reports.forEach(report => {
+                if (report.efficiency) {
+                    totalEfficiency += report.efficiency;
+                    efficiencyCount++;
+                }
+            });
+            
+            koor2Reports.forEach(report => {
+                if (report.efficiency) {
+                    totalEfficiency += report.efficiency;
+                    efficiencyCount++;
+                }
+            });
+            
+            const avgEfficiency = efficiencyCount > 0 ? (totalEfficiency / efficiencyCount) : 0;
+            document.getElementById('avg-efficiency').textContent = avgEfficiency.toFixed(2) + '%';
+            
+            // محاسبه تولید ماه جاری
+            const monthStart = new persianDate().format('YYYY/MM/01');
+            const monthEnd = new persianDate().endOf('month').format('YYYY/MM/DD');
+            let monthlyTotal = 0;
+            
+            [...koor1Reports, ...koor2Reports].forEach(report => {
+                if (report.date >= monthStart && report.date <= monthEnd) {
+                    let production = 0;
+                    
+                    if (report.inputs) {
+                        report.inputs.forEach(input => {
+                            production += parseFloat(input.production || 0);
+                        });
+                    } else {
+                        if (report.line2Inputs) {
+                            report.line2Inputs.forEach(input => {
+                                production += parseFloat(input.production || 0);
+                            });
+                        }
+                        if (report.line3Inputs) {
+                            report.line3Inputs.forEach(input => {
+                                production += parseFloat(input.production || 0);
+                            });
+                        }
+                    }
+                    
+                    monthlyTotal += production;
+                }
+            });
+            
+            document.getElementById('monthly-total').textContent = monthlyTotal.toFixed(2);
+        }
+
+        // ساعت و تاریخ
+        function startClock() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        }
+
+        function updateDateTime() {
+            const now = new persianDate();
+            const dateTimeStr = now.format('YYYY/MM/DD - HH:mm:ss');
+            document.getElementById('datetime').textContent = dateTimeStr;
+        }
+
+        // اعتبارسنجی
+        function validateKoor1Inputs() {
+            let isValid = true;
+            
+            // اعتبارسنجی تاریخ
+            if (!document.getElementById("k1-date").value) {
+                showError('k1-date-error', 'لطفاً تاریخ را انتخاب کنید');
+                document.getElementById("k1-date").classList.add('input-error');
+                isValid = false;
+            } else {
+                hideError('k1-date-error');
+                document.getElementById("k1-date").classList.remove('input-error');
+            }
+            
+            // اعتبارسنجی بچ
+            if (!document.getElementById("k1-batch").value) {
+                showError('k1-batch-error', 'لطفاً تعداد بچ مصرفی را وارد کنید');
+                document.getElementById("k1-batch").classList.add('input-error');
+                isValid = false;
+            } else {
+                hideError('k1-batch-error');
+                document.getElementById("k1-batch").classList.remove('input-error');
+            }
+            
+            // اعتبارسنجی ورودی‌ها
+            const inputGroups = document.querySelectorAll('#k1-inputs-container .input-group');
+            inputGroups.forEach((group, index) => {
+                const i = index + 1;
+                const requiredFields = ['width', 'weight', 'thickness', 'speed', 'hours', 'production'];
+                
+                requiredFields.forEach(field => {
+                    const fieldId = `k1-${field}-${i}`;
+                    if (!document.getElementById(fieldId).value) {
+                        showError(`${fieldId}-error`, `لطفاً ${getFieldName(field)} را وارد کنید`);
+                        document.getElementById(fieldId).classList.add('input-error');
+                        isValid = false;
+                    } else {
+                        hideError(`${fieldId}-error`);
+                        document.getElementById(fieldId).classList.remove('input-error');
+                    }
+                });
+            });
+            
+            return isValid;
+        }
+
+        function validateKoor2Inputs() {
+            let isValid = true;
+            
+            // اعتبارسنجی تاریخ
+            if (!document.getElementById("k2-date").value) {
+                showError('k2-date-error', 'لطفاً تاریخ را انتخاب کنید');
+                document.getElementById("k2-date").classList.add('input-error');
+                isValid = false;
+            } else {
+                hideError('k2-date-error');
+                document.getElementById("k2-date").classList.remove('input-error');
+            }
+            
+            // اعتبارسنجی بچ
+            if (!document.getElementById("k2-batch").value) {
+                showError('k2-batch-error', 'لطفاً تعداد بچ مصرفی را وارد کنید');
+                document.getElementById("k2-batch").classList.add('input-error');
+                isValid = false;
+            } else {
+                hideError('k2-batch-error');
+                document.getElementById("k2-batch").classList.remove('input-error');
+            }
+            
+            // اعتبارسنجی ورودی‌های خط ۲
+            const line2InputGroups = document.querySelectorAll('#k2-line2-inputs-container .input-group');
+            line2InputGroups.forEach((group, index) => {
+                const i = index + 1;
+                const requiredFields = ['width', 'weight', 'thickness', 'speed', 'hours', 'production'];
+                
+                requiredFields.forEach(field => {
+                    const fieldId = `k2-line2-${field}-${i}`;
+                    if (!document.getElementById(fieldId).value) {
+                        showError(`${fieldId}-error`, `لطفاً ${getFieldName(field)} خط ۲ را وارد کنید`);
+                        document.getElementById(fieldId).classList.add('input-error');
+                        isValid = false;
+                    } else {
+                        hideError(`${fieldId}-error`);
+                        document.getElementById(fieldId).classList.remove('input-error');
+                    }
+                });
+            });
+            
+            // اعتبارسنجی ورودی‌های خط ۳
+            const line3InputGroups = document.querySelectorAll('#k2-line3-inputs-container .input-group');
+            line3InputGroups.forEach((group, index) => {
+                const i = index + 1;
+                const requiredFields = ['width', 'weight', 'thickness', 'speed', 'hours', 'production'];
+                
+                requiredFields.forEach(field => {
+                    const fieldId = `k2-line3-${field}-${i}`;
+                    if (!document.getElementById(fieldId).value) {
+                        showError(`${fieldId}-error`, `لطفاً ${getFieldName(field)} خط ۳ را وارد کنید`);
+                        document.getElementById(fieldId).classList.add('input-error');
+                        isValid = false;
+                    } else {
+                        hideError(`${fieldId}-error`);
+                        document.getElementById(fieldId).classList.remove('input-error');
+                    }
+                });
+            });
+            
+            return isValid;
+        }
+
+        function getFieldName(field) {
+            const fieldNames = {
+                'width': 'عرض با کناره',
+                'weight': 'وزن یک متر مربع شیشه',
+                'thickness': 'ضخامت',
+                'speed': 'سرعت',
+                'hours': 'ساعات کارکرد',
+                'production': 'مقدار تولید واقعی'
+            };
+            return fieldNames[field] || field;
+        }
+
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = message;
+                element.style.display = 'block';
+            }
+        }
+
+        function hideError(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.style.display = 'none';
+            }
+        }
+
+        // نوتیفیکیشن
+        function showNotification(type, title, message) {
+            const notificationArea = document.getElementById('notification-area');
+            const notificationId = 'notification-' + Date.now();
+            
+            const notification = document.createElement('div');
+            notification.id = notificationId;
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${getNotificationIcon(type)}"></i>
+                <div>
+                    <strong>${title}</strong>
+                    <p>${message}</p>
+                </div>
+                <button class="notification-close" onclick="closeNotification('${notificationId}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            notificationArea.appendChild(notification);
+            
+            // حذف خودکار پس از 5 ثانیه
+            setTimeout(() => {
+                closeNotification(notificationId);
+            }, 5000);
+        }
+
+        function closeNotification(id) {
+            const notification = document.getElementById(id);
+            if (notification) {
+                notification.style.animation = 'slideInRight 0.5s ease reverse';
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
+            }
+        }
+
+        function getNotificationIcon(type) {
+            const icons = {
+                'success': 'check-circle',
+                'error': 'exclamation-circle',
+                'warning': 'exclamation-triangle',
+                'info': 'info-circle'
+            };
+            return icons[type] || 'info-circle';
+        }
+
+        // دکمه‌های شناور
+        function showQuickReport() {
+            openTab(event, 'reports');
+            showDailyReport();
+        }
+
+        function quickSave() {
+            const activeTab = document.querySelector('.tab-content.active').id;
+            if (activeTab === 'koor1' && window.koor1Results) {
+                saveKoor1();
+            } else if (activeTab === 'koor2' && window.koor2Results) {
+                saveKoor2();
+            } else {
+                showNotification('warning', 'ذخیره سریع', 'لطفاً ابتدا محاسبات را انجام دهید');
+            }
+        }
+
+        function quickPrint() {
+            const activeTab = document.querySelector('.tab-content.active').id;
+            if (activeTab === 'koor1') {
+                printKoor1();
+            } else if (activeTab === 'koor2') {
+                printKoor2();
+            } else {
+                window.print();
+            }
+        }
+
         // بررسی وضعیت لاگین هنگام بارگذاری صفحه
         window.onload = function() {
             const user = localStorage.getItem('currentUser');
@@ -1764,6 +2485,8 @@
                 
                 // به روزرسانی وضعیت اتصال
                 updateConnectionStatus();
+                updateLiveStats();
+                startClock();
             }
             
             // فعال‌سازی تقویم شمسی
