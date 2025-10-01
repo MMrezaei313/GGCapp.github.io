@@ -1152,9 +1152,10 @@
                 const production = parseFloat(document.getElementById(`k1-production-${i}`).value) || 0;
 
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                const WeightedThickness = ( production * weight ) / thickness;
                 totalDailyMelt += dailyMelt;
                 totalProduction += production;
-                totalWeightedThickness += ( production * weight ) / thickness;
+                totalWeightedThickness += WeightedThickness;
             });
 
             const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
