@@ -1144,26 +1144,24 @@
             
             inputGroups.forEach((group, index) => {
                 const i = index + 1;
-                const thickness = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
+                const thickness1 = parseFloat(document.getElementById(`k1-thickness-${i}`).value) || 0;
                 const width = parseFloat(document.getElementById(`k1-width-${i}`).value) || 0;
-                const weight = parseFloat(document.getElementById(`k1-weight-${i}`).value) || 0;
+                const weight1 = parseFloat(document.getElementById(`k1-weight-${i}`).value) || 0;
                 const speed = parseFloat(document.getElementById(`k1-speed-${i}`).value) || 0;
                 const hours = parseFloat(document.getElementById(`k1-hours-${i}`).value) || 0;
-                const production = parseFloat(document.getElementById(`k1-production-${i}`).value) || 0;
+                const production1 = parseFloat(document.getElementById(`k1-production-${i}`).value) || 0;
 
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
                 totalDailyMelt += dailyMelt;
-                totalProduction += production;
-                totalWeightedThickness += production * thickness;
+                totalProduction += production1;
+                totalWeightedThickness += ( production * weight ) / thickness1;
             });
 
             const batchCount = parseInt(document.getElementById("k1-batch").value) || 0;
             const batchConsumption = batchCount * 649;
-            const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
+            const culletConsumption = (totalDailyMelt - ( batchConsumption * 0.815 ));
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
-            
-            const avgThickness = totalProduction > 0 ? totalWeightedThickness / totalProduction : 0;
-            const efficiency = totalDailyMelt > 0 ? (( totalProduction * (totalWeightedThickness/totalProduction) * 2 ) / (totalDailyMelt * avgThickness)) * 100 : 0;
+            const efficiency = totalDailyMelt > 0 ? ((totalWeightedThickness * 2 ) / (totalDailyMelt )) * 100 : 0;
 
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
