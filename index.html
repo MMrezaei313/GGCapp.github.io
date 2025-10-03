@@ -931,6 +931,7 @@
             </button>
             <button class="tab-button" onclick="openTab(event, 'reports')">
                 <i class="fas fa-chart-line"></i> گزارشات
+            </button>
             <button class="tab-button" id="management-tab" onclick="showReportManagement()" style="display:none;">
                 <i class="fas fa-cog"></i> مدیریت گزارشات
             </button>
@@ -1664,7 +1665,7 @@
                 const production = parseFloat(document.getElementById(`k1-production-${i}`).value) || 0;
 
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
-                const WeightedThickness = ( production * weight ) / thickness;
+                const WeightedThickness = (production * weight) / thickness;
                 totalDailyMelt += dailyMelt;
                 totalProduction += production;
                 totalWeightedThickness += WeightedThickness;
@@ -1726,11 +1727,12 @@
 
             window.koor1Results = {
                 inputCount: inputGroups.length,
-                totalDailyMelt, 
-                batchConsumption, 
-                culletConsumption,
-                culletPercentage, 
-                efficiency,
+                totalDailyMelt: totalDailyMelt,
+                totalProduction: totalProduction,
+                batchConsumption: batchConsumption, 
+                culletConsumption: culletConsumption,
+                culletPercentage: culletPercentage, 
+                efficiency: efficiency,
                 materials: { silica, sodiumCarbonate, dolomite, sodiumSulfate, coal },
                 inputs: []
             };
@@ -1790,7 +1792,7 @@
     
           // به روزرسانی آمار زنده
           updateLiveStats();
-       }}
+       }
 
         function printKoor1() {
             window.print();
@@ -1935,13 +1937,13 @@
             window.koor2Results = {
                 line2InputCount: line2InputGroups.length,
                 line3InputCount: line3InputGroups.length,
-                line2DailyMelt, 
-                line3DailyMelt, 
-                totalDailyMelt,
-                batchConsumption, 
-                culletConsumption,
-                culletPercentage, 
-                efficiency,
+                line2DailyMelt: line2DailyMelt, 
+                line3DailyMelt: line3DailyMelt, 
+                totalDailyMelt: totalDailyMelt,
+                batchConsumption: batchConsumption, 
+                culletConsumption: culletConsumption,
+                culletPercentage: culletPercentage, 
+                efficiency: efficiency,
                 materials: { silica, sodiumCarbonate, dolomite, lime, sodiumSulfate, coal },
                 line2Inputs: [],
                 line3Inputs: []
