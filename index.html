@@ -2963,11 +2963,18 @@ function deleteReport(reportId, koorType) {
 
         // بررسی وضعیت لاگین هنگام بارگذاری صفحه
         window.onload = function() {
-            const user = localStorage.getItem('currentUser');
-            if(user) {
+           // پاک کردن کاربر قبلی برای تست
+           // localStorage.removeItem('currentUser');
+    
+           const user = localStorage.getItem('currentUser');
+           if(user) {
+            try {
+            const userObj = JSON.parse(user);
+            // بررسی معتبر بودن کاربر
+            if(userObj && userObj.name && users[userObj.userId]) {
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('app-content').style.display = 'block';
-                const userObj = JSON.parse(user);
+                
                 document.getElementById('welcome-message').innerHTML = `
                     <p>کاربر گرامی: <strong>${userObj.name}</strong></p>
                     <small>سطح دسترسی: ${getRoleName(userObj.role)}</small>
@@ -2978,15 +2985,33 @@ function deleteReport(reportId, koorType) {
                 updateConnectionStatus();
                 updateLiveStats();
                 startClock();
+                loadPersianDatepicker();
+            } else {
+                // اگر کاربر معتبر نیست، از سیستم خارج شو
+                localStorage.removeItem('currentUser');
+                showLoginPage();
             }
-            
-            // فعال‌سازی تقویم شمسی
-            $(".date-picker").persianDatepicker({
-                format: 'YYYY/MM/DD',
-                observer: true,
-                initialValue: false
-            });
-        };
+            } catch (e) {
+            // اگر خطایی در پارس کردن JSON بود
+            localStorage.removeItem('currentUser');
+            showLoginPage();
+            }
+            } else {
+            showLoginPage();
+            }
+    
+        // فعال‌سازی تقویم شمسی
+           $(".date-picker").persianDatepicker({
+           format: 'YYYY/MM/DD',
+           observer: true,
+           initialValue: false
+        });
+     };
+
+         function showLoginPage() {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('app-content').style.display = 'none';
+      }
     </script>
 </body>
 </html>
