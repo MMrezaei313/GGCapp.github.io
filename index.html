@@ -1934,7 +1934,8 @@ function setupAdvancedRealTimeValidation() {
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
                 line2DailyMelt += dailyMelt;
                 line2Production += production;
-                line2WeightedThickness += production * thickness;
+                const WeightedThickness2 = (production * weight) / thickness;
+                totalWeightedThickness2 += WeightedThickness2;
             });
 
             const line3InputGroups = document.querySelectorAll('#k2-line3-inputs-container .input-group');
@@ -1954,7 +1955,8 @@ function setupAdvancedRealTimeValidation() {
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
                 line3DailyMelt += dailyMelt;
                 line3Production += production;
-                line3WeightedThickness += production * thickness;
+                const WeightedThickness3 = (production * weight) / thickness;
+                totalWeightedThickness3 += WeightedThickness3;
             });
 
             const totalDailyMelt = line2DailyMelt + line3DailyMelt;
@@ -1966,7 +1968,7 @@ function setupAdvancedRealTimeValidation() {
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             
             const totalProdWeight = (( line2Production * 2 * (line2WeightedThickness/line2Production) ) + ( line3Production * 2 * (line3WeightedThickness/line3Production) ));
-            const efficiency = totalDailyMelt > 0 ? (totalProdWeight / totalDailyMelt) * 100 : 0;
+            const efficiency = totalDailyMelt > 0 ? (((totalWeightedThickness2 + totalWeightedThickness3 ) * 2 ) / (totalDailyMelt )) * 100 : 0;
             
             const silica = batchCount * 1010;
             const sodiumCarbonate = batchCount * 329;
@@ -1992,6 +1994,9 @@ function setupAdvancedRealTimeValidation() {
                 </div>
                 <div class="result-item">
                     <strong>مقدار ذوب کل کوره:</strong> ${totalDailyMelt.toFixed(2)} کیلوگرم
+                </div>
+                <div class="result-item">
+                    <strong>مقدار تولید روزانه:</strong> ${totalProduction.toFixed(2)} متر مربع 2میل
                 </div>
                 <div class="result-item">
                     <strong>مقدار بچ مصرفی:</strong> ${batchConsumption.toFixed(2)} کیلوگرم
@@ -2839,17 +2844,35 @@ function setupAdvancedRealTimeValidation() {
             document.getElementById('monthly-total').textContent = monthlyTotal.toFixed(2);
         }
 
-        // ساعت و تاریخ
+        // ساعت و تاریخ    
         function startClock() {
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
+         updateDateTime();
+         setInterval(updateDateTime, 1000);
         }
 
         function updateDateTime() {
-            const now = new persianDate();
-            const dateTimeStr = now.format('YYYY/MM/DD - HH:mm:ss');
+          try {
+            const now = new Date();
+        
+            // محاسبه زمان ایران (UTC+3:30)
+            const localOffset = now.getTimezoneOffset() * 60000; // offset in milliseconds
+            const iranOffset = 3.5 * 60 * 60 * 1000; // Iran is UTC+3:30 in milliseconds
+            const iranTime = new Date(now.getTime() + localOffset + iranOffset);
+        
+            // استفاده از persianDate با زمان ایران
+            const persianNow = new persianDate(iranTime);
+            const dateTimeStr = persianNow.format('YYYY/MM/DD - HH:mm:ss');
+        
             document.getElementById('datetime').textContent = dateTimeStr;
-        }
+        
+       } catch (error) {
+        // Fallback در صورت خطا
+        console.error('Error updating datetime:', error);
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('fa-IR');
+        document.getElementById('datetime').textContent = timeStr;
+      }
+   }
 
         // اعتبارسنجی
         function validateKoor1Inputs() {
