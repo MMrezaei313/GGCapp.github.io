@@ -787,71 +787,73 @@
             border-color: var(--danger-color) !important;
             box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2) !important;
         }
+        
         /* استایل‌های مدیریت گزارشات */
         .report-management {
-             margin-top: 20px;
+            margin-top: 20px;
         }
 
         .search-filters {
-             display: flex;
-             flex-wrap: wrap;
-             gap: 15px;
-             margin-bottom: 20px;
-             padding: 15px;
-             background-color: #f9f9f9;
-             border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
         }
+        
         .search-filters .form-group {
-             margin-bottom: 0;
-             flex: 1;
-             min-width: 150px;
+            margin-bottom: 0;
+            flex: 1;
+            min-width: 150px;
         }
 
-         .search-btn {
-             background-color: var(--secondary-color);
-             color: white;
-             border: none;
-             padding: 10px 15px;
-             border-radius: 4px;
-             cursor: pointer;
-             height: fit-content;
-             align-self: flex-end;
+        .search-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            height: fit-content;
+            align-self: flex-end;
         }
 
-         .search-btn:hover {
-             background-color: #2980b9;
+        .search-btn:hover {
+            background-color: #2980b9;
         }
 
-         .management-results {
-             max-height: 500px;
-             overflow-y: auto;
+        .management-results {
+            max-height: 500px;
+            overflow-y: auto;
         }
  
-         .edit-btn, .delete-btn {
-             padding: 5px 10px;
-             border: none;
-             border-radius: 3px;
-             cursor: pointer;
-             font-size: 12px;
-             margin: 0 2px;
+        .edit-btn, .delete-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 0 2px;
         }
 
-         .edit-btn {
-             background-color: var(--warning-color);
-             color: white;
+        .edit-btn {
+            background-color: var(--warning-color);
+            color: white;
         }
 
-         .edit-btn:hover {
-              background-color: #e67e22;
+        .edit-btn:hover {
+            background-color: #e67e22;
         }
 
-         .delete-btn {
-              background-color: var(--danger-color);
-              color: white;
+        .delete-btn {
+            background-color: var(--danger-color);
+            color: white;
         }
 
-         .delete-btn:hover {
-              background-color: #c0392b;
+        .delete-btn:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
@@ -1369,7 +1371,11 @@
             
             if(users[username] && users[username].password === password) {
                 const user = users[username];
-                localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.setItem('currentUser', JSON.stringify({
+                    name: user.name,
+                    role: user.role,
+                    userId: username
+                }));
                 
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('app-content').style.display = 'block';
@@ -1402,17 +1408,17 @@
 
         // تابع بررسی تکراری بودن گزارش
         function isDuplicateReport(koorType, date, shift) {
-           const reports = koorType === 'koor1' ? koor1Reports : koor2Reports;
-    
-           return reports.some(report => {
-             return report.date === date && report.shift === shift;
-        });
-            }
+            const reports = koorType === 'koor1' ? koor1Reports : koor2Reports;
+            return reports.some(report => {
+                return report.date === date && report.shift === shift;
+            });
+        }
 
-         // تابع تولید شناسه منحصر به فرد برای گزارشات
+        // تابع تولید شناسه منحصر به فرد برای گزارشات
         function generateReportId() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
-            }
+        }
+
         function logout() {
             localStorage.removeItem('currentUser');
             showNotification('info', 'خروج از سیستم', 'با موفقیت از سیستم خارج شدید');
@@ -1431,21 +1437,16 @@
         }
 
         function setupAccessControls(role) {
-    const isSupervisor = role === 'supervisor';
-    const isManager = role === 'manager';
-    const isDirector = role === 'director';
-    
-    const reportButtons = document.querySelectorAll('button[onclick*="Reports"]');
-    reportButtons.forEach(btn => {
-        btn.style.display = (isManager || isDirector) ? 'inline-block' : 'none';
-    });
-    
-    // نمایش تب مدیریت گزارشات برای مدیران
-    const managementTab = document.getElementById('management-tab');
-    if (managementTab) {
-        managementTab.style.display = (isManager || isDirector) ? 'inline-block' : 'none';
-    }
-}}
+            const isSupervisor = role === 'supervisor';
+            const isManager = role === 'manager';
+            const isDirector = role === 'director';
+            
+            // نمایش تب مدیریت گزارشات برای مدیران
+            const managementTab = document.getElementById('management-tab');
+            if (managementTab) {
+                managementTab.style.display = (isManager || isDirector) ? 'inline-block' : 'none';
+            }
+        }
 
         function loadPersianDatepicker() {
             $(".date-picker").persianDatepicker({
@@ -1758,41 +1759,41 @@
         function saveKoor1() {
            const user = JSON.parse(localStorage.getItem('currentUser'));
            if (!user || !window.koor1Results) {
-           showNotification('error', 'خطا در ذخیره', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
-              return;
-        }
+               showNotification('error', 'خطا در ذخیره', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
+               return;
+           }
 
            const date = document.getElementById("k1-date").value;
            const shift = document.getElementById("k1-shift").value;
     
-          // بررسی تکراری بودن گزارش
-          if (isDuplicateReport('koor1', date, shift)) {
-          showNotification('error', 'گزارش تکراری', 'برای این تاریخ و شیفت قبلاً گزارشی ثبت شده است');
-             return;
+           // بررسی تکراری بودن گزارش
+           if (isDuplicateReport('koor1', date, shift)) {
+               showNotification('error', 'گزارش تکراری', 'برای این تاریخ و شیفت قبلاً گزارشی ثبت شده است');
+               return;
+           }
+
+           const report = {
+               ...window.koor1Results,
+               date: date,
+               shift: shift,
+               batchCount: document.getElementById("k1-batch").value,
+               enteredBy: user.name,
+               userId: user.userId,
+               timestamp: new Date().toISOString(),
+               id: generateReportId() // اضافه کردن شناسه منحصر به فرد
+           };
+
+           koor1Reports.push(report);
+           localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
+    
+           // شبیه‌سازی ذخیره در ابر
+           simulateCloudSave('koor1', report);
+    
+           showNotification('success', 'ذخیره موفق', `گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد`);
+    
+           // به روزرسانی آمار زنده
+           updateLiveStats();
         }
-
-          const report = {
-             ...window.koor1Results,
-             date: date,
-             shift: shift,
-             batchCount: document.getElementById("k1-batch").value,
-             enteredBy: user.name,
-             userId: Object.keys(users).find(key => users[key].name === user.name),
-             timestamp: new Date().toISOString(),
-             id: generateReportId() // اضافه کردن شناسه منحصر به فرد
-        };
-
-          koor1Reports.push(report);
-          localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
-    
-          // شبیه‌سازی ذخیره در ابر
-          simulateCloudSave('koor1', report);
-    
-          showNotification('success', 'ذخیره موفق', `گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد`);
-    
-          // به روزرسانی آمار زنده
-          updateLiveStats();
-       }
 
         function printKoor1() {
             window.print();
@@ -1982,44 +1983,43 @@
             showNotification('success', 'محاسبه موفق', 'محاسبات کوره ۲ با موفقیت انجام شد');
         }
 
-
         function saveKoor2() {
            const user = JSON.parse(localStorage.getItem('currentUser'));
            if (!user || !window.koor2Results) {
-           showNotification('error', 'خطا در ذخیره', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
-             return;
-        }
+               showNotification('error', 'خطا در ذخیره', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
+               return;
+           }
 
-          const date = document.getElementById("k2-date").value;
-          const shift = document.getElementById("k2-shift").value;
+           const date = document.getElementById("k2-date").value;
+           const shift = document.getElementById("k2-shift").value;
     
-          // بررسی تکراری بودن گزارش
-          if (isDuplicateReport('koor2', date, shift)) {
-          showNotification('error', 'گزارش تکراری', 'برای این تاریخ و شیفت قبلاً گزارشی ثبت شده است');
-             return;
-        }
+           // بررسی تکراری بودن گزارش
+           if (isDuplicateReport('koor2', date, shift)) {
+               showNotification('error', 'گزارش تکراری', 'برای این تاریخ و شیفت قبلاً گزارشی ثبت شده است');
+               return;
+           }
 
-         const report = {
-            ...window.koor2Results,
-            date: date,
-            shift: shift,
-            batchCount: document.getElementById("k2-batch").value,
-            enteredBy: user.name,
-            userId: Object.keys(users).find(key => users[key].name === user.name),
-            timestamp: new Date().toISOString(),
-            id: generateReportId() // اضافه کردن شناسه منحصر به فرد
-        };
+           const report = {
+               ...window.koor2Results,
+               date: date,
+               shift: shift,
+               batchCount: document.getElementById("k2-batch").value,
+               enteredBy: user.name,
+               userId: user.userId,
+               timestamp: new Date().toISOString(),
+               id: generateReportId() // اضافه کردن شناسه منحصر به فرد
+           };
 
-          koor2Reports.push(report);
-          localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
+           koor2Reports.push(report);
+           localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
     
-          // شبیه‌سازی ذخیره در ابر
-          simulateCloudSave('koor2', report);
+           // شبیه‌سازی ذخیره در ابر
+           simulateCloudSave('koor2', report);
     
-          showNotification('success', 'ذخیره موفق', `گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد`);
+           showNotification('success', 'ذخیره موفق', `گزارش با موفقیت ${navigator.onLine ? 'در ابر' : 'به صورت آفلاین'} ثبت شد`);
     
-          // به روزرسانی آمار زنده
-          updateLiveStats();
+           // به روزرسانی آمار زنده
+           updateLiveStats();
         }
 
         function printKoor2() {
@@ -2141,391 +2141,395 @@
             displayReports(filteredReports, `گزارش سفارشی - از ${fromDate} تا ${toDate}`);
             closeModal();
         }
-// تابع نمایش مدیریت گزارشات برای مدیر
-function showReportManagement() {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-    if (!user || (user.role !== 'manager' && user.role !== 'director')) {
-        showNotification('error', 'عدم دسترسی', 'شما دسترسی لازم برای مدیریت گزارشات را ندارید');
-        return;
-    }
 
-    const modal = document.getElementById("report-modal");
-    document.getElementById("modal-title").textContent = "مدیریت گزارشات";
-    
-    // ایجاد محتوای مدیریت گزارشات
-    const modalBody = document.querySelector('.modal-body');
-    modalBody.innerHTML = `
-        <div class="report-management">
-            <div class="search-filters">
-                <div class="form-group">
-                    <label for="search-date">تاریخ:</label>
-                    <input type="text" id="search-date" class="date-picker">
-                </div>
-                <div class="form-group">
-                    <label for="search-koor">کوره:</label>
-                    <select id="search-koor">
-                        <option value="all">همه</option>
-                        <option value="koor1">کوره ۱</option>
-                        <option value="koor2">کوره ۲</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="search-shift">شیفت:</label>
-                    <select id="search-shift">
-                        <option value="all">همه</option>
-                        <option value="6-14">۶ تا ۱۴</option>
-                        <option value="14-22">۱۴ تا ۲۲</option>
-                        <option value="22-6">۲۲ تا ۶</option>
-                    </select>
-                </div>
-                <button onclick="searchReports()" class="search-btn">
-                    <i class="fas fa-search"></i> جستجو
-                </button>
-            </div>
-            <div id="management-results" class="management-results">
-                <!-- نتایج جستجو اینجا نمایش داده می‌شود -->
-            </div>
-        </div>
-    `;
-    
-    // فعال‌سازی تقویم شمسی
-    $("#search-date").persianDatepicker({
-        format: 'YYYY/MM/DD',
-        observer: true,
-        initialValue: false
-    });
-    
-    modal.style.display = "block";
-    searchReports(); // نمایش همه گزارشات به صورت پیش‌فرض
-}
-
-// تابع جستجوی گزارشات
-function searchReports() {
-    const date = document.getElementById("search-date").value;
-    const koor = document.getElementById("search-koor").value;
-    const shift = document.getElementById("search-shift").value;
-    
-    let filteredReports = [];
-    
-    if (koor === 'all' || koor === 'koor1') {
-        filteredReports = filteredReports.concat(koor1Reports.map(report => ({...report, koorType: 'کوره ۱'})));
-    }
-    
-    if (koor === 'all' || koor === 'koor2') {
-        filteredReports = filteredReports.concat(koor2Reports.map(report => ({...report, koorType: 'کوره ۲'})));
-    }
-    
-    // فیلتر بر اساس تاریخ
-    if (date) {
-        filteredReports = filteredReports.filter(report => report.date === date);
-    }
-    
-    // فیلتر بر اساس شیفت
-    if (shift !== 'all') {
-        filteredReports = filteredReports.filter(report => report.shift === shift);
-    }
-    
-    displayManagementResults(filteredReports);
-}
-
-// تابع نمایش نتایج مدیریت گزارشات
-function displayManagementResults(reports) {
-    const resultsDiv = document.getElementById("management-results");
-    
-    if (reports.length === 0) {
-        resultsDiv.innerHTML = "<p>گزارشی با معیارهای انتخابی یافت نشد</p>";
-        return;
-    }
-    
-    let html = `
-        <h3>نتایج جستجو (${reports.length} گزارش)</h3>
-        <table class="report-table">
-            <thead>
-                <tr>
-                    <th>تاریخ</th>
-                    <th>شیفت</th>
-                    <th>کوره</th>
-                    <th>کاربر</th>
-                    <th>تولید (m²)</th>
-                    <th>راندمان (%)</th>
-                    <th>زمان ثبت</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-    
-    reports.forEach(report => {
-        let production = 0;
-        
-        if (report.inputs) {
-            // کوره ۱
-            report.inputs.forEach(input => {
-                production += parseFloat(input.production || 0);
-            });
-        } else {
-            // کوره ۲
-            if (report.line2Inputs) {
-                report.line2Inputs.forEach(input => {
-                    production += parseFloat(input.production || 0);
-                });
+        // تابع نمایش مدیریت گزارشات برای مدیر
+        function showReportManagement() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user || (user.role !== 'manager' && user.role !== 'director')) {
+                showNotification('error', 'عدم دسترسی', 'شما دسترسی لازم برای مدیریت گزارشات را ندارید');
+                return;
             }
-            if (report.line3Inputs) {
-                report.line3Inputs.forEach(input => {
-                    production += parseFloat(input.production || 0);
-                });
-            }
-        }
-        
-        const timestamp = new Date(report.timestamp);
-        const timeStr = timestamp.toLocaleTimeString('fa-IR');
-        const dateStr = timestamp.toLocaleDateString('fa-IR');
-        
-        html += `
-            <tr>
-                <td>${report.date}</td>
-                <td>${report.shift}</td>
-                <td>${report.koorType}</td>
-                <td>${report.enteredBy}</td>
-                <td>${production.toFixed(2)}</td>
-                <td>${report.efficiency ? report.efficiency.toFixed(2) : '0.00'}</td>
-                <td>${dateStr} - ${timeStr}</td>
-                <td>
-                    <button class="edit-btn" onclick="editReport('${report.id}', '${report.koorType === 'کوره ۱' ? 'koor1' : 'koor2'}')">
-                        <i class="fas fa-edit"></i> ویرایش
-                    </button>
-                    <button class="delete-btn" onclick="deleteReport('${report.id}', '${report.koorType === 'کوره ۱' ? 'koor1' : 'koor2'}')">
-                        <i class="fas fa-trash"></i> حذف
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
-    
-    html += `
-            </tbody>
-        </table>
-    `;
-    
-    resultsDiv.innerHTML = html;
-}
 
-// تابع ویرایش گزارش
-function editReport(reportId, koorType) {
-    const reports = koorType === 'koor1' ? koor1Reports : koor2Reports;
-    const report = reports.find(r => r.id === reportId);
-    
-    if (!report) {
-        showNotification('error', 'خطا', 'گزارش مورد نظر یافت نشد');
-        return;
-    }
-    
-    // بسته به نوع کوره، تب مربوطه را باز می‌کنیم
-    if (koorType === 'koor1') {
-        openTab(event, 'koor1');
-        
-        // پر کردن فرم با داده‌های گزارش
-        document.getElementById("k1-date").value = report.date;
-        document.getElementById("k1-shift").value = report.shift;
-        document.getElementById("k1-batch").value = report.batchCount;
-        
-        // حذف گروه‌های ورودی موجود
-        const container = document.getElementById("k1-inputs-container");
-        container.innerHTML = '';
-        
-        // ایجاد گروه‌های ورودی بر اساس داده‌های گزارش
-        report.inputs.forEach((input, index) => {
-            addInputGroup('k1');
-            const i = index + 1;
+            const modal = document.getElementById("report-modal");
+            document.getElementById("modal-title").textContent = "مدیریت گزارشات";
             
-            document.getElementById(`k1-width-${i}`).value = input.width;
-            document.getElementById(`k1-weight-${i}`).value = input.weight;
-            document.getElementById(`k1-thickness-${i}`).value = input.thickness;
-            document.getElementById(`k1-design-${i}`).value = input.design;
-            document.getElementById(`k1-speed-${i}`).value = input.speed;
-            document.getElementById(`k1-hours-${i}`).value = input.hours;
-            document.getElementById(`k1-delivery-width-${i}`).value = input.deliveryWidth;
-            document.getElementById(`k1-delivery-length-${i}`).value = input.deliveryLength;
-            document.getElementById(`k1-production-${i}`).value = input.production;
-        });
-        
-        // ذخیره شناسه گزارش برای به‌روزرسانی
-        window.editingReportId = reportId;
-        window.editingKoorType = koorType;
-        
-        // تغییر متن دکمه ذخیره
-        const saveBtn = document.querySelector('#koor1 .button-group .success');
-        saveBtn.innerHTML = '<i class="fas fa-save"></i> به‌روزرسانی';
-        saveBtn.onclick = updateKoor1Report;
-        
-    } else {
-        openTab(event, 'koor2');
-        
-        // پر کردن فرم با داده‌های گزارش
-        document.getElementById("k2-date").value = report.date;
-        document.getElementById("k2-shift").value = report.shift;
-        document.getElementById("k2-batch").value = report.batchCount;
-        
-        // حذف گروه‌های ورودی موجود
-        const line2Container = document.getElementById("k2-line2-inputs-container");
-        const line3Container = document.getElementById("k2-line3-inputs-container");
-        line2Container.innerHTML = '';
-        line3Container.innerHTML = '';
-        
-        // ایجاد گروه‌های ورودی خط ۲
-        if (report.line2Inputs) {
-            report.line2Inputs.forEach((input, index) => {
-                addInputGroup('k2-line2');
-                const i = index + 1;
-                
-                document.getElementById(`k2-line2-width-${i}`).value = input.width;
-                document.getElementById(`k2-line2-weight-${i}`).value = input.weight;
-                document.getElementById(`k2-line2-thickness-${i}`).value = input.thickness;
-                document.getElementById(`k2-line2-design-${i}`).value = input.design;
-                document.getElementById(`k2-line2-speed-${i}`).value = input.speed;
-                document.getElementById(`k2-line2-hours-${i}`).value = input.hours;
-                document.getElementById(`k2-line2-delivery-width-${i}`).value = input.deliveryWidth;
-                document.getElementById(`k2-line2-delivery-length-${i}`).value = input.deliveryLength;
-                document.getElementById(`k2-line2-production-${i}`).value = input.production;
+            // ایجاد محتوای مدیریت گزارشات
+            const modalBody = document.querySelector('.modal-body');
+            modalBody.innerHTML = `
+                <div class="report-management">
+                    <div class="search-filters">
+                        <div class="form-group">
+                            <label for="search-date">تاریخ:</label>
+                            <input type="text" id="search-date" class="date-picker">
+                        </div>
+                        <div class="form-group">
+                            <label for="search-koor">کوره:</label>
+                            <select id="search-koor">
+                                <option value="all">همه</option>
+                                <option value="koor1">کوره ۱</option>
+                                <option value="koor2">کوره ۲</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-shift">شیفت:</label>
+                            <select id="search-shift">
+                                <option value="all">همه</option>
+                                <option value="6-14">۶ تا ۱۴</option>
+                                <option value="14-22">۱۴ تا ۲۲</option>
+                                <option value="22-6">۲۲ تا ۶</option>
+                            </select>
+                        </div>
+                        <button onclick="searchReports()" class="search-btn">
+                            <i class="fas fa-search"></i> جستجو
+                        </button>
+                    </div>
+                    <div id="management-results" class="management-results">
+                        <!-- نتایج جستجو اینجا نمایش داده می‌شود -->
+                    </div>
+                </div>
+            `;
+            
+            // فعال‌سازی تقویم شمسی
+            $("#search-date").persianDatepicker({
+                format: 'YYYY/MM/DD',
+                observer: true,
+                initialValue: false
             });
+            
+            modal.style.display = "block";
+            searchReports(); // نمایش همه گزارشات به صورت پیش‌فرض
         }
-        
-        // ایجاد گروه‌های ورودی خط ۳
-        if (report.line3Inputs) {
-            report.line3Inputs.forEach((input, index) => {
-                addInputGroup('k2-line3');
-                const i = index + 1;
-                
-                document.getElementById(`k2-line3-width-${i}`).value = input.width;
-                document.getElementById(`k2-line3-weight-${i}`).value = input.weight;
-                document.getElementById(`k2-line3-thickness-${i}`).value = input.thickness;
-                document.getElementById(`k2-line3-design-${i}`).value = input.design;
-                document.getElementById(`k2-line3-speed-${i}`).value = input.speed;
-                document.getElementById(`k2-line3-hours-${i}`).value = input.hours;
-                document.getElementById(`k2-line3-delivery-width-${i}`).value = input.deliveryWidth;
-                document.getElementById(`k2-line3-delivery-length-${i}`).value = input.deliveryLength;
-                document.getElementById(`k2-line3-production-${i}`).value = input.production;
-            });
+
+        // تابع جستجوی گزارشات
+        function searchReports() {
+            const date = document.getElementById("search-date").value;
+            const koor = document.getElementById("search-koor").value;
+            const shift = document.getElementById("search-shift").value;
+            
+            let filteredReports = [];
+            
+            if (koor === 'all' || koor === 'koor1') {
+                filteredReports = filteredReports.concat(koor1Reports.map(report => ({...report, koorType: 'کوره ۱'})));
+            }
+            
+            if (koor === 'all' || koor === 'koor2') {
+                filteredReports = filteredReports.concat(koor2Reports.map(report => ({...report, koorType: 'کوره ۲'})));
+            }
+            
+            // فیلتر بر اساس تاریخ
+            if (date) {
+                filteredReports = filteredReports.filter(report => report.date === date);
+            }
+            
+            // فیلتر بر اساس شیفت
+            if (shift !== 'all') {
+                filteredReports = filteredReports.filter(report => report.shift === shift);
+            }
+            
+            displayManagementResults(filteredReports);
         }
-        
-        // ذخیره شناسه گزارش برای به‌روزرسانی
-        window.editingReportId = reportId;
-        window.editingKoorType = koorType;
-        
-        // تغییر متن دکمه ذخیره
-        const saveBtn = document.querySelector('#koor2 .button-group .success');
-        saveBtn.innerHTML = '<i class="fas fa-save"></i> به‌روزرسانی';
-        saveBtn.onclick = updateKoor2Report;
-    }
-    
-    closeModal();
-    showNotification('info', 'ویرایش گزارش', 'فرم با داده‌های گزارش انتخابی پر شد. پس از ویرایش، روی دکمه به‌روزرسانی کلیک کنید.');
-}
 
-// تابع به‌روزرسانی گزارش کوره ۱
-function updateKoor1Report() {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-    if (!user || !window.koor1Results) {
-        showNotification('error', 'خطا در به‌روزرسانی', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
-        return;
-    }
-
-    const reportIndex = koor1Reports.findIndex(r => r.id === window.editingReportId);
-    if (reportIndex === -1) {
-        showNotification('error', 'خطا', 'گزارش مورد نظر یافت نشد');
-        return;
-    }
-
-    const updatedReport = {
-        ...window.koor1Results,
-        date: document.getElementById("k1-date").value,
-        shift: document.getElementById("k1-shift").value,
-        batchCount: document.getElementById("k1-batch").value,
-        enteredBy: user.name,
-        userId: Object.keys(users).find(key => users[key].name === user.name),
-        timestamp: new Date().toISOString(),
-        id: window.editingReportId // حفظ شناسه اصلی
-    };
-
-    koor1Reports[reportIndex] = updatedReport;
-    localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
-    
-    // بازنشانی دکمه ذخیره
-    const saveBtn = document.querySelector('#koor1 .button-group .success');
-    saveBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> ذخیره در ابر';
-    saveBtn.onclick = saveKoor1;
-    
-    delete window.editingReportId;
-    delete window.editingKoorType;
-    
-    showNotification('success', 'به‌روزرسانی موفق', 'گزارش با موفقیت به‌روزرسانی شد');
-    updateLiveStats();
-}
-
-// تابع به‌روزرسانی گزارش کوره ۲
-function updateKoor2Report() {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-    if (!user || !window.koor2Results) {
-        showNotification('error', 'خطا در به‌روزرسانی', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
-        return;
-    }
-
-    const reportIndex = koor2Reports.findIndex(r => r.id === window.editingReportId);
-    if (reportIndex === -1) {
-        showNotification('error', 'خطا', 'گزارش مورد نظر یافت نشد');
-        return;
-    }
-
-    const updatedReport = {
-        ...window.koor2Results,
-        date: document.getElementById("k2-date").value,
-        shift: document.getElementById("k2-shift").value,
-        batchCount: document.getElementById("k2-batch").value,
-        enteredBy: user.name,
-        userId: Object.keys(users).find(key => users[key].name === user.name),
-        timestamp: new Date().toISOString(),
-        id: window.editingReportId // حفظ شناسه اصلی
-    };
-
-    koor2Reports[reportIndex] = updatedReport;
-    localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
-    
-    // بازنشانی دکمه ذخیره
-    const saveBtn = document.querySelector('#koor2 .button-group .success');
-    saveBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> ذخیره در ابر';
-    saveBtn.onclick = saveKoor2;
-    
-    delete window.editingReportId;
-    delete window.editingKoorType;
-    
-    showNotification('success', 'به‌روزرسانی موفق', 'گزارش با موفقیت به‌روزرسانی شد');
-    updateLiveStats();
-}
-
-// تابع حذف گزارش
-function deleteReport(reportId, koorType) {
-    if (!confirm('آیا از حذف این گزارش اطمینان دارید؟ این عمل قابل بازگشت نیست.')) {
-        return;
-    }
-    
-    const reports = koorType === 'koor1' ? koor1Reports : koor2Reports;
-    const reportIndex = reports.findIndex(r => r.id === reportId);
-    
-    if (reportIndex === -1) {
-        showNotification('error', 'خطا', 'گزارش مورد نظر یافت نشد');
-        return;
-    }
-    
-    reports.splice(reportIndex, 1);
-    localStorage.setItem(koorType + 'Reports', JSON.stringify(reports));
-    
-    showNotification('success', 'حذف موفق', 'گزارش با موفقیت حذف شد');
-    searchReports(); // به‌روزرسانی لیست
-    updateLiveStats();
-}
-        function displayReports(reports, title) {
+        // تابع نمایش نتایج مدیریت گزارشات
+        function displayManagementResults(reports) {
+            const resultsDiv = document.getElementById("management-results");
+            
             if (reports.length === 0) {
-                document.getElementById("reports-results").innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
+                resultsDiv.innerHTML = "<p>گزارشی با معیارهای انتخابی یافت نشد</p>";
+                return;
+            }
+            
+            let html = `
+                <h3>نتایج جستجو (${reports.length} گزارش)</h3>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>تاریخ</th>
+                            <th>شیفت</th>
+                            <th>کوره</th>
+                            <th>کاربر</th>
+                            <th>تولید (m²)</th>
+                            <th>راندمان (%)</th>
+                            <th>زمان ثبت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            reports.forEach(report => {
+                let production = 0;
+                
+                if (report.inputs) {
+                    // کوره ۱
+                    report.inputs.forEach(input => {
+                        production += parseFloat(input.production || 0);
+                    });
+                } else {
+                    // کوره ۲
+                    if (report.line2Inputs) {
+                        report.line2Inputs.forEach(input => {
+                            production += parseFloat(input.production || 0);
+                        });
+                    }
+                    if (report.line3Inputs) {
+                        report.line3Inputs.forEach(input => {
+                            production += parseFloat(input.production || 0);
+                        });
+                    }
+                }
+                
+                const timestamp = new Date(report.timestamp);
+                const timeStr = timestamp.toLocaleTimeString('fa-IR');
+                const dateStr = timestamp.toLocaleDateString('fa-IR');
+                
+                html += `
+                    <tr>
+                        <td>${report.date}</td>
+                        <td>${report.shift}</td>
+                        <td>${report.koorType}</td>
+                        <td>${report.enteredBy}</td>
+                        <td>${production.toFixed(2)}</td>
+                        <td>${report.efficiency ? report.efficiency.toFixed(2) : '0.00'}</td>
+                        <td>${dateStr} - ${timeStr}</td>
+                        <td>
+                            <button class="edit-btn" onclick="editReport('${report.id}', '${report.koorType === 'کوره ۱' ? 'koor1' : 'koor2'}')">
+                                <i class="fas fa-edit"></i> ویرایش
+                            </button>
+                            <button class="delete-btn" onclick="deleteReport('${report.id}', '${report.koorType === 'کوره ۱' ? 'koor1' : 'koor2'}')">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            resultsDiv.innerHTML = html;
+        }
+
+        // تابع ویرایش گزارش
+        function editReport(reportId, koorType) {
+            const reports = koorType === 'koor1' ? koor1Reports : koor2Reports;
+            const report = reports.find(r => r.id === reportId);
+            
+            if (!report) {
+                showNotification('error', 'خطا', 'گزارش مورد نظر یافت نشد');
+                return;
+            }
+            
+            // بسته به نوع کوره، تب مربوطه را باز می‌کنیم
+            if (koorType === 'koor1') {
+                openTab(event, 'koor1');
+                
+                // پر کردن فرم با داده‌های گزارش
+                document.getElementById("k1-date").value = report.date;
+                document.getElementById("k1-shift").value = report.shift;
+                document.getElementById("k1-batch").value = report.batchCount;
+                
+                // حذف گروه‌های ورودی موجود
+                const container = document.getElementById("k1-inputs-container");
+                container.innerHTML = '';
+                
+                // ایجاد گروه‌های ورودی بر اساس داده‌های گزارش
+                report.inputs.forEach((input, index) => {
+                    addInputGroup('k1');
+                    const i = index + 1;
+                    
+                    document.getElementById(`k1-width-${i}`).value = input.width;
+                    document.getElementById(`k1-weight-${i}`).value = input.weight;
+                    document.getElementById(`k1-thickness-${i}`).value = input.thickness;
+                    document.getElementById(`k1-design-${i}`).value = input.design;
+                    document.getElementById(`k1-speed-${i}`).value = input.speed;
+                    document.getElementById(`k1-hours-${i}`).value = input.hours;
+                    document.getElementById(`k1-delivery-width-${i}`).value = input.deliveryWidth;
+                    document.getElementById(`k1-delivery-length-${i}`).value = input.deliveryLength;
+                    document.getElementById(`k1-production-${i}`).value = input.production;
+                });
+                
+                // ذخیره شناسه گزارش برای به‌روزرسانی
+                window.editingReportId = reportId;
+                window.editingKoorType = koorType;
+                
+                // تغییر متن دکمه ذخیره
+                const saveBtn = document.querySelector('#koor1 .button-group .success');
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> به‌روزرسانی';
+                saveBtn.onclick = updateKoor1Report;
+                
+            } else {
+                openTab(event, 'koor2');
+                
+                // پر کردن فرم با داده‌های گزارش
+                document.getElementById("k2-date").value = report.date;
+                document.getElementById("k2-shift").value = report.shift;
+                document.getElementById("k2-batch").value = report.batchCount;
+                
+                // حذف گروه‌های ورودی موجود
+                const line2Container = document.getElementById("k2-line2-inputs-container");
+                const line3Container = document.getElementById("k2-line3-inputs-container");
+                line2Container.innerHTML = '';
+                line3Container.innerHTML = '';
+                
+                // ایجاد گروه‌های ورودی خط ۲
+                if (report.line2Inputs) {
+                    report.line2Inputs.forEach((input, index) => {
+                        addInputGroup('k2-line2');
+                        const i = index + 1;
+                        
+                        document.getElementById(`k2-line2-width-${i}`).value = input.width;
+                        document.getElementById(`k2-line2-weight-${i}`).value = input.weight;
+                        document.getElementById(`k2-line2-thickness-${i}`).value = input.thickness;
+                        document.getElementById(`k2-line2-design-${i}`).value = input.design;
+                        document.getElementById(`k2-line2-speed-${i}`).value = input.speed;
+                        document.getElementById(`k2-line2-hours-${i}`).value = input.hours;
+                        document.getElementById(`k2-line2-delivery-width-${i}`).value = input.deliveryWidth;
+                        document.getElementById(`k2-line2-delivery-length-${i}`).value = input.deliveryLength;
+                        document.getElementById(`k2-line2-production-${i}`).value = input.production;
+                    });
+                }
+                
+                // ایجاد گروه‌های ورودی خط ۳
+                if (report.line3Inputs) {
+                    report.line3Inputs.forEach((input, index) => {
+                        addInputGroup('k2-line3');
+                        const i = index + 1;
+                        
+                        document.getElementById(`k2-line3-width-${i}`).value = input.width;
+                        document.getElementById(`k2-line3-weight-${i}`).value = input.weight;
+                        document.getElementById(`k2-line3-thickness-${i}`).value = input.thickness;
+                        document.getElementById(`k2-line3-design-${i}`).value = input.design;
+                        document.getElementById(`k2-line3-speed-${i}`).value = input.speed;
+                        document.getElementById(`k2-line3-hours-${i}`).value = input.hours;
+                        document.getElementById(`k2-line3-delivery-width-${i}`).value = input.deliveryWidth;
+                        document.getElementById(`k2-line3-delivery-length-${i}`).value = input.deliveryLength;
+                        document.getElementById(`k2-line3-production-${i}`).value = input.production;
+                    });
+                }
+                
+                // ذخیره شناسه گزارش برای به‌روزرسانی
+                window.editingReportId = reportId;
+                window.editingKoorType = koorType;
+                
+                // تغییر متن دکمه ذخیره
+                const saveBtn = document.querySelector('#koor2 .button-group .success');
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> به‌روزرسانی';
+                saveBtn.onclick = updateKoor2Report;
+            }
+            
+            closeModal();
+            showNotification('info', 'ویرایش گزارش', 'فرم با داده‌های گزارش انتخابی پر شد. پس از ویرایش، روی دکمه به‌روزرسانی کلیک کنید.');
+        }
+
+        // تابع به‌روزرسانی گزارش کوره ۱
+        function updateKoor1Report() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user || !window.koor1Results) {
+                showNotification('error', 'خطا در به‌روزرسانی', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
+                return;
+            }
+
+            const reportIndex = koor1Reports.findIndex(r => r.id === window.editingReportId);
+            if (reportIndex === -1) {
+                showNotification('error', 'خطا', 'گزارش مورد نظر یافت نشد');
+                return;
+            }
+
+            const updatedReport = {
+                ...window.koor1Results,
+                date: document.getElementById("k1-date").value,
+                shift: document.getElementById("k1-shift").value,
+                batchCount: document.getElementById("k1-batch").value,
+                enteredBy: user.name,
+                userId: user.userId,
+                timestamp: new Date().toISOString(),
+                id: window.editingReportId // حفظ شناسه اصلی
+            };
+
+            koor1Reports[reportIndex] = updatedReport;
+            localStorage.setItem('koor1Reports', JSON.stringify(koor1Reports));
+            
+            // بازنشانی دکمه ذخیره
+            const saveBtn = document.querySelector('#koor1 .button-group .success');
+            saveBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> ذخیره در ابر';
+            saveBtn.onclick = saveKoor1;
+            
+            delete window.editingReportId;
+            delete window.editingKoorType;
+            
+            showNotification('success', 'به‌روزرسانی موفق', 'گزارش با موفقیت به‌روزرسانی شد');
+            updateLiveStats();
+        }
+
+        // تابع به‌روزرسانی گزارش کوره ۲
+        function updateKoor2Report() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user || !window.koor2Results) {
+                showNotification('error', 'خطا در به‌روزرسانی', 'لطفاً ابتدا وارد سیستم شوید و محاسبات را انجام دهید');
+                return;
+            }
+
+            const reportIndex = koor2Reports.findIndex(r => r.id === window.editingReportId);
+            if (reportIndex === -1) {
+                showNotification('error', 'خطا', 'گزارش مورد نظر یافت نشد');
+                return;
+            }
+
+            const updatedReport = {
+                ...window.koor2Results,
+                date: document.getElementById("k2-date").value,
+                shift: document.getElementById("k2-shift").value,
+                batchCount: document.getElementById("k2-batch").value,
+                enteredBy: user.name,
+                userId: user.userId,
+                timestamp: new Date().toISOString(),
+                id: window.editingReportId // حفظ شناسه اصلی
+            };
+
+            koor2Reports[reportIndex] = updatedReport;
+            localStorage.setItem('koor2Reports', JSON.stringify(koor2Reports));
+            
+            // بازنشانی دکمه ذخیره
+            const saveBtn = document.querySelector('#koor2 .button-group .success');
+            saveBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> ذخیره در ابر';
+            saveBtn.onclick = saveKoor2;
+            
+            delete window.editingReportId;
+            delete window.editingKoorType;
+            
+            showNotification('success', 'به‌روزرسانی موفق', 'گزارش با موفقیت به‌روزرسانی شد');
+            updateLiveStats();
+        }
+
+        // تابع حذف گزارش
+        function deleteReport(reportId, koorType) {
+            if (!confirm('آیا از حذف این گزارش اطمینان دارید؟ این عمل قابل بازگشت نیست.')) {
+                return;
+            }
+            
+            const reports = koorType === 'koor1' ? koor1Reports : koor2Reports;
+            const reportIndex = reports.findIndex(r => r.id === reportId);
+            
+            if (reportIndex === -1) {
+                showNotification('error', 'خطا', 'گزارش مورد نظر یافت نشد');
+                return;
+            }
+            
+            reports.splice(reportIndex, 1);
+            localStorage.setItem(koorType + 'Reports', JSON.stringify(reports));
+            
+            showNotification('success', 'حذف موفق', 'گزارش با موفقیت حذف شد');
+            searchReports(); // به‌روزرسانی لیست
+            updateLiveStats();
+        }
+
+        function displayReports(reports, title) {
+            const resultsDiv = document.getElementById("reports-results");
+            
+            if (reports.length === 0) {
+                resultsDiv.innerHTML = "<p>گزارشی برای بازه انتخابی یافت نشد</p>";
                 return;
             }
 
@@ -2601,7 +2605,7 @@ function deleteReport(reportId, koorType) {
                 totalEfficiency += report.efficiency;
             });
 
-            const avgEfficiency = totalEfficiency / reports.length;
+            const avgEfficiency = reports.length > 0 ? totalEfficiency / reports.length : 0;
 
             html += `
                     </tbody>
@@ -2619,7 +2623,7 @@ function deleteReport(reportId, koorType) {
                 </table>
             `;
 
-            document.getElementById("reports-results").innerHTML = html;
+            resultsDiv.innerHTML = html;
         }
 
         // توابع عمومی
@@ -2963,55 +2967,52 @@ function deleteReport(reportId, koorType) {
 
         // بررسی وضعیت لاگین هنگام بارگذاری صفحه
         window.onload = function() {
-           // پاک کردن کاربر قبلی برای تست
-           // localStorage.removeItem('currentUser');
-    
-           const user = localStorage.getItem('currentUser');
-           if(user) {
-            try {
-            const userObj = JSON.parse(user);
-            // بررسی معتبر بودن کاربر
-            if(userObj && userObj.name && users[userObj.userId]) {
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('app-content').style.display = 'block';
-                
-                document.getElementById('welcome-message').innerHTML = `
-                    <p>کاربر گرامی: <strong>${userObj.name}</strong></p>
-                    <small>سطح دسترسی: ${getRoleName(userObj.role)}</small>
-                `;
-                setupAccessControls(userObj.role);
-                
-                // به روزرسانی وضعیت اتصال
-                updateConnectionStatus();
-                updateLiveStats();
-                startClock();
-                loadPersianDatepicker();
+            const user = localStorage.getItem('currentUser');
+            if(user) {
+                try {
+                    const userObj = JSON.parse(user);
+                    // بررسی معتبر بودن کاربر
+                    if(userObj && userObj.name && users[userObj.userId]) {
+                        document.getElementById('login-section').style.display = 'none';
+                        document.getElementById('app-content').style.display = 'block';
+                        
+                        document.getElementById('welcome-message').innerHTML = `
+                            <p>کاربر گرامی: <strong>${userObj.name}</strong></p>
+                            <small>سطح دسترسی: ${getRoleName(userObj.role)}</small>
+                        `;
+                        setupAccessControls(userObj.role);
+                        
+                        // به روزرسانی وضعیت اتصال
+                        updateConnectionStatus();
+                        updateLiveStats();
+                        startClock();
+                        loadPersianDatepicker();
+                    } else {
+                        // اگر کاربر معتبر نیست، از سیستم خارج شو
+                        localStorage.removeItem('currentUser');
+                        showLoginPage();
+                    }
+                } catch (e) {
+                    // اگر خطایی در پارس کردن JSON بود
+                    localStorage.removeItem('currentUser');
+                    showLoginPage();
+                }
             } else {
-                // اگر کاربر معتبر نیست، از سیستم خارج شو
-                localStorage.removeItem('currentUser');
                 showLoginPage();
             }
-            } catch (e) {
-            // اگر خطایی در پارس کردن JSON بود
-            localStorage.removeItem('currentUser');
-            showLoginPage();
-            }
-            } else {
-            showLoginPage();
-            }
-    
-        // فعال‌سازی تقویم شمسی
-           $(".date-picker").persianDatepicker({
-           format: 'YYYY/MM/DD',
-           observer: true,
-           initialValue: false
-        });
-     };
+            
+            // فعال‌سازی تقویم شمسی
+            $(".date-picker").persianDatepicker({
+                format: 'YYYY/MM/DD',
+                observer: true,
+                initialValue: false
+            });
+        };
 
-         function showLoginPage() {
+        function showLoginPage() {
             document.getElementById('login-section').style.display = 'flex';
             document.getElementById('app-content').style.display = 'none';
-      }
+        }
     </script>
 </body>
 </html>
