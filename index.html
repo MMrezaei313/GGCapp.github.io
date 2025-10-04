@@ -917,8 +917,11 @@
             <button class="login-btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> ورود به سیستم</button>
             <div style="margin-top: 20px; text-align: center; font-size: 14px; color: #666;">
                 <p>برای ورود به سیستم از اطلاعات زیر استفاده کنید:</p>
-                <p>نام کاربری: supervisor1 | رمز عبور: s123</p>
-                <p>نام کاربری: manager1 | رمز عبور: m789</p>
+                <p>نام کاربری: abolfazl | رمز عبور </p>
+                <p>نام کاربری: morteza | رمز عبور </p>
+                <p>نام کاربری: reza | رمز عبور </p>
+                <p>نام کاربری: director | رمز عبور </p>
+                <p>نام کاربری: manager | رمز عبور </p>
             </div>
         </div>
     </div>
@@ -1353,10 +1356,11 @@
     <script>
         // سیستم کاربران
         const users = {
-            "supervisor1": {name: "سرپرست شیفت صبح", password: "s123", role: "supervisor"},
-            "supervisor2": {name: "سرپرست شیفت عصر", password: "s456", role: "supervisor"},
-            "manager1": {name: "مدیر تولید", password: "m789", role: "manager"},
-            "director1": {name: "رییس واحد تولید", password: "d012", role: "director"}
+            "abolfazl": {name: "سرپرست شیفت صبح", password: "a321", role: "supervisor"},
+            "morteza": {name: "سرپرست شیفت عصر", password: "m456", role: "supervisor"},
+            "reza": {name: "سرپرست شیفت شب", password: "r789", role: "supervisor"},
+            "manager": {name: "مدیر تولید", password: "2866", role: "manager"},
+            "director": {name: "رییس تولید", password: "d012", role: "director"}
         };
 
         // متغیرهای گزارشات
@@ -1518,7 +1522,7 @@ function setupAdvancedRealTimeValidation() {
             const roles = {
                 'supervisor': 'سرپرست تولید',
                 'manager': 'مدیر تولید',
-                'director': 'رییس واحد'
+                'director': 'رییس تولید'
             };
             return roles[role] || role;
         }
