@@ -882,6 +882,33 @@
              border-color: var(--warning-color) !important;
              box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2) !important;
          }
+        /* استایل‌های وضعیت تکراری بودن */
+         .duplicate-status {
+             padding: 8px 12px;
+             margin: 10px 0;
+             border-radius: 4px;
+             font-size: 14px;
+             display: flex;
+             align-items: center;
+             gap: 8px;
+        }
+
+         .duplicate-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+         .duplicate-success {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+         .input-warning {
+            border-color: var(--warning-color) !important;
+            box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2) !important;
+        } 
     </style>
 </head>
 <body>
@@ -1356,11 +1383,11 @@
     <script>
         // سیستم کاربران
         const users = {
-            "abolfazl": {name: "سرپرست شیفت صبح", password: "a321", role: "supervisor"},
-            "morteza": {name: "سرپرست شیفت عصر", password: "m456", role: "supervisor"},
-            "reza": {name: "سرپرست شیفت شب", password: "r789", role: "supervisor"},
-            "manager": {name: "مدیر تولید", password: "2866", role: "manager"},
-            "director": {name: "رییس تولید", password: "d012", role: "director"}
+            "abolfazl": {name: "A سرپرست شیفت ", password: "a321", role: "supervisor"},
+            "morteza": {name: "B سرپرست شیفت ", password: "m456", role: "supervisor"},
+            "reza": {name: "C سرپرست شیفت ", password: "r789", role: "supervisor"},
+            "director": {name: "رییس تولید", password: "d012", role: "director"},
+            "manager": {name: "مدیر تولید", password: "2866", role: "manager"}
         };
 
         // متغیرهای گزارشات
@@ -1446,17 +1473,75 @@
                 return report.date === date && report.shift === shift;
             });
         }
-        // تابع بهبود یافته برای نمایش وضعیت تکراری بودن
-function showDuplicateStatus(koorType, dateElement, shiftElement) {
-    const date = dateElement.value;
-    const shift = shiftElement.value;
+        // تابع نمایش وضعیت تکراری بودن
+        function showDuplicateStatus(koorType, dateElement, shiftElement) {
+           const date = dateElement.value;
+           const shift = shiftElement.value;
     
-    if (!date || !shift) return;
+           if (!date || !shift) return;
     
-    const isDuplicate = isDuplicateReport(koorType, date, shift);
-    const statusElement = document.getElementById(`${koorType}-duplicate-status`) || createDuplicateStatusElement(koorType);
+           const isDuplicate = isDuplicateReport(koorType, date, shift);
+           const statusElement = document.getElementById(`${koorType}-duplicate-status`) || createDuplicateStatusElement(koorType);
     
-    if (isDuplicate) {
+           if (isDuplicate) {
+           statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> برای این تاریخ و شیفت قبلاً گزارشی ثبت شده است';
+           statusElement.className = 'duplicate-warning';
+           dateElement.classList.add('input-warning');
+           shiftElement.classList.add('input-warning');
+           } else {
+           statusElement.innerHTML = '<i class="fas fa-check-circle"></i> تاریخ و شیفت قابل استفاده است';
+           statusElement.className = 'duplicate-success';
+           dateElement.classList.remove('input-warning');
+           shiftElement.classList.remove('input-warning');
+           }
+      }
+
+      // ایجاد المان وضعیت
+      function createDuplicateStatusElement(koorType) {
+          const statusElement = document.createElement('div');
+          statusElement.id = `${koorType}-duplicate-status`;
+          statusElement.className = 'duplicate-status';
+    
+      // پیدا کردن محل مناسب برای قرار دادن المان وضعیت
+          const shiftElement = document.getElementById(`${koorType}-shift`);
+          if (shiftElement && shiftElement.parentNode) {
+          shiftElement.parentNode.parentNode.insertBefore(statusElement, shiftElement.parentNode.nextSibling);
+      }
+    
+         return statusElement;
+      }
+
+       // فعال کردن بررسی لحظه‌ای
+       function setupRealTimeValidation() {
+       // برای کوره ۱
+          const k1Date = document.getElementById("k1-date");
+          const k1Shift = document.getElementById("k1-shift");
+     
+          if (k1Date && k1Shift) {
+          k1Date.addEventListener('change', () => showDuplicateStatus('k1', k1Date, k1Shift));
+          k1Shift.addEventListener('change', () => showDuplicateStatus('k1', k1Date, k1Shift));
+       }
+    
+      // برای کوره ۲
+          const k2Date = document.getElementById("k2-date");
+          const k2Shift = document.getElementById("k2-shift");
+    
+         if (k2Date && k2Shift) {
+          k2Date.addEventListener('change', () => showDuplicateStatus('k2', k2Date, k2Shift));
+          k2Shift.addEventListener('change', () => showDuplicateStatus('k2', k2Date, k2Shift));
+         }
+      }
+     // تابع بهبود یافته برای نمایش وضعیت تکراری بودن
+     function showDuplicateStatus(koorType, dateElement, shiftElement) {
+         const date = dateElement.value;
+         const shift = shiftElement.value;
+    
+         if (!date || !shift) return;
+    
+         const isDuplicate = isDuplicateReport(koorType, date, shift);
+         const statusElement = document.getElementById(`${koorType}-duplicate-status`) || createDuplicateStatusElement(koorType);
+    
+        if (isDuplicate) {
         statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> برای این تاریخ و شیفت قبلاً گزارشی ثبت شده است';
         statusElement.className = 'duplicate-warning';
         dateElement.classList.add('input-warning');
@@ -2425,6 +2510,12 @@ function setupAdvancedRealTimeValidation() {
                 document.getElementById("k1-date").value = report.date;
                 document.getElementById("k1-shift").value = report.shift;
                 document.getElementById("k1-batch").value = report.batchCount;
+
+            setTimeout(() => {
+                const k1Date = document.getElementById("k1-date");
+                const k1Shift = document.getElementById("k1-shift");
+                showDuplicateStatus('k1', k1Date, k1Shift);
+            }, 100);
                 
                 // حذف گروه‌های ورودی موجود
                 const container = document.getElementById("k1-inputs-container");
