@@ -1606,16 +1606,16 @@ function setupAdvancedRealTimeValidation() {
         function getRoleName(role) {
             const roles = {
                 'supervisor': 'سرپرست تولید',
-                'manager': 'مدیر تولید',
-                'director': 'رییس تولید'
+                'director': 'رییس تولید',
+                'manager': 'مدیر تولید'
             };
             return roles[role] || role;
         }
 
         function setupAccessControls(role) {
             const isSupervisor = role === 'supervisor';
-            const isManager = role === 'manager';
             const isDirector = role === 'director';
+            const isManager = role === 'manager';
             
             // نمایش تب مدیریت گزارشات برای مدیران
             const managementTab = document.getElementById('management-tab');
