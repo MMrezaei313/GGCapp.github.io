@@ -909,6 +909,24 @@
             border-color: var(--warning-color) !important;
             box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2) !important;
         } 
+        .form-group textarea {
+           flex: 1;
+           padding: 10px;
+           border: 1px solid #ddd;
+           border-radius: 4px;
+           font-size: 14px;
+           font-family: inherit;
+           resize: vertical;
+           min-height: 80px;
+        }
+
+        .efficiency-explanation {
+           border: 2px solid var(--warning-color);
+           background-color: #fffaf0;
+           padding: 15px;
+           border-radius: 5px;
+           margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -990,6 +1008,9 @@
             </button>
             <button class="tab-button" onclick="openTab(event, 'reports')">
                 <i class="fas fa-chart-line"></i> گزارشات
+            </button>
+            <button class="tab-button" id="analysis-tab" onclick="openTab(event, 'analysis')" style="display:none;">
+               <i class="fas fa-chart-bar"></i> تحلیل و داشبورد
             </button>
             <button class="tab-button" id="management-tab" onclick="showReportManagement()" style="display:none;">
                 <i class="fas fa-cog"></i> مدیریت گزارشات
@@ -1100,6 +1121,17 @@
                     <input type="number" id="k1-batch">
                     <div class="error-message" id="k1-batch-error"></div>
                 </div>
+
+                <div class="form-group">
+                    <label for="k1-supervisor-report"><i class="fas fa-clipboard"></i> گزارش سرپرست شیفت:</label>
+                    <textarea id="k1-supervisor-report" rows="4" placeholder="گزارش عملکرد، مشکلات، توضیحات..."></textarea>
+                </div>
+                <div id="k1-efficiency-explanation" class="efficiency-explanation" style="display:none;">
+                    <div class="form-group">
+                       <label for="k1-efficiency-reason"><i class="fas fa-exclamation-triangle"></i> توضیحات کاهش راندمان (زیر ۸۰٪):</label>
+                       <textarea id="k1-efficiency-reason" rows="3" placeholder="علت کاهش راندمان را شرح دهید..."></textarea>
+                </div>
+
                 
                 <div class="button-group">
                     <button onclick="calculateKoor1()">
@@ -1309,6 +1341,18 @@
                     <input type="number" id="k2-batch">
                     <div class="error-message" id="k2-batch-error"></div>
                 </div>
+
+                <div class="form-group">
+                    <label for="k2-supervisor-report"><i class="fas fa-clipboard"></i> گزارش سرپرست شیفت:</label>
+                    <textarea id="k2-supervisor-report" rows="4" placeholder="گزارش عملکرد، مشکلات، توضیحات..."></textarea>
+                </div>
+
+                <div id="k2-efficiency-explanation" class="efficiency-explanation" style="display:none;">
+                    <div class="form-group">
+                       <label for="k2-efficiency-reason"><i class="fas fa-exclamation-triangle"></i> توضیحات کاهش راندمان (زیر ۸۰٪):</label>
+                       <textarea id="k2-efficiency-reason" rows="3" placeholder="علت کاهش راندمان را شرح دهید..."></textarea>
+                   </div>
+                </div>
                 
                 <div class="button-group">
                     <button onclick="calculateKoor2()">
@@ -1355,6 +1399,15 @@
                 </div>
             </div>
         </div>
+
+        <div id="analysis" class="tab-content">
+          <div class="form-container">
+            <h3><i class="fas fa-chart-bar"></i> تحلیل و داشبورد مدیریتی</h3>
+            <div id="analysis-content">
+               <!-- محتوای تحلیل اینجا نمایش داده می‌شود -->
+           </div>
+        </div>
+      </div>
 
         <!-- مودال گزارشات -->
         <div id="report-modal" class="modal">
@@ -1622,6 +1675,7 @@ function setupAdvancedRealTimeValidation() {
             if (managementTab) {
                 managementTab.style.display = (isManager || isDirector) ? 'inline-block' : 'none';
             }
+                document.getElementById('analysis-tab').style.display = (isManager || isDirector) ? 'inline-block' : 'none';
         }
 
         function loadPersianDatepicker() {
