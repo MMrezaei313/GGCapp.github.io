@@ -1131,6 +1131,7 @@
                        <label for="k1-efficiency-reason"><i class="fas fa-exclamation-triangle"></i> توضیحات کاهش راندمان (زیر ۸۰٪):</label>
                        <textarea id="k1-efficiency-reason" rows="3" placeholder="علت کاهش راندمان را شرح دهید..."></textarea>
                 </div>
+                </div>
 
                 
                 <div class="button-group">
@@ -1907,6 +1908,12 @@ function setupAdvancedRealTimeValidation() {
             const culletConsumption = (totalDailyMelt - ( batchConsumption * 0.815 ));
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
             const efficiency = totalDailyMelt > 0 ? ((totalWeightedThickness * 2 ) / (totalDailyMelt )) * 100 : 0;
+            const efficiencyExplanation = document.getElementById('k1-efficiency-explanation');
+            if (efficiency < 80) {
+              efficiencyExplanation.style.display = 'block';
+            } else {
+              efficiencyExplanation.style.display = 'none';
+            }
 
             const silica = batchCount * 393;
             const sodiumCarbonate = batchCount * 129;
@@ -2060,6 +2067,7 @@ function setupAdvancedRealTimeValidation() {
             let line2DailyMelt = 0;
             let line2Production = 0;
             let line2WeightedThickness = 0;
+            let totalWeightedThickness2 = 0;
             
             line2InputGroups.forEach((group, index) => {
                 const i = index + 1;
@@ -2081,6 +2089,7 @@ function setupAdvancedRealTimeValidation() {
             let line3DailyMelt = 0;
             let line3Production = 0;
             let line3WeightedThickness = 0;
+            let totalWeightedThickness3 = 0;
             
             line3InputGroups.forEach((group, index) => {
                 const i = index + 1;
@@ -2108,6 +2117,12 @@ function setupAdvancedRealTimeValidation() {
             
             const totalProdWeight = (( line2Production * 2 * (line2WeightedThickness/line2Production) ) + ( line3Production * 2 * (line3WeightedThickness/line3Production) ));
             const efficiency = totalDailyMelt > 0 ? (((totalWeightedThickness2 + totalWeightedThickness3 ) * 2 ) / (totalDailyMelt )) * 100 : 0;
+            const efficiencyExplanation = document.getElementById('k1-efficiency-explanation');
+            if (efficiency < 80) {
+               efficiencyExplanation.style.display = 'block';
+            } else {
+              efficiencyExplanation.style.display = 'none';
+            }
             
             const silica = batchCount * 1010;
             const sodiumCarbonate = batchCount * 329;
