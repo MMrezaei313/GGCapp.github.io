@@ -2217,7 +2217,6 @@ function setupAdvancedRealTimeValidation() {
             const line2InputGroups = document.querySelectorAll('#k2-line2-inputs-container .input-group');
             let line2DailyMelt = 0;
             let line2Production = 0;
-            let line2WeightedThickness = 0;
             let totalWeightedThickness2 = 0;
             
             line2InputGroups.forEach((group, index) => {
@@ -2230,16 +2229,15 @@ function setupAdvancedRealTimeValidation() {
                 const production = parseFloat(document.getElementById(`k2-line2-production-${i}`).value) || 0;
 
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                const WeightedThickness2 = (production * weight) / thickness;
                 line2DailyMelt += dailyMelt;
                 line2Production += production;
-                const WeightedThickness2 = (production * weight) / thickness;
                 totalWeightedThickness2 += WeightedThickness2;
             });
 
             const line3InputGroups = document.querySelectorAll('#k2-line3-inputs-container .input-group');
             let line3DailyMelt = 0;
             let line3Production = 0;
-            let line3WeightedThickness = 0;
             let totalWeightedThickness3 = 0;
             
             line3InputGroups.forEach((group, index) => {
@@ -2252,9 +2250,9 @@ function setupAdvancedRealTimeValidation() {
                 const production = parseFloat(document.getElementById(`k2-line3-production-${i}`).value) || 0;
 
                 const dailyMelt = speed * 2.54 * 60 * hours * (width / 100) * weight / 100;
+                const WeightedThickness3 = (production * weight) / thickness;
                 line3DailyMelt += dailyMelt;
                 line3Production += production;
-                const WeightedThickness3 = (production * weight) / thickness;
                 totalWeightedThickness3 += WeightedThickness3;
             });
 
@@ -2265,8 +2263,6 @@ function setupAdvancedRealTimeValidation() {
             const batchConsumption = batchCount * 1655.12;
             const culletConsumption = (totalDailyMelt - batchConsumption * 0.815);
             const culletPercentage = totalDailyMelt > 0 ? (culletConsumption / totalDailyMelt) * 100 : 0;
-            
-            const totalProdWeight = (( line2Production * 2 * (line2WeightedThickness/line2Production) ) + ( line3Production * 2 * (line3WeightedThickness/line3Production) ));
             const efficiency = totalDailyMelt > 0 ? (((totalWeightedThickness2 + totalWeightedThickness3 ) * 2 ) / (totalDailyMelt )) * 100 : 0;
             const efficiencyExplanation = document.getElementById('k2-efficiency-explanation');
             if (efficiency < 80) {
